@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Opris — O motor invisível por trás das empresas mais eficientes</title>
+<meta name="description" content="Automações sob medida, softwares robustos e plataformas web de alta performance para o mercado B2B. Eliminamos tarefas repetitivas para sua equipe focar em crescer."/>
+
+<!-- Evita flash de conteúdo antes do GSAP assumir (sem JS, tudo aparece normalmente) -->
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- 1. Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- 2. GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<!-- 3. Google Fonts — Bricolage Grotesque (display, do design system) + Inter + JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!-- 4. Lucide Icons -->
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:        '#050505',
+          surface:   '#0A0A0A',
+          surface2:  '#111111',
+          accent:    '#F97316',
+          accenthi:  '#FB923C',
+          accentlo:  '#EA580C',
+          accent2:   '#3B82F6',
+          onaccent:  '#2C1306'
+        },
+        fontFamily: {
+          sans:    ['Inter', 'system-ui', 'sans-serif'],
+          display: ['"Bricolage Grotesque"', 'Inter', 'sans-serif'],
+          mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+
+<style>
+/* ============================================================
+   DESIGN TOKENS — espelham assets do design_system.html
+   ============================================================ */
+:root{
+  /* Superfícies */
+  --bg:            #050505;
+  --surface:       #0A0A0A;
+  --surface-2:     #111111;
+  --surface-warm:  #120A05;
+
+  /* Bordas */
+  --border:        rgba(255,255,255,.10);
+  --border-subtle: rgba(255,255,255,.05);
+
+  /* Texto */
+  --text:          #FFFFFF;
+  --text-muted:    #A3A3A3;
+  --text-dim:      #737373;
+  --on-accent:     #2C1306;
+
+  /* Accent primário (design system) */
+  --accent:        #F97316;
+  --accent-hi:     #FB923C;
+  --accent-lo:     #EA580C;
+
+  /* Accent secundário */
+  --accent-2:      #3B82F6;
+
+  /* Gradientes */
+  --grad-primary:  linear-gradient(to top, #FEF08A, #FB923C, #F97316);
+  --grad-text:     linear-gradient(to right, #FFFFFF, #FED7AA, #FB923C);
+  --grad-edge:     linear-gradient(to bottom, #FDE047, #F97316, transparent);
+
+  /* Glows */
+  --glow-accent:   0 0 40px -5px rgba(249,115,22,.60);
+  --glow-accent-h: 0 0 60px -5px rgba(249,115,22,.80);
+  --glow-blue:     0 0 20px rgba(59,130,246,.50), inset 0 0 10px rgba(59,130,246,.20);
+
+  /* Motion */
+  --ease-entry:    cubic-bezier(.2,.8,.2,1);
+}
+
+html, body { background-color: var(--bg); }
+body { font-family: 'Inter', system-ui, sans-serif; }
+
+/* Anti-FOUC: só esconde se o JS estiver ativo */
+.js [data-reveal]{ opacity: 0; }
+
+/* ============================================================
+   FUNDO — profundidade em camadas
+   ============================================================ */
+
+/* Malha de pontos com deriva lenta */
+.dot-grid{
+  background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+          mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+  animation: gridDrift 26s linear infinite;
+}
+@keyframes gridDrift{ to{ background-position: 28px 28px; } }
+
+/* Campo de estrelas (design_system.html) */
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, #ffffff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  opacity: .20;
+}
+
+/* Grid amplo mascarado (design_system.html) */
+.grid-bg-mask{
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+          mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+}
+
+/* Feixes que percorrem as bordas (design_system.html) */
+.beam-border-h{
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: rgba(255,255,255,.05); overflow:hidden; z-index:10;
+}
+.beam-border-h::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 7s cubic-bezier(.4,0,.2,1) infinite;
+  animation-delay: 2.5s; opacity:.7;
+}
+@keyframes beam-slide{
+  0%{ transform: translateX(-100%); opacity:0; }
+  10%{ opacity:1; } 90%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Glow do painel (design_system.html) */
+.electric-card{
+  box-shadow: 0 0 30px rgba(249,115,22,.30), inset 0 0 20px rgba(249,115,22,.10);
+}
+
+/* ============================================================
+   BOTÃO PRIMÁRIO — "Beam Ring" (design_system.html)
+   Geometria do Finex (pílula escura + borda cônica girando),
+   recolorida para o accent primário laranja.
+   ============================================================ */
+.btn-beam{
+  box-shadow: 0 0 25px -10px rgba(249,115,22,.45);
+  /* Sem transform no hover: o botão fica parado, só o brilho responde. */
+}
+.btn-beam:hover{ box-shadow: 0 0 40px -10px rgba(249,115,22,.70); }
+
+/* Feixe cônico que percorre a borda (Finex) */
+.btn-beam-ring{
+  background: conic-gradient(from 0deg, transparent 0 300deg, var(--accent) 360deg);
+  animation: beam-spin 3s linear infinite;
+}
+@keyframes beam-spin{ to{ transform: rotate(360deg); } }
+
+/* Borda em gradiente mascarada (Finex / design_system.html) */
+[style*="--border-gradient"]::before{
+  content:""; position:absolute; inset:0; padding:1px;
+  border-radius: var(--border-radius-before, inherit);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  background: var(--border-gradient);
+  pointer-events: none;
+}
+
+/* ============================================================
+   CRACHÁS FLUTUANTES
+   ============================================================ */
+.pill{
+  background: rgba(10,10,10,.72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.8);
+  will-change: transform;
+}
+
+/* Pulso que viaja pela linha do pipeline */
+.flow-pulse{
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes flowRun{
+  0%{ transform: translateX(-100%); opacity:0; }
+  15%{ opacity:1; } 85%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Palavras do headline (reveal por máscara) */
+.word{
+  display:inline-block; overflow:hidden; vertical-align:bottom;
+  padding-bottom:.14em; margin-bottom:-.14em;
+}
+.word > span{ display:inline-block; will-change: transform; }
+
+/* Texto em gradiente.
+   O split envolve cada palavra num <span> próprio, e um filho inline-block
+   quebra o background-clip:text do pai (a palavra some). Por isso o gradiente
+   é reaplicado em cada palavra — e mantido no pai como fallback sem JS. */
+.text-grad,
+.text-grad .word > span{
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+::selection{ background: rgba(249,115,22,.30); color:#fff; }
+
+/* Acessibilidade: respeita redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+  .js [data-reveal]{ opacity:1 !important; }
+}
+</style>
+</head>
+
+<body class="min-h-screen bg-bg text-white overflow-x-hidden antialiased relative">
+
+<!-- ============================================================
+     CAMADAS DE FUNDO
+     ============================================================ -->
+<div class="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+  <div class="stars absolute inset-0"></div>
+  <div class="dot-grid absolute inset-0"></div>
+  <div class="grid-bg-mask absolute inset-0"></div>
+  <!-- Orbes de profundidade -->
+  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[520px] rounded-full bg-accent/10 blur-[130px]"></div>
+  <div class="absolute bottom-0 right-0 w-[620px] h-[620px] rounded-full bg-accentlo/10 blur-[110px]"></div>
+  <div class="absolute top-1/3 -left-40 w-[520px] h-[520px] rounded-full bg-accent2/10 blur-[130px]"></div>
+  <!-- Vinheta -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,5,5,.85)_100%)]"></div>
+</div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<header class="relative z-50">
+  <nav class="relative max-w-7xl mx-auto flex items-center justify-between px-6 py-6" data-reveal="nav">
+    <div class="beam-border-h"></div>
+
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-2.5 group">
+      <span class="relative flex items-center justify-center w-8 h-8">
+        <i data-lucide="asterisk" class="absolute w-8 h-8 text-white rotate-45"></i>
+        <i data-lucide="asterisk" class="absolute w-8 h-8 text-accent transition-transform duration-700 group-hover:rotate-90"></i>
+      </span>
+      <span class="text-xl tracking-tight">Opris</span>
+    </a>
+
+    <!-- Menu central -->
+    <div class="hidden md:flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-1 py-1 backdrop-blur-md">
+      <a href="#" class="flex items-center gap-2 rounded-full border border-white/5 bg-neutral-800/80 px-4 py-1.5 text-xs shadow-inner">
+        <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>Início
+      </a>
+      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Soluções</a>
+      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Casos</a>
+      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Empresa</a>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex items-center gap-3">
+      <a href="#contato" class="hidden sm:block rounded-full border-t border-white/20 bg-gradient-to-b from-accenthi to-accentlo px-5 py-2 text-sm shadow-[0_0_15px_-3px_rgba(249,115,22,.4)] transition-all hover:brightness-110">
+        Falar com especialista
+      </a>
+      <button class="md:hidden p-2 text-neutral-300 transition-colors hover:text-white" aria-label="Abrir menu">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<main class="relative z-10">
+  <section class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 pt-14 pb-24 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
+
+    <!-- ---------- COLUNA ESQUERDA ---------- -->
+    <div class="lg:col-span-7">
+
+      <!-- Tagline -->
+      <div data-reveal="tag" class="mb-8 inline-flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+        </span>
+        <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-neutral-300">
+          // Sistemas inteligentes. Operações invisíveis.
+        </span>
+      </div>
+
+      <!-- Headline -->
+      <h1 data-reveal="headline" data-split
+          class="mb-7 font-display text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-[64px] xl:text-[72px]">
+        O motor <span class="text-grad">invisível</span> por trás das empresas mais eficientes.
+      </h1>
+
+      <!-- Subtítulo -->
+      <p data-reveal="sub" class="mb-10 max-w-xl text-base leading-relaxed text-neutral-400 sm:text-lg">
+        Desenvolvemos automações sob medida, softwares robustos e plataformas web de alta
+        performance. Eliminamos tarefas repetitivas para que sua equipe foque no que
+        realmente importa: <span class="text-neutral-200">crescer</span>.
+      </p>
+
+      <!-- CTAs -->
+      <div data-reveal="cta" class="flex flex-col gap-4 sm:flex-row sm:items-center">
+
+        <!-- Primário: Beam Ring (estrutura do botão da Finex, sem as listras) -->
+        <a href="#contato"
+           class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+           style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
+
+          <!-- Feixe cônico girando na borda -->
+          <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
+            <span class="btn-beam-ring absolute inset-[-100%] block"></span>
+            <span class="absolute inset-[1px] rounded-full bg-bg"></span>
+          </span>
+
+          <!-- Superfície interna -->
+          <span class="pointer-events-none absolute inset-[2px] -z-10 overflow-hidden rounded-full bg-surface">
+            <span class="absolute inset-0 bg-gradient-to-b from-accent/15 to-transparent"></span>
+            <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45"></span>
+          </span>
+
+          <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
+            <i data-lucide="cog" class="h-[17px] w-[17px] text-accent"></i>
+            Automatizar minha operação
+            <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+          </span>
+        </a>
+
+        <!-- Secundário: outline/fantasma -->
+        <a href="#casos"
+           class="group inline-flex h-[54px] items-center justify-center gap-2.5 whitespace-nowrap rounded-full border border-white/15 bg-white/[0.03] px-6 text-[13px] font-semibold uppercase tracking-tight text-neutral-300 backdrop-blur-sm transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white sm:px-8 sm:text-[14px]">
+          <i data-lucide="play-circle" class="h-[17px] w-[17px] text-neutral-500 transition-colors group-hover:text-accent"></i>
+          Ver casos de uso
+        </a>
+      </div>
+
+      <!-- Prova social -->
+      <div data-reveal="proof" class="mt-14 flex flex-wrap items-center gap-x-10 gap-y-6 border-t border-white/5 pt-8">
+        <div>
+          <div class="font-display text-3xl font-light tracking-tight">+37h</div>
+          <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Devolvidas / mês</div>
+        </div>
+        <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
+        <div>
+          <div class="font-display text-3xl font-light tracking-tight">99,9%</div>
+          <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Uptime das rotinas</div>
+        </div>
+        <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
+        <div>
+          <div class="font-display text-3xl font-light tracking-tight">B2B</div>
+          <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Foco exclusivo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- COLUNA DIREITA ---------- -->
+    <div class="relative lg:col-span-5">
+
+      <!-- Crachás flutuantes (lg+) -->
+      <div class="pointer-events-none absolute inset-0 z-20 hidden lg:block" aria-hidden="true">
+        <div data-float class="pill absolute -left-16 top-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+          <i data-lucide="webhook" class="h-3.5 w-3.5 text-accent"></i>
+          <span class="font-mono text-[11px] text-neutral-200">Webhooks</span>
+        </div>
+        <div data-float class="pill absolute -right-10 top-32 flex items-center gap-2 rounded-full px-3.5 py-2">
+          <i data-lucide="plug" class="h-3.5 w-3.5 text-accent2"></i>
+          <span class="font-mono text-[11px] text-neutral-200">Integração via API</span>
+        </div>
+        <div data-float class="pill absolute -left-20 bottom-24 flex items-center gap-2 rounded-full px-3.5 py-2">
+          <i data-lucide="file-text" class="h-3.5 w-3.5 text-accent"></i>
+          <span class="font-mono text-[11px] text-neutral-200">Geração de PDFs</span>
+        </div>
+        <div data-float class="pill absolute -right-6 bottom-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+          <i data-lucide="database" class="h-3.5 w-3.5 text-accent2"></i>
+          <span class="font-mono text-[11px] text-neutral-200">Sync de dados</span>
+        </div>
+      </div>
+
+      <!-- Painel: pipeline de automação -->
+      <div data-reveal="panel" class="electric-card relative z-10 mx-auto w-full max-w-[400px] overflow-hidden rounded-[32px] bg-neutral-900 p-[2px]">
+        <!-- Borda com gradiente -->
+        <div class="absolute inset-0 z-0 bg-gradient-to-b from-yellow-300 via-accent to-transparent opacity-80"></div>
+
+        <div class="relative z-10 h-full rounded-[30px] bg-surface p-6 sm:p-7">
+          <!-- Brilho interno -->
+          <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/10 to-transparent"></div>
+
+          <!-- Cabeçalho -->
+          <div class="relative mb-7 flex items-start justify-between">
+            <span class="flex items-center gap-1.5 rounded border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-neutral-400">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+              </span>
+              Executando
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-600">opris://pipeline</span>
+          </div>
+
+          <!-- Etapas -->
+          <div class="relative space-y-3">
+            <!-- 01 Gatilho -->
+            <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 ring-1 ring-accent/20">
+                <i data-lucide="zap" class="h-4 w-4 text-accent"></i>
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="text-sm">Gatilho recebido</div>
+                <div class="truncate font-mono text-[10px] text-neutral-500">POST /webhook · pedido.criado</div>
+              </div>
+              <i data-lucide="check" class="h-4 w-4 shrink-0 text-accent"></i>
+            </div>
+
+            <!-- Conector -->
+            <div class="relative ml-[26px] h-5 w-px overflow-hidden bg-white/10">
+              <span class="absolute inset-0 block h-full w-full bg-gradient-to-b from-transparent via-accent to-transparent"
+                    style="animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) infinite;"></span>
+            </div>
+
+            <!-- 02 Processamento -->
+            <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent2/10 ring-1 ring-accent2/20">
+                <i data-lucide="cpu" class="h-4 w-4 text-accent2"></i>
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="text-sm">Regras aplicadas</div>
+                <div class="truncate font-mono text-[10px] text-neutral-500">validação · enriquecimento · ERP</div>
+              </div>
+              <span class="font-mono text-[10px] text-neutral-500">1.2s</span>
+            </div>
+
+            <div class="relative ml-[26px] h-5 w-px overflow-hidden bg-white/10">
+              <span class="absolute inset-0 block h-full w-full bg-gradient-to-b from-transparent via-accent to-transparent"
+                    style="animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) .4s infinite;"></span>
+            </div>
+
+            <!-- 03 Entrega -->
+            <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 ring-1 ring-accent/20">
+                <i data-lucide="send" class="h-4 w-4 text-accent"></i>
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="text-sm">Entrega automática</div>
+                <div class="truncate font-mono text-[10px] text-neutral-500">PDF assinado · e-mail · CRM</div>
+              </div>
+              <i data-lucide="check" class="h-4 w-4 shrink-0 text-accent"></i>
+            </div>
+          </div>
+
+          <!-- Barra de execução -->
+          <div class="mt-7">
+            <div class="mb-2 flex items-baseline justify-between">
+              <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Execuções hoje</span>
+              <span class="font-display text-lg font-light">1.284</span>
+            </div>
+            <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+              <div class="absolute inset-y-0 left-0 w-[78%] rounded-full bg-gradient-to-r from-accentlo via-accent to-amber-400"></div>
+              <span class="flow-pulse absolute inset-y-0 left-0 w-1/3"></span>
+            </div>
+          </div>
+
+          <!-- Rodapé -->
+          <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+            <span class="flex items-center gap-1.5 font-mono text-[10px] text-neutral-500">
+              <i data-lucide="shield-check" class="h-3.5 w-3.5 text-neutral-400"></i>
+              Sem intervenção manual
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-600">Opris</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crachás em linha (mobile/tablet) -->
+      <div class="mt-8 flex flex-wrap justify-center gap-2.5 lg:hidden">
+        <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+          <i data-lucide="webhook" class="h-3.5 w-3.5 text-accent"></i>
+          <span class="font-mono text-[11px] text-neutral-300">Webhooks</span>
+        </span>
+        <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+          <i data-lucide="plug" class="h-3.5 w-3.5 text-accent2"></i>
+          <span class="font-mono text-[11px] text-neutral-300">Integração via API</span>
+        </span>
+        <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+          <i data-lucide="file-text" class="h-3.5 w-3.5 text-accent"></i>
+          <span class="font-mono text-[11px] text-neutral-300">Geração de PDFs</span>
+        </span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Ícones Lucide */
+  if (window.lucide) lucide.createIcons();
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGSAP = typeof window.gsap !== 'undefined';
+
+  /* Sem GSAP ou com movimento reduzido: mostra tudo e encerra */
+  if (!hasGSAP || reduced) {
+    document.querySelectorAll('[data-reveal]').forEach(function (el) { el.style.opacity = 1; });
+    return;
+  }
+
+  /* ---------- Split do headline em palavras (para o reveal por máscara) ---------- */
+  function splitWords(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var nodes = [], n;
+    while ((n = walker.nextNode())) { if (n.nodeValue.trim()) nodes.push(n); }
+
+    nodes.forEach(function (node) {
+      var frag = document.createDocumentFragment();
+      node.nodeValue.split(/(\s+)/).forEach(function (chunk) {
+        if (!chunk) return;
+        if (/^\s+$/.test(chunk)) { frag.appendChild(document.createTextNode(chunk)); return; }
+        var outer = document.createElement('span');
+        outer.className = 'word';
+        var inner = document.createElement('span');
+        inner.textContent = chunk;
+        outer.appendChild(inner);
+        frag.appendChild(outer);
+      });
+      node.parentNode.replaceChild(frag, node);
+    });
+    return root.querySelectorAll('.word > span');
+  }
+
+  var headline = document.querySelector('[data-split]');
+  var words = headline ? splitWords(headline) : [];
+
+  /* ---------- Timeline de entrada ---------- */
+  var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('[data-reveal="nav"]', { opacity: 1, duration: .8 }, 0)
+    .from('[data-reveal="nav"]', { y: -18, duration: .8 }, 0)
+
+    .to('[data-reveal="tag"]', { opacity: 1, duration: .7 }, .15)
+    .from('[data-reveal="tag"]', { y: 16, filter: 'blur(8px)', duration: .7 }, .15)
+
+    .set('[data-reveal="headline"]', { opacity: 1 }, .3)
+    .from(words, { yPercent: 115, duration: 1, stagger: .045, ease: 'expo.out' }, .3)
+
+    .to('[data-reveal="sub"]', { opacity: 1, duration: .8 }, .75)
+    .from('[data-reveal="sub"]', { y: 22, filter: 'blur(8px)', duration: .8 }, .75)
+
+    .to('[data-reveal="cta"]', { opacity: 1, duration: .7 }, .92)
+    .from('[data-reveal="cta"]', { y: 22, duration: .7 }, .92)
+
+    .to('[data-reveal="proof"]', { opacity: 1, duration: .7 }, 1.05)
+    .from('[data-reveal="proof"]', { y: 20, duration: .7 }, 1.05)
+
+    .to('[data-reveal="panel"]', { opacity: 1, duration: 1 }, .5)
+    .from('[data-reveal="panel"]', { y: 40, scale: .96, filter: 'blur(10px)', duration: 1.1 }, .5);
+
+  /* ---------- Crachás: entrada + flutuação em loop ---------- */
+  var floats = gsap.utils.toArray('[data-float]');
+
+  gsap.set(floats, { opacity: 0, scale: .9 });
+  gsap.to(floats, {
+    opacity: 1, scale: 1, duration: .6, stagger: .12, delay: 1.1, ease: 'back.out(1.6)',
+    onComplete: function () {
+      floats.forEach(function (el, i) {
+        gsap.to(el, {
+          y: i % 2 === 0 ? -12 : -16,
+          duration: 2.4 + i * .25,
+          ease: 'sine.inOut',
+          repeat: -1,
+          yoyo: true,
+          delay: i * .18
+        });
+      });
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
