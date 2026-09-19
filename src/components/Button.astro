@@ -1,0 +1,86 @@
+---
+// Botão do design system, em duas variantes:
+//
+//   beam  — primário. Pílula escura com um feixe cônico girando na borda
+//           (geometria do design_system.html) e brilho interno no hover.
+//   ghost — secundário. Outline sobre fundo translúcido.
+//
+// Vira <a> quando recebe href, senão <button>. O rótulo vai no slot.
+
+interface Props {
+  variant?: 'beam' | 'ghost';
+  /** Nome do ícone Lucide à esquerda do rótulo. */
+  icon: string;
+  /** Seta à direita, que desliza no hover. Ligada por padrão no beam. */
+  arrow?: boolean;
+  href?: string;
+  type?: 'submit' | 'button' | 'reset';
+  class?: string;
+}
+
+const {
+  variant = 'beam',
+  icon,
+  arrow = variant === 'beam',
+  href,
+  type,
+  class: extra,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+
+const classes = {
+  beam: 'btn-beam group relative isolate inline-flex h-[54px] w-full items-center justify-center overflow-hidden rounded-full px-4 text-center text-[12px] font-semibold uppercase leading-tight tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]',
+  ghost:
+    'group inline-flex h-[54px] w-full items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/[0.03] px-4 text-[12px] font-semibold uppercase leading-tight tracking-tight text-neutral-300 backdrop-blur-sm transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]',
+};
+
+// A borda em gradiente é lida pelo seletor [style*="--border-gradient"] do CSS global.
+const estiloBeam =
+  '--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px';
+
+const classeIcone =
+  variant === 'beam'
+    ? 'h-[17px] w-[17px] shrink-0 text-accent'
+    : 'h-[17px] w-[17px] shrink-0 text-neutral-500 transition-colors group-hover:text-accent';
+
+const classeSeta =
+  'h-[17px] w-[17px] shrink-0 transition-transform duration-300 group-hover:translate-x-1';
+---
+
+<Tag
+  href={href}
+  type={type}
+  class:list={[classes[variant], extra]}
+  style={variant === 'beam' ? estiloBeam : undefined}
+>
+  {
+    variant === 'beam' ? (
+      <>
+        {/* Feixe cônico girando na borda */}
+        <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
+          <span class="btn-beam-ring absolute inset-[-100%] block" />
+          <span class="absolute inset-[1px] rounded-full bg-bg" />
+        </span>
+
+        {/* Superfície interna */}
+        <span class="pointer-events-none absolute inset-[2px] -z-10 overflow-hidden rounded-full bg-surface">
+          <span class="absolute inset-0 bg-gradient-to-b from-accent/15 to-transparent" />
+          <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45" />
+        </span>
+
+        <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
+          <i data-lucide={icon} class={classeIcone} />
+          <slot />
+          {arrow && <i data-lucide="arrow-right" class={classeSeta} />}
+        </span>
+      </>
+    ) : (
+      <>
+        <i data-lucide={icon} class={classeIcone} />
+        <slot />
+        {arrow && <i data-lucide="arrow-right" class={classeSeta} />}
+      </>
+    )
+  }
+</Tag>

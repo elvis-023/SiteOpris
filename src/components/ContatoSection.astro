@@ -1,0 +1,187 @@
+---
+// 5ª DOBRA — CONTATO.
+//
+// Cabeçalho, canais diretos e o formulário de diagnóstico. No <script>
+// do fim vão as duas lógicas da dobra: o envio do formulário e o reveal
+// por scroll.
+//
+// ⚠ SUBSTITUIR ANTES DE PUBLICAR: e-mail e WhatsApp abaixo são
+// placeholders (procure por "opris.com.br" e "5500").
+//
+// O formulário funciona sem backend: se data-endpoint estiver vazio, o
+// envio monta um mailto já preenchido, então nenhuma mensagem se perde.
+// Para usar um serviço real (Formspree, Basin, API própria), preencha
+// data-endpoint com a URL — o form passa a fazer POST normal e o mailto
+// é ignorado.
+import Button from './Button.astro';
+---
+
+<section id="contato" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
+  <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute left-1/2 top-1/4 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="grid grid-cols-1 gap-10 sm:gap-14 lg:grid-cols-12 lg:gap-16">
+
+      <!-- Esquerda -->
+      <div class="lg:col-span-5">
+        <span data-reveal="cta-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+          <span class="h-px w-6 bg-accent"></span>
+          Contato
+        </span>
+        <h2 data-reveal="cta-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl">
+          Vamos ver o que <span class="text-grad">dá para automatizar</span>
+        </h2>
+        <p data-reveal="cta-head" class="mb-8 text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-base md:text-lg">
+          Trinta minutos, sem custo e sem compromisso. Você mostra a rotina que mais
+          incomoda e a gente diz o que é automatizável — inclusive se a resposta for
+          &ldquo;nada, por enquanto&rdquo;.
+        </p>
+
+        <ul data-reveal="cta-head" class="mb-8 space-y-3.5 sm:mb-10">
+          <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+            <i data-lucide="clock" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
+            Resposta imediata
+          </li>
+          <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+            <i data-lucide="shield-check" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
+            Tudo que você contar fica em sigilo
+          </li>
+          <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+            <i data-lucide="message-square" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
+            Você fala com quem vai fazer, não com vendedor
+          </li>
+        </ul>
+
+        <!-- Canais diretos -->
+        <div data-reveal="cta-head" class="flex flex-wrap gap-2.5 sm:gap-3">
+          <a href="mailto:contato@opris.com.br"
+             class="group inline-flex max-w-full items-center gap-2.5 break-all rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-[13px] text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white sm:break-normal sm:text-sm">
+            <i data-lucide="mail" class="h-4 w-4 shrink-0 text-neutral-500 transition-colors group-hover:text-accent"></i>
+            contato@opris.com.br
+          </a>
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener"
+             class="group inline-flex max-w-full items-center gap-2.5 break-all rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-[13px] text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white sm:break-normal sm:text-sm">
+            <i data-lucide="message-circle" class="h-4 w-4 shrink-0 text-neutral-500 transition-colors group-hover:text-accent"></i>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Direita: formulário -->
+      <div data-reveal="cta-form" class="lg:col-span-7">
+        <form id="form-contato" data-endpoint="" method="post" novalidate
+              class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-5 sm:p-8">
+          <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
+
+          <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <label for="f-nome" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Nome *</label>
+              <input id="f-nome" name="nome" type="text" required autocomplete="name"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     placeholder="Como te chamamos"/>
+            </div>
+            <div>
+              <label for="f-empresa" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Empresa</label>
+              <input id="f-empresa" name="empresa" type="text" autocomplete="organization"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     placeholder="Nome da empresa"/>
+            </div>
+            <div>
+              <label for="f-email" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">E-mail corporativo *</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     placeholder="voce@empresa.com.br"/>
+            </div>
+            <div>
+              <label for="f-fone" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">WhatsApp</label>
+              <input id="f-fone" name="telefone" type="tel" autocomplete="tel"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     placeholder="(00) 00000-0000"/>
+            </div>
+            <div class="sm:col-span-2">
+              <label for="f-msg" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Qual rotina mais consome tempo hoje? *</label>
+              <textarea id="f-msg" name="mensagem" rows="4" required
+                        class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-base leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:text-sm"
+                        placeholder="Ex.: conferimos 200 pedidos por dia na mão, comparando o pedido do cliente com o que entrou no ERP."></textarea>
+            </div>
+          </div>
+
+          <!-- Mensagem de estado (validação / retorno) -->
+          <p id="form-aviso" role="status" aria-live="polite" class="mt-5 hidden text-sm"></p>
+
+          <div class="mt-7 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <Button type="submit" icon="send">Enviar e agendar</Button>
+            <p class="text-center text-xs leading-relaxed text-neutral-600 sm:max-w-[16rem] sm:text-left">
+              Seus dados ficam só conosco. Nada de lista de disparo.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Script de componente: módulo adiado pelo Astro. O listener de submit
+     entra depois do parse, e o GSAP do CDN (carregado no <head> do
+     Layout) já está de pé quando o reveal é montado. */
+  import { revelarSecao } from '../scripts/reveal.js';
+
+  /* ---------- Formulário de contato ----------
+     Com data-endpoint preenchido, faz POST normal.
+     Vazio, monta um mailto já preenchido — assim o form nunca
+     engole a mensagem, mesmo sem backend. */
+  var form = document.getElementById('form-contato');
+  if (form) {
+    var aviso = document.getElementById('form-aviso');
+    var EMAIL_DESTINO = 'contato@opris.com.br';   // ⚠ trocar
+
+    function mostrarAviso(texto, erro) {
+      if (!aviso) return;
+      aviso.textContent = texto;
+      aviso.className = 'mt-5 text-sm ' + (erro ? 'text-accent' : 'text-neutral-400');
+    }
+
+    form.addEventListener('submit', function (e) {
+      /* Validação nativa (o form tem novalidate para controlarmos a mensagem) */
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        var invalido = form.querySelector(':invalid');
+        if (invalido) invalido.focus();
+        mostrarAviso('Preencha nome, e-mail e a descrição da rotina para continuar.', true);
+        return;
+      }
+
+      var endpoint = form.getAttribute('data-endpoint');
+      if (endpoint) {
+        form.setAttribute('action', endpoint);
+        return; // segue o envio normal
+      }
+
+      /* Sem endpoint: cai para mailto */
+      e.preventDefault();
+      var d = new FormData(form);
+      var corpo =
+        'Nome: '     + (d.get('nome')     || '') + '\n' +
+        'Empresa: '  + (d.get('empresa')  || '-') + '\n' +
+        'E-mail: '   + (d.get('email')    || '') + '\n' +
+        'WhatsApp: ' + (d.get('telefone') || '-') + '\n\n' +
+        'Rotina que consome tempo:\n' + (d.get('mensagem') || '');
+
+      mostrarAviso('Abrindo seu aplicativo de e-mail… Se nada acontecer, escreva para ' + EMAIL_DESTINO + '.', false);
+
+      window.location.href = 'mailto:' + EMAIL_DESTINO +
+        '?subject=' + encodeURIComponent('Diagnóstico Opris — ' + (d.get('empresa') || d.get('nome') || '')) +
+        '&body='    + encodeURIComponent(corpo);
+    });
+  }
+
+  /* ---------- Reveal da seção ---------- */
+  revelarSecao('#contato', (tl, { desk, headFrom, headTo }) => {
+    tl.fromTo('[data-reveal="cta-head"]', headFrom, headTo, 0)
+      .fromTo('[data-reveal="cta-form"]',
+        { opacity: 0, y: desk ? 36 : 24, scale: desk ? .97 : 1 },
+        { opacity: 1, y: 0, scale: 1, duration: .9 }, .25);
+  }, { start: 'top 82%' });
+</script>

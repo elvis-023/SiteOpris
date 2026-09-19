@@ -1,0 +1,181 @@
+---
+// 3ª DOBRA — PROCESSO.
+//
+// As quatro etapas com os conectores entre elas, o marquee de
+// integrações e o manifesto com o CTA. São dois reveals: o da seção
+// e o do manifesto, que entra bem mais abaixo e por isso tem gatilho
+// próprio — ver o <script> no fim do arquivo.
+import Button from './Button.astro';
+---
+
+<section id="processo" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
+  <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute bottom-0 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-accent2/[0.04] blur-[150px]" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+
+    <!-- Cabeçalho -->
+    <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-24">
+      <span data-reveal="proc-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+        <span class="h-px w-6 bg-accent"></span>
+        Processo
+      </span>
+      <h2 data-reveal="proc-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
+        Do diagnóstico ao <span class="text-grad">piloto automático</span>
+      </h2>
+      <p data-reveal="proc-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
+        Nada de projeto de seis meses que só aparece no fim. Você acompanha cada etapa
+        funcionando, decide o que entra primeiro e vê o retorno antes da entrega final.
+      </p>
+    </header>
+
+    <!-- Etapas -->
+    <ol class="relative mb-16 grid grid-cols-1 gap-8 sm:mb-20 sm:grid-cols-2 sm:gap-10 lg:mb-24 lg:grid-cols-4 lg:gap-8">
+
+      <li data-reveal="proc-step" class="relative">
+        <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" aria-hidden="true"></span>
+        <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
+        <div class="relative mb-6 flex items-center gap-4">
+          <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">01</span>
+          <i data-lucide="search" class="h-5 w-5 text-accent"></i>
+        </div>
+        <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
+          <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Diagnóstico</h3>
+          <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
+            Acompanhamos sua operação por dentro, medimos onde as horas se perdem e
+            priorizamos o que devolve mais tempo primeiro.
+          </p>
+        </div>
+      </li>
+
+      <li data-reveal="proc-step" class="relative">
+        <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.4s" aria-hidden="true"></span>
+        <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
+        <div class="relative mb-6 flex items-center gap-4">
+          <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">02</span>
+          <i data-lucide="pen-tool" class="h-5 w-5 text-accent"></i>
+        </div>
+        <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
+          <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Desenho</h3>
+          <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
+            Fluxos, arquitetura e telas definidos antes da primeira linha de código.
+            Você aprova o caminho sabendo exatamente o que vai receber.
+          </p>
+        </div>
+      </li>
+
+      <li data-reveal="proc-step" class="relative">
+        <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.8s" aria-hidden="true"></span>
+        <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
+        <div class="relative mb-6 flex items-center gap-4">
+          <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">03</span>
+          <i data-lucide="code-2" class="h-5 w-5 text-accent"></i>
+        </div>
+        <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
+          <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Construção</h3>
+          <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
+            Entregas em ciclos curtos, sempre em ambiente real. Você testa rodando, não
+            em apresentação de slides.
+          </p>
+        </div>
+      </li>
+
+      <li data-reveal="proc-step" class="relative">
+        <div class="relative mb-6 flex items-center gap-4">
+          <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-zinc-900 font-mono text-xs text-accent">04</span>
+          <i data-lucide="activity" class="h-5 w-5 text-accent"></i>
+        </div>
+        <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
+          <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Operação</h3>
+          <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
+            Monitoramos, ajustamos e evoluímos. A automação não para no deploy — ela
+            cresce junto com a sua operação.
+          </p>
+        </div>
+      </li>
+    </ol>
+
+    <!-- Integrações (marquee do design system) -->
+    <div data-reveal="proc-marquee" class="relative mb-16 overflow-hidden border-y border-white/5 py-5 sm:mb-20 lg:mb-24">
+      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-bg to-transparent sm:w-24"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-bg to-transparent sm:w-24"></div>
+      <div class="flex w-max animate-marquee">
+        <div class="flex shrink-0 items-center gap-8 pr-8 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-600 sm:gap-12 sm:pr-12 sm:text-[11px]">
+          <span>Conectamos com</span><span class="text-accent/70">/</span>
+          <span>ERP</span><span class="text-accent/70">/</span>
+          <span>CRM</span><span class="text-accent/70">/</span>
+          <span>WhatsApp</span><span class="text-accent/70">/</span>
+          <span>Planilhas</span><span class="text-accent/70">/</span>
+          <span>E-mail</span><span class="text-accent/70">/</span>
+          <span>Notas fiscais</span><span class="text-accent/70">/</span>
+          <span>Pagamentos</span><span class="text-accent/70">/</span>
+          <span>Bancos de dados</span><span class="text-accent/70">/</span>
+          <span>APIs internas</span><span class="text-accent/70">/</span>
+        </div>
+        <div aria-hidden="true" class="flex shrink-0 items-center gap-8 pr-8 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-600 sm:gap-12 sm:pr-12 sm:text-[11px]">
+          <span>Conectamos com</span><span class="text-accent/70">/</span>
+          <span>ERP</span><span class="text-accent/70">/</span>
+          <span>CRM</span><span class="text-accent/70">/</span>
+          <span>WhatsApp</span><span class="text-accent/70">/</span>
+          <span>Planilhas</span><span class="text-accent/70">/</span>
+          <span>E-mail</span><span class="text-accent/70">/</span>
+          <span>Notas fiscais</span><span class="text-accent/70">/</span>
+          <span>Pagamentos</span><span class="text-accent/70">/</span>
+          <span>Bancos de dados</span><span class="text-accent/70">/</span>
+          <span>APIs internas</span><span class="text-accent/70">/</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manifesto + CTA.
+         A frase descarta uma saída e aponta outra: o risco e o realce
+         fazem esse argumento na tipografia, em vez de deixar tudo no
+         mesmo peso. O texto ao redor fica esmaecido, não ilegível —
+         neutral-700 sobre o fundo dava 1,97:1 de contraste. -->
+    <div class="grid grid-cols-1 gap-10 sm:gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
+      <h2 data-reveal="proc-manifesto" class="font-display text-[1.75rem] font-light leading-[1.15] tracking-tight text-neutral-500 [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:col-span-8 lg:text-[4rem] lg:leading-[1.02]">
+        A maioria das empresas não precisa de <span class="manifesto-risco whitespace-nowrap text-neutral-400">mais gente<span class="manifesto-risco-linha" aria-hidden="true"></span></span>. Precisa de <span class="manifesto-realce font-medium">menos trabalho manual</span><span class="text-accent">.</span>
+      </h2>
+
+      <div data-reveal="proc-manifesto" class="lg:col-span-4">
+        <p class="mb-6 text-[14px] leading-relaxed text-neutral-400 sm:mb-7 sm:text-sm">
+          Uma conversa de 30 minutos é o bastante para mapearmos onde sua operação
+          está perdendo tempo — e dizermos, sem rodeios, se dá para automatizar.
+        </p>
+        <Button href="#contato" icon="calendar-check">Agendar diagnóstico</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ---------- Reveals da seção ----------
+     Script de componente: módulo adiado pelo Astro, com o GSAP do CDN
+     (carregado no <head> do Layout) já de pé quando isto roda. */
+  import { revelarSecao } from '../scripts/reveal.js';
+
+  revelarSecao('#processo', (tl, { headFrom, headTo, desk }) => {
+    tl.fromTo('[data-reveal="proc-head"]', headFrom, headTo, 0)
+      .fromTo('[data-reveal="proc-step"]',
+        { opacity: 0, y: desk ? 36 : 24 },
+        { opacity: 1, y: 0, duration: .7, stagger: .13 }, .3)
+      .fromTo('[data-reveal="proc-marquee"]',
+        { opacity: 0 },
+        { opacity: 1, duration: .9 }, .7);
+  });
+
+  /* O manifesto fecha a dobra, quase uma tela abaixo das etapas. Preso
+     ao gatilho da seção ele já teria entrado — e passado — antes de
+     alguém chegar nele, então ganha gatilho e ponto de disparo próprios. */
+  revelarSecao('[data-reveal="proc-manifesto"]', (tl, { desk, blur }) => {
+    tl.fromTo('[data-reveal="proc-manifesto"]',
+      { opacity: 0, y: desk ? 30 : 22, filter: blur },
+      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .14 })
+      /* O risco corta "mais gente" quando a frase já assentou — o gesto
+         só significa alguma coisa depois de a pessoa ter lido. Sem GSAP
+         a linha já nasce desenhada (ver o CSS), então nada se perde. */
+      .fromTo('.manifesto-risco-linha',
+        { scaleX: 0 },
+        { scaleX: 1, duration: .55, ease: 'power2.inOut' }, '>-.4');
+  }, { start: 'top 88%' });
+</script>

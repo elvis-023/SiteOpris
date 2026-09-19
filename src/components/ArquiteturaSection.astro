@@ -1,0 +1,167 @@
+---
+// 2ª DOBRA — ARQUITETURA.
+//
+// Cabeçalho da seção, o diagrama de malha operacional (SVG + nós em
+// órbita) e os três pilares. O reveal por scroll fica no <script> do
+// fim do arquivo; o que ele tem em comum com as outras dobras vem de
+// scripts/reveal.js.
+---
+
+<section id="arquitetura" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
+  <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+
+    <!-- Cabeçalho -->
+    <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-20">
+      <span data-reveal="arch-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+        <span class="h-px w-6 bg-accent"></span>
+        Metodologia
+      </span>
+      <h2 data-reveal="arch-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
+        Arquitetura de <span class="text-grad">Eficiência</span>
+      </h2>
+      <p data-reveal="arch-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
+        Não entregamos peças soltas. Automação, engenharia e design operam como um
+        sistema único cada camada reforçando a seguinte para sua empresa ganhar
+        escala sem ganhar complexidade.
+      </p>
+    </header>
+
+    <!-- Grid principal -->
+    <div class="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
+
+      <!-- ---------- ESQUERDA: diagrama de rede ---------- -->
+      <div data-reveal="arch-card" class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-4 sm:p-8">
+
+        <div class="mb-4 flex items-center justify-between">
+          <span class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+            <span class="relative flex h-1.5 w-1.5">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
+              <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent"></span>
+            </span>
+            Malha operacional
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">4 camadas</span>
+        </div>
+
+        <!-- Palco quadrado: o viewBox 400x400 e as posições em % ficam alinhados -->
+        <div class="relative mx-auto aspect-square w-full max-w-[420px]">
+
+          <!-- Conexões -->
+          <svg class="absolute inset-0 h-full w-full" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+            <circle cx="200" cy="200" r="78"  stroke="rgba(255,255,255,.06)"/>
+            <circle cx="200" cy="200" r="132" stroke="rgba(255,255,255,.035)"/>
+            <g stroke="rgba(255,255,255,.09)" stroke-width="1">
+              <path d="M200 200 L100 96"/>
+              <path d="M200 200 L304 116"/>
+              <path d="M200 200 L296 300"/>
+              <path d="M200 200 L104 288"/>
+            </g>
+            <g stroke="#F97316" stroke-width="1.5" stroke-linecap="round">
+              <path class="wire-pulse" pathLength="100" d="M200 200 L100 96"   style="animation-delay:0s"/>
+              <path class="wire-pulse" pathLength="100" d="M200 200 L304 116"  style="animation-delay:.8s"/>
+              <path class="wire-pulse" pathLength="100" d="M200 200 L296 300"  style="animation-delay:1.6s"/>
+              <path class="wire-pulse" pathLength="100" d="M200 200 L104 288"  style="animation-delay:2.4s"/>
+            </g>
+          </svg>
+
+          <!-- Partícula em órbita -->
+          <div class="orbit pointer-events-none absolute inset-[20%]" aria-hidden="true">
+            <span class="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(249,115,22,.6)]"></span>
+          </div>
+
+          <!-- Núcleo -->
+          <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div class="relative flex h-[60px] w-[60px] items-center justify-center rounded-2xl border border-white/15 bg-zinc-900 shadow-[0_0_50px_-10px_rgba(249,115,22,.55)] sm:h-[76px] sm:w-[76px]">
+              <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/40"></span>
+              <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/30" style="animation-delay:1.2s"></span>
+              <i data-lucide="server-cog" class="h-6 w-6 text-accent sm:h-8 sm:w-8"></i>
+            </div>
+          </div>
+
+          <!-- Satélites -->
+          <div class="node absolute left-[25%] top-[24%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Bancos de dados">
+            <i data-lucide="database" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
+          </div>
+          <div class="node absolute left-[76%] top-[29%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="APIs e integrações">
+            <i data-lucide="code-2" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
+          </div>
+          <div class="node absolute left-[74%] top-[75%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Segurança">
+            <i data-lucide="shield-check" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
+          </div>
+          <div class="node absolute left-[26%] top-[72%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Rotinas automatizadas">
+            <i data-lucide="cog" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
+          </div>
+
+          <!-- Poeira -->
+          <span class="absolute left-[58%] top-[47%] h-1 w-1 rounded-full bg-white/70" aria-hidden="true"></span>
+          <span class="absolute left-[38%] top-[66%] h-[3px] w-[3px] rounded-full bg-white/25" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <!-- ---------- DIREITA: os pilares ---------- -->
+      <ol class="space-y-8 sm:space-y-10 lg:space-y-12">
+
+        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">01</span>
+          <div class="min-w-0">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Automação Inteligente</h3>
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
+              Mapeamos o que consome as horas da sua equipe e transformamos em fluxos que
+              rodam sozinhos. Integrações, webhooks e regras de negócio que não dormem.
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">&minus;37h/mês</code>
+            </p>
+          </div>
+        </li>
+
+        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">02</span>
+          <div class="min-w-0">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Engenharia Sob Medida</h3>
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
+              Sistemas construídos para o seu processo, não o contrário. Arquitetura pensada
+              para performance, observabilidade e para crescer sem exigir reescrita.
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">99,9% uptime</code>
+            </p>
+          </div>
+        </li>
+
+        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">03</span>
+          <div class="min-w-0">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Design que Converte</h3>
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
+              Do redesenho ao site novo: interfaces claras, rápidas e construídas para
+              vender. Seu visitante entende o valor do negócio em segundos e sabe
+              exatamente qual é o próximo passo.
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">carrega em 1s</code>
+            </p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ---------- Reveal da seção ----------
+     Script de componente: o Astro o serve como módulo adiado, então o
+     import resolve em build e o GSAP do CDN (carregado no <head>) já
+     está de pé quando isto roda. */
+  import { revelarSecao } from '../scripts/reveal.js';
+
+  revelarSecao('#arquitetura', (tl, { desk, headFrom, headTo }) => {
+    tl.fromTo('[data-reveal="arch-head"]', headFrom, headTo, 0)
+      .fromTo('[data-reveal="arch-card"]',
+        { opacity: 0, scale: desk ? .94 : .98, filter: desk ? 'blur(10px)' : 'blur(0px)' },
+        { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.1 }, .18)
+      /* Os pilares deslizam no eixo X só no desktop — ver o porquê
+         em scripts/reveal.js. */
+      .fromTo('[data-reveal="arch-item"]',
+        desk ? { opacity: 0, x: 44 } : { opacity: 0, y: 24 },
+        desk ? { opacity: 1, x: 0, duration: .7, stagger: .15 }
+             : { opacity: 1, y: 0, duration: .6, stagger: .12 }, .42);
+  });
+</script>
