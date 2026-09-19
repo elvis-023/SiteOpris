@@ -12,8 +12,9 @@
 <!-- 1. Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- 2. GSAP -->
+<!-- 2. GSAP + ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <!-- 3. Google Fonts — Bricolage Grotesque (display, do design system) + Inter + JetBrains Mono -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -226,6 +227,82 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   color: transparent;
 }
 
+/* ============================================================
+   2ª DOBRA — ARQUITETURA
+   ============================================================ */
+
+/* Malha de pontos da seção */
+.dot-grid-soft{
+  background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+          mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+}
+
+/* Luz percorrendo as conexões do diagrama.
+   pathLength="100" normaliza o comprimento de cada path, então o mesmo
+   dasharray e o mesmo timing funcionam para qualquer geometria de linha. */
+.wire-pulse{
+  stroke-dasharray: 6 94;
+  stroke-dashoffset: 100;
+  animation: wireRun 3.2s linear infinite;
+}
+@keyframes wireRun{ to{ stroke-dashoffset: 0; } }
+
+/* Anéis concêntricos expandindo a partir do núcleo */
+.core-ring{ animation: coreRing 3.6s cubic-bezier(.3,0,.5,1) infinite; }
+@keyframes coreRing{
+  0%   { transform: scale(.7);  opacity: 0;  }
+  35%  {                        opacity: .55;}
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+/* Nós satélite */
+.node{
+  background: rgba(24,24,27,.85);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.node:hover{
+  border-color: rgba(249,115,22,.45);
+  box-shadow: 0 0 22px -6px rgba(249,115,22,.55);
+}
+
+/* Partícula em órbita */
+.orbit{ animation: orbitSpin 18s linear infinite; }
+@keyframes orbitSpin{ to{ transform: rotate(360deg); } }
+
+/* ============================================================
+   3ª DOBRA — PROCESSO
+   ============================================================ */
+
+/* Conector entre etapas. Reaproveita o keyframe beam-slide do
+   design system para o pulso que percorre a linha. */
+.step-wire{ background: rgba(255,255,255,.08); overflow: hidden; }
+.step-wire::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 4.5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:.75;
+}
+
+/* Marquee de integrações (design_system.html) */
+.animate-marquee{ animation: marquee 34s linear infinite; }
+@keyframes marquee{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Cartão de etapa */
+.step-card{ transition: border-color .35s ease, background-color .35s ease; }
+.step-card:hover{
+  border-color: rgba(249,115,22,.28);
+  background-color: rgba(249,115,22,.03);
+}
+
 ::selection{ background: rgba(249,115,22,.30); color:#fff; }
 
 /* Acessibilidade: respeita redução de movimento */
@@ -322,9 +399,10 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
       <!-- Subtítulo -->
       <p data-reveal="sub" class="mb-10 max-w-xl text-base leading-relaxed text-neutral-400 sm:text-lg">
-        Desenvolvemos automações sob medida, softwares robustos e plataformas web de alta
-        performance. Eliminamos tarefas repetitivas para que sua equipe foque no que
-        realmente importa: <span class="text-neutral-200">crescer</span>.
+        Desenvolvemos automações sob medida, softwares robustos e sites com design moderno
+        que reformulam a presença digital da sua empresa. Unimos engenharia de alta
+        performance para eliminar tarefas repetitivas e liberar sua
+        equipe para o que realmente importa: <span class="text-neutral-200">crescer</span>.
       </p>
 
       <!-- CTAs -->
@@ -515,6 +593,302 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </div>
     </div>
   </section>
+
+  <!-- ============================================================
+       2ª DOBRA — ARQUITETURA
+       ============================================================ -->
+  <section id="arquitetura" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+    <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-7xl px-6">
+
+      <!-- Cabeçalho -->
+      <header class="mb-16 max-w-2xl lg:mb-20">
+        <span data-reveal="arch-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+          <span class="h-px w-6 bg-accent"></span>
+          Metodologia
+        </span>
+        <h2 data-reveal="arch-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
+          Arquitetura de <span class="text-grad">Eficiência</span>
+        </h2>
+        <p data-reveal="arch-head" class="text-base leading-relaxed text-neutral-400 sm:text-lg">
+          Não entregamos peças soltas. Automação, engenharia e design operam como um
+          sistema único cada camada reforçando a seguinte para sua empresa ganhar
+          escala sem ganhar complexidade.
+        </p>
+      </header>
+
+      <!-- Grid principal -->
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+
+        <!-- ---------- ESQUERDA: diagrama de rede ---------- -->
+        <div data-reveal="arch-card" class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-6 sm:p-8">
+
+          <div class="mb-4 flex items-center justify-between">
+            <span class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75"></span>
+                <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent"></span>
+              </span>
+              Malha operacional
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">4 camadas</span>
+          </div>
+
+          <!-- Palco quadrado: o viewBox 400x400 e as posições em % ficam alinhados -->
+          <div class="relative mx-auto aspect-square w-full max-w-[420px]">
+
+            <!-- Conexões -->
+            <svg class="absolute inset-0 h-full w-full" viewBox="0 0 400 400" fill="none" aria-hidden="true">
+              <circle cx="200" cy="200" r="78"  stroke="rgba(255,255,255,.06)"/>
+              <circle cx="200" cy="200" r="132" stroke="rgba(255,255,255,.035)"/>
+              <g stroke="rgba(255,255,255,.09)" stroke-width="1">
+                <path d="M200 200 L100 96"/>
+                <path d="M200 200 L304 116"/>
+                <path d="M200 200 L296 300"/>
+                <path d="M200 200 L104 288"/>
+              </g>
+              <g stroke="#F97316" stroke-width="1.5" stroke-linecap="round">
+                <path class="wire-pulse" pathLength="100" d="M200 200 L100 96"   style="animation-delay:0s"/>
+                <path class="wire-pulse" pathLength="100" d="M200 200 L304 116"  style="animation-delay:.8s"/>
+                <path class="wire-pulse" pathLength="100" d="M200 200 L296 300"  style="animation-delay:1.6s"/>
+                <path class="wire-pulse" pathLength="100" d="M200 200 L104 288"  style="animation-delay:2.4s"/>
+              </g>
+            </svg>
+
+            <!-- Partícula em órbita -->
+            <div class="orbit pointer-events-none absolute inset-[20%]" aria-hidden="true">
+              <span class="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_10px_2px_rgba(249,115,22,.6)]"></span>
+            </div>
+
+            <!-- Núcleo -->
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div class="relative flex h-[76px] w-[76px] items-center justify-center rounded-2xl border border-white/15 bg-zinc-900 shadow-[0_0_50px_-10px_rgba(249,115,22,.55)]">
+                <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/40"></span>
+                <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/30" style="animation-delay:1.2s"></span>
+                <i data-lucide="server-cog" class="h-8 w-8 text-accent"></i>
+              </div>
+            </div>
+
+            <!-- Satélites -->
+            <div class="node absolute left-[25%] top-[24%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Bancos de dados">
+              <i data-lucide="database" class="h-5 w-5 text-neutral-400"></i>
+            </div>
+            <div class="node absolute left-[76%] top-[29%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="APIs e integrações">
+              <i data-lucide="code-2" class="h-5 w-5 text-neutral-400"></i>
+            </div>
+            <div class="node absolute left-[74%] top-[75%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Segurança">
+              <i data-lucide="shield-check" class="h-5 w-5 text-neutral-400"></i>
+            </div>
+            <div class="node absolute left-[26%] top-[72%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Rotinas automatizadas">
+              <i data-lucide="cog" class="h-5 w-5 text-neutral-400"></i>
+            </div>
+
+            <!-- Poeira -->
+            <span class="absolute left-[58%] top-[47%] h-1 w-1 rounded-full bg-white/70" aria-hidden="true"></span>
+            <span class="absolute left-[38%] top-[66%] h-[3px] w-[3px] rounded-full bg-white/25" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- ---------- DIREITA: os pilares ---------- -->
+        <ol class="space-y-10 lg:space-y-12">
+
+          <li data-reveal="arch-item" class="group flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">01</span>
+            <div class="min-w-0">
+              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Automação Inteligente</h3>
+              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+                Mapeamos o que consome as horas da sua equipe e transformamos em fluxos que
+                rodam sozinhos. Integrações, webhooks e regras de negócio que não dormem.
+                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">&minus;37h/mês</code>
+              </p>
+            </div>
+          </li>
+
+          <li data-reveal="arch-item" class="group flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">02</span>
+            <div class="min-w-0">
+              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Engenharia Sob Medida</h3>
+              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+                Sistemas construídos para o seu processo, não o contrário. Arquitetura pensada
+                para performance, observabilidade e para crescer sem exigir reescrita.
+                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">99,9% uptime</code>
+              </p>
+            </div>
+          </li>
+
+          <li data-reveal="arch-item" class="group flex gap-5">
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">03</span>
+            <div class="min-w-0">
+              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Design que Converte</h3>
+              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+                Do redesenho ao site novo: interfaces claras, rápidas e construídas para
+                vender. Seu visitante entende o valor do negócio em segundos e sabe
+                exatamente qual é o próximo passo.
+                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">carrega em 1s</code>
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       3ª DOBRA — PROCESSO
+       ============================================================ -->
+  <section id="processo" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+    <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute bottom-0 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-accent2/[0.04] blur-[150px]" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-7xl px-6">
+
+      <!-- Cabeçalho -->
+      <header class="mb-16 max-w-2xl lg:mb-24">
+        <span data-reveal="proc-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+          <span class="h-px w-6 bg-accent"></span>
+          Processo
+        </span>
+        <h2 data-reveal="proc-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
+          Do diagnóstico ao <span class="text-grad">piloto automático</span>
+        </h2>
+        <p data-reveal="proc-head" class="text-base leading-relaxed text-neutral-400 sm:text-lg">
+          Nada de projeto de seis meses que só aparece no fim. Você acompanha cada etapa
+          funcionando, decide o que entra primeiro e vê o retorno antes da entrega final.
+        </p>
+      </header>
+
+      <!-- Etapas -->
+      <ol class="relative mb-24 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+
+        <li data-reveal="proc-step" class="relative">
+          <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <div class="relative mb-6 flex items-center gap-4">
+            <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">01</span>
+            <i data-lucide="search" class="h-5 w-5 text-accent"></i>
+          </div>
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Diagnóstico</h3>
+            <p class="text-sm leading-relaxed text-neutral-400">
+              Acompanhamos sua operação por dentro, medimos onde as horas se perdem e
+              priorizamos o que devolve mais tempo primeiro.
+            </p>
+          </div>
+        </li>
+
+        <li data-reveal="proc-step" class="relative">
+          <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.4s" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <div class="relative mb-6 flex items-center gap-4">
+            <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">02</span>
+            <i data-lucide="pen-tool" class="h-5 w-5 text-accent"></i>
+          </div>
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Desenho</h3>
+            <p class="text-sm leading-relaxed text-neutral-400">
+              Fluxos, arquitetura e telas definidos antes da primeira linha de código.
+              Você aprova o caminho sabendo exatamente o que vai receber.
+            </p>
+          </div>
+        </li>
+
+        <li data-reveal="proc-step" class="relative">
+          <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.8s" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <div class="relative mb-6 flex items-center gap-4">
+            <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">03</span>
+            <i data-lucide="code-2" class="h-5 w-5 text-accent"></i>
+          </div>
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Construção</h3>
+            <p class="text-sm leading-relaxed text-neutral-400">
+              Entregas em ciclos curtos, sempre em ambiente real. Você testa rodando, não
+              em apresentação de slides.
+            </p>
+          </div>
+        </li>
+
+        <li data-reveal="proc-step" class="relative">
+          <div class="relative mb-6 flex items-center gap-4">
+            <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-zinc-900 font-mono text-xs text-accent">04</span>
+            <i data-lucide="activity" class="h-5 w-5 text-accent"></i>
+          </div>
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+            <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Operação</h3>
+            <p class="text-sm leading-relaxed text-neutral-400">
+              Monitoramos, ajustamos e evoluímos. A automação não para no deploy — ela
+              cresce junto com a sua operação.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <!-- Integrações (marquee do design system) -->
+      <div data-reveal="proc-marquee" class="relative mb-24 overflow-hidden border-y border-white/5 py-5">
+        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-bg to-transparent"></div>
+        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-bg to-transparent"></div>
+        <div class="flex w-max animate-marquee">
+          <div class="flex items-center gap-12 pr-12 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-600">
+            <span>Conectamos com</span><span class="text-accent/70">/</span>
+            <span>ERP</span><span class="text-accent/70">/</span>
+            <span>CRM</span><span class="text-accent/70">/</span>
+            <span>WhatsApp</span><span class="text-accent/70">/</span>
+            <span>Planilhas</span><span class="text-accent/70">/</span>
+            <span>E-mail</span><span class="text-accent/70">/</span>
+            <span>Notas fiscais</span><span class="text-accent/70">/</span>
+            <span>Pagamentos</span><span class="text-accent/70">/</span>
+            <span>Bancos de dados</span><span class="text-accent/70">/</span>
+            <span>APIs internas</span><span class="text-accent/70">/</span>
+          </div>
+          <div aria-hidden="true" class="flex items-center gap-12 pr-12 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-600">
+            <span>Conectamos com</span><span class="text-accent/70">/</span>
+            <span>ERP</span><span class="text-accent/70">/</span>
+            <span>CRM</span><span class="text-accent/70">/</span>
+            <span>WhatsApp</span><span class="text-accent/70">/</span>
+            <span>Planilhas</span><span class="text-accent/70">/</span>
+            <span>E-mail</span><span class="text-accent/70">/</span>
+            <span>Notas fiscais</span><span class="text-accent/70">/</span>
+            <span>Pagamentos</span><span class="text-accent/70">/</span>
+            <span>Bancos de dados</span><span class="text-accent/70">/</span>
+            <span>APIs internas</span><span class="text-accent/70">/</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manifesto (tipografia do design system) + CTA -->
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
+        <h2 data-reveal="proc-manifesto" class="text-3xl font-normal leading-[1.1] tracking-tight text-neutral-700 md:text-5xl lg:col-span-8 lg:text-[4.5rem] lg:leading-[0.95]">
+          A maioria das empresas não precisa de <span class="font-medium text-white">mais gente</span>. Precisa de <span class="font-medium text-white">menos trabalho manual</span>.
+        </h2>
+
+        <div data-reveal="proc-manifesto" class="lg:col-span-4">
+          <p class="mb-7 text-sm leading-relaxed text-neutral-400">
+            Uma conversa de 30 minutos é o bastante para mapearmos onde sua operação
+            está perdendo tempo — e dizermos, sem rodeios, se dá para automatizar.
+          </p>
+          <a href="#contato"
+             class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+             style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
+            <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
+              <span class="btn-beam-ring absolute inset-[-100%] block"></span>
+              <span class="absolute inset-[1px] rounded-full bg-bg"></span>
+            </span>
+            <span class="pointer-events-none absolute inset-[2px] -z-10 overflow-hidden rounded-full bg-surface">
+              <span class="absolute inset-0 bg-gradient-to-b from-accent/15 to-transparent"></span>
+              <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45"></span>
+            </span>
+            <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
+              <i data-lucide="calendar-check" class="h-[17px] w-[17px] text-accent"></i>
+              Agendar diagnóstico
+              <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -602,6 +976,55 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       });
     }
   });
+
+  /* ---------- 2ª dobra: Arquitetura (ScrollTrigger) ---------- */
+  if (window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.timeline({
+      scrollTrigger: { trigger: '#arquitetura', start: 'top 72%', once: true },
+      defaults: { ease: 'power3.out' }
+    })
+    /* 1. Cabeçalho: fade-up em stagger */
+    .fromTo('[data-reveal="arch-head"]',
+      { opacity: 0, y: 28, filter: 'blur(8px)' },
+      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    /* 2. Card do diagrama: zoom-in suave */
+    .fromTo('[data-reveal="arch-card"]',
+      { opacity: 0, scale: .94, filter: 'blur(10px)' },
+      { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.1 }, .18)
+    /* 3. Pilares: entram da direita, um após o outro */
+    .fromTo('[data-reveal="arch-item"]',
+      { opacity: 0, x: 44 },
+      { opacity: 1, x: 0, duration: .7, stagger: .15 }, .42);
+
+    /* ----- 3ª dobra: Processo ----- */
+    gsap.timeline({
+      scrollTrigger: { trigger: '#processo', start: 'top 72%', once: true },
+      defaults: { ease: 'power3.out' }
+    })
+    .fromTo('[data-reveal="proc-head"]',
+      { opacity: 0, y: 28, filter: 'blur(8px)' },
+      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    .fromTo('[data-reveal="proc-step"]',
+      { opacity: 0, y: 36 },
+      { opacity: 1, y: 0, duration: .7, stagger: .13 }, .3)
+    .fromTo('[data-reveal="proc-marquee"]',
+      { opacity: 0 },
+      { opacity: 1, duration: .9 }, .7);
+
+    /* O manifesto entra com trigger próprio, mais abaixo na página */
+    gsap.fromTo('[data-reveal="proc-manifesto"]',
+      { opacity: 0, y: 30, filter: 'blur(8px)' },
+      {
+        opacity: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .14, ease: 'power3.out',
+        scrollTrigger: { trigger: '[data-reveal="proc-manifesto"]', start: 'top 82%', once: true }
+      });
+
+  } else {
+    /* ScrollTrigger não carregou: revela as seções para não sumir conteúdo */
+    gsap.set('[data-reveal^="arch"], [data-reveal^="proc"]', { opacity: 1 });
+  }
 
 })();
 </script>
