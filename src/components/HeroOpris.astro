@@ -1,0 +1,310 @@
+---
+// HERO — primeira dobra.
+//
+// Texto, CTAs, prova social e o painel "opris://pipeline". A coreografia
+// de entrada (timeline de load + crachás flutuantes) vive no <script> do
+// fim deste arquivo: o reveal por scroll das demais seções continua em
+// index.astro.
+import Button from './Button.astro';
+---
+
+<section class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-16 pt-10 sm:gap-16 sm:px-6 sm:pb-24 sm:pt-14 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
+
+  <!-- ---------- COLUNA ESQUERDA ---------- -->
+  <div class="lg:col-span-7">
+
+    <!-- Tagline -->
+    <div data-reveal="tag" class="mb-8 inline-flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+      </span>
+      <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-neutral-300">
+        // Sistemas inteligentes. Operações invisíveis.
+      </span>
+    </div>
+
+    <!-- Headline -->
+    <h1 data-reveal="headline" data-split
+        class="mb-6 font-display text-[2rem] font-light leading-[1.08] tracking-tight [text-wrap:balance] sm:mb-7 sm:text-5xl md:text-[3.5rem] lg:text-[64px] lg:leading-[1.06] xl:text-[72px]">
+      O motor <span class="text-grad">invisível</span> por trás das empresas mais eficientes.
+    </h1>
+
+    <!-- Subtítulo -->
+    <p data-reveal="sub" class="mb-8 max-w-xl text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-lg">
+      Desenvolvemos automações sob medida, softwares robustos e sites com design moderno
+      que reformulam a presença digital da sua empresa. Unimos engenharia de alta
+      performance para eliminar tarefas repetitivas e liberar sua
+      equipe para o que realmente importa: <span class="text-neutral-200">crescer</span>.
+    </p>
+
+    <!-- CTAs -->
+    <div data-reveal="cta" class="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
+
+      <!-- Primário: Beam Ring (estrutura do botão da Finex, sem as listras) -->
+      <Button href="#contato" icon="cog">Automatizar minha operação</Button>
+
+      <!-- Secundário: outline/fantasma -->
+      <Button variant="ghost" href="#resultados" icon="play-circle">Ver casos de uso</Button>
+    </div>
+
+    <!-- Prova social -->
+    <div data-reveal="proof" class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-6 border-t border-white/5 pt-8 sm:mt-14 sm:gap-x-10">
+      <div>
+        <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">+37h</div>
+        <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Devolvidas / mês</div>
+      </div>
+      <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
+      <div>
+        <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">99,9%</div>
+        <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Uptime das rotinas</div>
+      </div>
+      <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
+      <div>
+        <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">B2B</div>
+        <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Foco exclusivo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- COLUNA DIREITA ---------- -->
+  <div class="relative lg:col-span-5">
+
+    <!-- Crachás flutuantes (lg+) -->
+    <div class="pointer-events-none absolute inset-0 z-20 hidden lg:block" aria-hidden="true">
+      <div data-float class="pill absolute -left-16 top-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+        <i data-lucide="webhook" class="h-3.5 w-3.5 text-accent"></i>
+        <span class="font-mono text-[11px] text-neutral-200">Webhooks</span>
+      </div>
+      <div data-float class="pill absolute -right-10 top-32 flex items-center gap-2 rounded-full px-3.5 py-2">
+        <i data-lucide="plug" class="h-3.5 w-3.5 text-accent2"></i>
+        <span class="font-mono text-[11px] text-neutral-200">Integração via API</span>
+      </div>
+      <div data-float class="pill absolute -left-20 bottom-24 flex items-center gap-2 rounded-full px-3.5 py-2">
+        <i data-lucide="file-text" class="h-3.5 w-3.5 text-accent"></i>
+        <span class="font-mono text-[11px] text-neutral-200">Geração de PDFs</span>
+      </div>
+      <div data-float class="pill absolute -right-6 bottom-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+        <i data-lucide="database" class="h-3.5 w-3.5 text-accent2"></i>
+        <span class="font-mono text-[11px] text-neutral-200">Sync de dados</span>
+      </div>
+    </div>
+
+    <!-- Painel: pipeline de automação -->
+    <div data-reveal="panel" class="electric-card relative z-10 mx-auto w-full max-w-[400px] overflow-hidden rounded-[32px] bg-neutral-900 p-[2px]">
+      <!-- Borda com gradiente -->
+      <div class="absolute inset-0 z-0 bg-gradient-to-b from-yellow-300 via-accent to-transparent opacity-80"></div>
+
+      <div class="relative z-10 h-full rounded-[30px] bg-surface p-5 sm:p-7">
+        <!-- Brilho interno -->
+        <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/10 to-transparent"></div>
+
+        <!-- Cabeçalho -->
+        <div class="relative mb-7 flex items-start justify-between">
+          <span class="flex items-center gap-1.5 rounded border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-neutral-400">
+            <span class="relative flex h-2 w-2">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
+              <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+            </span>
+            Executando
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-600">opris://pipeline</span>
+        </div>
+
+        <!-- Etapas -->
+        <div class="relative space-y-3">
+          <!-- 01 Gatilho -->
+          <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 ring-1 ring-accent/20">
+              <i data-lucide="zap" class="h-4 w-4 text-accent"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm">Gatilho recebido</div>
+              <div class="truncate font-mono text-[10px] text-neutral-500">POST /webhook · pedido.criado</div>
+            </div>
+            <i data-lucide="check" class="h-4 w-4 shrink-0 text-accent"></i>
+          </div>
+
+          <!-- Conector -->
+          <div class="relative ml-[26px] h-5 w-px overflow-hidden bg-white/10">
+            <span class="absolute inset-0 block h-full w-full bg-gradient-to-b from-transparent via-accent to-transparent"
+                  style="animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) infinite;"></span>
+          </div>
+
+          <!-- 02 Processamento -->
+          <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent2/10 ring-1 ring-accent2/20">
+              <i data-lucide="cpu" class="h-4 w-4 text-accent2"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm">Regras aplicadas</div>
+              <div class="truncate font-mono text-[10px] text-neutral-500">validação · enriquecimento · ERP</div>
+            </div>
+            <span class="font-mono text-[10px] text-neutral-500">1.2s</span>
+          </div>
+
+          <div class="relative ml-[26px] h-5 w-px overflow-hidden bg-white/10">
+            <span class="absolute inset-0 block h-full w-full bg-gradient-to-b from-transparent via-accent to-transparent"
+                  style="animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) .4s infinite;"></span>
+          </div>
+
+          <!-- 03 Entrega -->
+          <div class="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3 transition-colors hover:border-accent/30">
+            <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 ring-1 ring-accent/20">
+              <i data-lucide="send" class="h-4 w-4 text-accent"></i>
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm">Entrega automática</div>
+              <div class="truncate font-mono text-[10px] text-neutral-500">PDF assinado · e-mail · CRM</div>
+            </div>
+            <i data-lucide="check" class="h-4 w-4 shrink-0 text-accent"></i>
+          </div>
+        </div>
+
+        <!-- Barra de execução -->
+        <div class="mt-7">
+          <div class="mb-2 flex items-baseline justify-between">
+            <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Execuções hoje</span>
+            <span class="font-display text-lg font-light">1.284</span>
+          </div>
+          <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-white/5">
+            <div class="absolute inset-y-0 left-0 w-[78%] rounded-full bg-gradient-to-r from-accentlo via-accent to-amber-400"></div>
+            <span class="flow-pulse absolute inset-y-0 left-0 w-1/3"></span>
+          </div>
+        </div>
+
+        <!-- Rodapé -->
+        <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+          <span class="flex items-center gap-1.5 font-mono text-[10px] text-neutral-500">
+            <i data-lucide="shield-check" class="h-3.5 w-3.5 text-neutral-400"></i>
+            Sem intervenção manual
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-600">Opris</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crachás em linha (mobile/tablet) -->
+    <div class="mt-8 flex flex-wrap justify-center gap-2.5 lg:hidden">
+      <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+        <i data-lucide="webhook" class="h-3.5 w-3.5 text-accent"></i>
+        <span class="font-mono text-[11px] text-neutral-300">Webhooks</span>
+      </span>
+      <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+        <i data-lucide="plug" class="h-3.5 w-3.5 text-accent2"></i>
+        <span class="font-mono text-[11px] text-neutral-300">Integração via API</span>
+      </span>
+      <span class="pill inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+        <i data-lucide="file-text" class="h-3.5 w-3.5 text-accent"></i>
+        <span class="font-mono text-[11px] text-neutral-300">Geração de PDFs</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ---------- Coreografia de entrada do hero ----------
+     Script de componente: o Astro o serve como módulo adiado, então roda
+     depois do lucide.createIcons() do layout (os <i data-lucide> já viraram
+     <svg>) e com o GSAP do CDN, carregado no <head>, já disponível.
+
+     Só cuida do que está acima da dobra. As seções seguintes continuam
+     com o ScrollTrigger de index.astro. */
+  (function () {
+    'use strict';
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Sem GSAP ou com movimento reduzido: mostra tudo e encerra.
+       O anti-FOUC (.js [data-reveal]{opacity:0}) esconderia o hero para
+       sempre se saíssemos daqui sem revelar nada. */
+    if (typeof window.gsap === 'undefined' || reduced) {
+      document
+        .querySelectorAll('[data-reveal="nav"], [data-reveal="tag"], [data-reveal="headline"], [data-reveal="sub"], [data-reveal="cta"], [data-reveal="proof"], [data-reveal="panel"]')
+        .forEach(function (el) { el.style.opacity = '1'; });
+      return;
+    }
+
+    /* Blur é caro em GPU de celular: no mobile a entrada é só fade + deslocamento. */
+    var isMobile = window.matchMedia('(max-width: 767px)').matches;
+    var b8  = isMobile ? 'blur(0px)' : 'blur(8px)';
+    var b10 = isMobile ? 'blur(0px)' : 'blur(10px)';
+
+    /* ---------- Split do headline em palavras (para o reveal por máscara) ---------- */
+    function splitWords(root) {
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      var nodes = [], n;
+      while ((n = walker.nextNode())) { if (n.nodeValue.trim()) nodes.push(n); }
+
+      nodes.forEach(function (node) {
+        var frag = document.createDocumentFragment();
+        node.nodeValue.split(/(\s+)/).forEach(function (chunk) {
+          if (!chunk) return;
+          if (/^\s+$/.test(chunk)) { frag.appendChild(document.createTextNode(chunk)); return; }
+          var outer = document.createElement('span');
+          outer.className = 'word';
+          var inner = document.createElement('span');
+          inner.textContent = chunk;
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+      return root.querySelectorAll('.word > span');
+    }
+
+    var headline = document.querySelector('[data-split]');
+    var words = headline ? splitWords(headline) : [];
+
+    /* ---------- Timeline de entrada ----------
+       O nav mora no Header.astro (layout), mas entra nesta mesma timeline:
+       o tempo dele é relativo ao hero, não ao cabeçalho isolado. */
+    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    tl.to('[data-reveal="nav"]', { opacity: 1, duration: .8 }, 0)
+      .from('[data-reveal="nav"]', { y: -18, duration: .8 }, 0)
+
+      .to('[data-reveal="tag"]', { opacity: 1, duration: .7 }, .15)
+      .from('[data-reveal="tag"]', { y: 16, filter: b8, duration: .7 }, .15)
+
+      .set('[data-reveal="headline"]', { opacity: 1 }, .3)
+      .from(words, { yPercent: 115, duration: 1, stagger: .045, ease: 'expo.out' }, .3)
+
+      .to('[data-reveal="sub"]', { opacity: 1, duration: .8 }, .75)
+      .from('[data-reveal="sub"]', { y: 22, filter: b8, duration: .8 }, .75)
+
+      .to('[data-reveal="cta"]', { opacity: 1, duration: .7 }, .92)
+      .from('[data-reveal="cta"]', { y: 22, duration: .7 }, .92)
+
+      .to('[data-reveal="proof"]', { opacity: 1, duration: .7 }, 1.05)
+      .from('[data-reveal="proof"]', { y: 20, duration: .7 }, 1.05)
+
+      .to('[data-reveal="panel"]', { opacity: 1, duration: 1 }, .5)
+      .from('[data-reveal="panel"]', { y: 40, scale: .96, filter: b10, duration: 1.1 }, .5);
+
+    /* ---------- Crachás flutuantes ----------
+       Só existem a partir de lg (hidden lg:block). Fora disso nem criamos
+       o loop de flutuação — é ciclo de CPU jogado fora. */
+    gsap.matchMedia().add('(min-width: 1024px)', function () {
+      var floats = gsap.utils.toArray('[data-float]');
+      if (!floats.length) return;
+
+      gsap.set(floats, { opacity: 0, scale: .9 });
+      gsap.to(floats, {
+        opacity: 1, scale: 1, duration: .6, stagger: .12, delay: 1.1, ease: 'back.out(1.6)',
+        onComplete: function () {
+          floats.forEach(function (el, i) {
+            gsap.to(el, {
+              y: i % 2 === 0 ? -12 : -16,
+              duration: 2.4 + i * .25,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+              delay: i * .18
+            });
+          });
+        }
+      });
+    });
+  })();
+</script>

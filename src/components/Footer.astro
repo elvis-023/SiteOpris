@@ -1,0 +1,96 @@
+---
+// Rodapé do site: marca, mapa de links e barra legal.
+//
+// ⚠ SUBSTITUIR: e-mail, WhatsApp, LinkedIn e os links legais.
+//
+// O ano sai renderizado no build; o <script> no fim o corrige no cliente,
+// para a página não envelhecer entre um deploy e outro.
+const anoAtual = new Date().getFullYear();
+---
+
+<footer class="relative z-10 border-t border-white/5">
+  <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
+
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-10 md:grid-cols-4 lg:gap-16">
+
+      <!-- Marca -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="#" class="mb-4 inline-flex items-center gap-2.5 group">
+          <span class="relative flex h-8 w-8 items-center justify-center">
+            <i data-lucide="asterisk" class="absolute h-8 w-8 rotate-45 text-white"></i>
+            <i data-lucide="asterisk" class="absolute h-8 w-8 text-accent transition-transform duration-700 group-hover:rotate-90"></i>
+          </span>
+          <span class="text-xl tracking-tight text-white">Opris</span>
+        </a>
+        <p class="max-w-xs text-sm leading-relaxed text-neutral-500">
+          Automações sob medida, softwares robustos e sites que vendem. Para empresas
+          que querem crescer sem inchar a equipe.
+        </p>
+      </div>
+
+      <!-- Serviços -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Serviços</h3>
+        <ul class="space-y-1 text-sm sm:space-y-2">
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Automação de processos</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Software sob medida</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Sites e redesign</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Integrações e APIs</a></li>
+        </ul>
+      </div>
+
+      <!-- Empresa -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Empresa</h3>
+        <ul class="space-y-1 text-sm sm:space-y-2">
+          <li><a href="#processo" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Como trabalhamos</a></li>
+          <li><a href="#resultados" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Resultados</a></li>
+          <li><a href="#contato" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Contato</a></li>
+        </ul>
+      </div>
+
+      <!-- Contato -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Falar com a gente</h3>
+        <ul class="space-y-1 text-sm sm:space-y-2">
+          <li>
+            <a href="mailto:contato@opris.com.br" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="mail" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              contato@opris.com.br
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="message-circle" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              WhatsApp
+            </a>
+          </li>
+          <li>
+            <a href="#" target="_blank" rel="noopener" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="linkedin" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              LinkedIn
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="mt-12 flex flex-col gap-4 border-t border-white/5 pt-8 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-neutral-600 sm:text-[11px]">
+        &copy; <span id="ano-atual">{anoAtual}</span> Opris &middot; Todos os direitos reservados
+      </p>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[10px] uppercase tracking-widest text-neutral-600 sm:text-[11px]">
+        <a href="#" class="inline-block py-1 transition-colors hover:text-neutral-300">Política de privacidade</a>
+        <a href="#" class="inline-block py-1 transition-colors hover:text-neutral-300">Termos</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- Ano no rodapé ---------- */
+  const anoEl = document.getElementById('ano-atual');
+  if (anoEl) anoEl.textContent = String(new Date().getFullYear());
+</script>

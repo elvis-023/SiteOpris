@@ -1,0 +1,431 @@
+---
+// Shell do documento: head (tokens, Tailwind, GSAP, Lucide, fontes),
+// camadas de fundo, cabeçalho, slot com o conteúdo da página e rodapé.
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR" class="scroll-smooth overflow-x-hidden">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{title}</title>
+<meta name="description" content={description}/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="icon" href="/favicon.ico"/>
+<meta name="generator" content={Astro.generator}/>
+
+<!-- Evita flash de conteúdo antes do GSAP assumir (sem JS, tudo aparece normalmente) -->
+<script is:inline>document.documentElement.classList.add('js');</script>
+
+<!-- 1. Tailwind CSS -->
+<script is:inline src="https://cdn.tailwindcss.com"></script>
+
+<!-- 2. GSAP + ScrollTrigger -->
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- 3. Google Fonts — Bricolage Grotesque (display, do design system) + Inter + JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+<!-- 4. Lucide Icons -->
+<script is:inline src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+
+<script is:inline>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg:        '#050505',
+          surface:   '#0A0A0A',
+          surface2:  '#111111',
+          accent:    '#F97316',
+          accenthi:  '#FB923C',
+          accentlo:  '#EA580C',
+          accent2:   '#3B82F6',
+          onaccent:  '#2C1306'
+        },
+        fontFamily: {
+          sans:    ['Inter', 'system-ui', 'sans-serif'],
+          display: ['"Bricolage Grotesque"', 'Inter', 'sans-serif'],
+          mono:    ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+
+<style is:global>
+/* ============================================================
+   DESIGN TOKENS — espelham assets do design_system.html
+   ============================================================ */
+:root{
+  /* Superfícies */
+  --bg:            #050505;
+  --surface:       #0A0A0A;
+  --surface-2:     #111111;
+  --surface-warm:  #120A05;
+
+  /* Bordas */
+  --border:        rgba(255,255,255,.10);
+  --border-subtle: rgba(255,255,255,.05);
+
+  /* Texto */
+  --text:          #FFFFFF;
+  --text-muted:    #A3A3A3;
+  --text-dim:      #737373;
+  --on-accent:     #2C1306;
+
+  /* Accent primário (design system) */
+  --accent:        #F97316;
+  --accent-hi:     #FB923C;
+  --accent-lo:     #EA580C;
+
+  /* Accent secundário */
+  --accent-2:      #3B82F6;
+
+  /* Gradientes */
+  --grad-primary:  linear-gradient(to top, #FEF08A, #FB923C, #F97316);
+  --grad-text:     linear-gradient(to right, #FFFFFF, #FED7AA, #FB923C);
+  --grad-edge:     linear-gradient(to bottom, #FDE047, #F97316, transparent);
+
+  /* Glows */
+  --glow-accent:   0 0 40px -5px rgba(249,115,22,.60);
+  --glow-accent-h: 0 0 60px -5px rgba(249,115,22,.80);
+  --glow-blue:     0 0 20px rgba(59,130,246,.50), inset 0 0 10px rgba(59,130,246,.20);
+
+  /* Motion */
+  --ease-entry:    cubic-bezier(.2,.8,.2,1);
+}
+
+html, body { background-color: var(--bg); overflow-x: hidden; }
+/* Nada pode furar a largura da viewport no mobile */
+*, *::before, *::after { min-width: 0; }
+img, svg, video { max-width: 100%; height: auto; }
+body { font-family: 'Inter', system-ui, sans-serif; }
+
+/* Anti-FOUC: só esconde se o JS estiver ativo */
+.js [data-reveal]{ opacity: 0; }
+
+/* ============================================================
+   FUNDO — profundidade em camadas
+   ============================================================ */
+
+/* Malha de pontos com deriva lenta */
+.dot-grid{
+  background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+          mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+  animation: gridDrift 26s linear infinite;
+}
+@keyframes gridDrift{ to{ background-position: 28px 28px; } }
+
+/* Campo de estrelas (design_system.html) */
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, #ffffff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  opacity: .20;
+}
+
+/* Grid amplo mascarado (design_system.html) */
+.grid-bg-mask{
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+          mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+}
+
+/* Feixes que percorrem as bordas (design_system.html) */
+.beam-border-h{
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: rgba(255,255,255,.05); overflow:hidden; z-index:10;
+}
+.beam-border-h::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 7s cubic-bezier(.4,0,.2,1) infinite;
+  animation-delay: 2.5s; opacity:.7;
+}
+@keyframes beam-slide{
+  0%{ transform: translateX(-100%); opacity:0; }
+  10%{ opacity:1; } 90%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Glow do painel (design_system.html) */
+.electric-card{
+  box-shadow: 0 0 30px rgba(249,115,22,.30), inset 0 0 20px rgba(249,115,22,.10);
+}
+
+/* ============================================================
+   BOTÃO PRIMÁRIO — "Beam Ring" (design_system.html)
+   Geometria do Finex (pílula escura + borda cônica girando),
+   recolorida para o accent primário laranja.
+   ============================================================ */
+.btn-beam{
+  box-shadow: 0 0 25px -10px rgba(249,115,22,.45);
+  /* Sem transform no hover: o botão fica parado, só o brilho responde. */
+}
+.btn-beam:hover{ box-shadow: 0 0 40px -10px rgba(249,115,22,.70); }
+
+/* Feixe cônico que percorre a borda (Finex) */
+.btn-beam-ring{
+  background: conic-gradient(from 0deg, transparent 0 300deg, var(--accent) 360deg);
+  animation: beam-spin 3s linear infinite;
+}
+@keyframes beam-spin{ to{ transform: rotate(360deg); } }
+
+/* Borda em gradiente mascarada (Finex / design_system.html) */
+[style*="--border-gradient"]::before{
+  content:""; position:absolute; inset:0; padding:1px;
+  border-radius: var(--border-radius-before, inherit);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  background: var(--border-gradient);
+  pointer-events: none;
+}
+
+/* ============================================================
+   CRACHÁS FLUTUANTES
+   ============================================================ */
+.pill{
+  background: rgba(10,10,10,.72);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.8);
+  will-change: transform;
+}
+
+/* Pulso que viaja pela linha do pipeline */
+.flow-pulse{
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes flowRun{
+  0%{ transform: translateX(-100%); opacity:0; }
+  15%{ opacity:1; } 85%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Palavras do headline (reveal por máscara) */
+.word{
+  display:inline-block; overflow:hidden; vertical-align:bottom;
+  padding-bottom:.14em; margin-bottom:-.14em;
+}
+.word > span{ display:inline-block; will-change: transform; }
+
+/* Texto em gradiente.
+   O split envolve cada palavra num <span> próprio, e um filho inline-block
+   quebra o background-clip:text do pai (a palavra some). Por isso o gradiente
+   é reaplicado em cada palavra — e mantido no pai como fallback sem JS. */
+.text-grad,
+.text-grad .word > span{
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   2ª DOBRA — ARQUITETURA
+   ============================================================ */
+
+/* Malha de pontos da seção */
+.dot-grid-soft{
+  background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+          mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+}
+
+/* Luz percorrendo as conexões do diagrama.
+   pathLength="100" normaliza o comprimento de cada path, então o mesmo
+   dasharray e o mesmo timing funcionam para qualquer geometria de linha. */
+.wire-pulse{
+  stroke-dasharray: 6 94;
+  stroke-dashoffset: 100;
+  animation: wireRun 3.2s linear infinite;
+}
+@keyframes wireRun{ to{ stroke-dashoffset: 0; } }
+
+/* Anéis concêntricos expandindo a partir do núcleo */
+.core-ring{ animation: coreRing 3.6s cubic-bezier(.3,0,.5,1) infinite; }
+@keyframes coreRing{
+  0%   { transform: scale(.7);  opacity: 0;  }
+  35%  {                        opacity: .55;}
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+/* Nós satélite */
+.node{
+  background: rgba(24,24,27,.85);
+  border: 1px solid rgba(255,255,255,.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.node:hover{
+  border-color: rgba(249,115,22,.45);
+  box-shadow: 0 0 22px -6px rgba(249,115,22,.55);
+}
+
+/* Partícula em órbita */
+.orbit{ animation: orbitSpin 18s linear infinite; }
+@keyframes orbitSpin{ to{ transform: rotate(360deg); } }
+
+/* ============================================================
+   3ª DOBRA — PROCESSO
+   ============================================================ */
+
+/* Conector entre etapas. Reaproveita o keyframe beam-slide do
+   design system para o pulso que percorre a linha. */
+.step-wire{ background: rgba(255,255,255,.08); overflow: hidden; }
+.step-wire::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 4.5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:.75;
+}
+/* Variante vertical (mobile). O gradiente horizontal comprimido em
+   1px pintava a linha inteira de laranja, sem pulso nenhum. */
+.step-wire-v::after{
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  transform: translateY(-100%);
+  animation-name: beam-drop;
+}
+
+/* Marquee de integrações (design_system.html) */
+.animate-marquee{ animation: marquee 34s linear infinite; }
+@keyframes marquee{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Manifesto da dobra — o risco e o realce.
+
+   A linha é um elemento de verdade, e não um text-decoration ou um
+   ::after: o GSAP precisa de um alvo para desenhá-la da esquerda para
+   a direita, e pseudo-elemento ele não anima. Ela nasce em scaleX(1)
+   para continuar visível se o GSAP não subir; quem começa em zero é o
+   fromTo da timeline, no instante em que a animação entra. */
+.manifesto-risco{ position: relative; }
+.manifesto-risco-linha{
+  position: absolute; left: -.05em; right: -.05em;
+  /* Meio da altura-x da Bricolage, não meio da caixa da linha: medido,
+     dá .674em do topo (a caixa inline tem 1.194em), e a linha tem .06em
+     de espessura — daí o .644em. Como é proporção da fonte, vale em
+     qualquer tamanho. */
+  top: .644em;
+  height: .06em; min-height: 2px; border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+}
+
+/* O outro lado da frase: branco puro sobre o esmaecido, com o mesmo
+   halo quente dos elementos em destaque do design system. */
+.manifesto-realce{
+  color: #fff;
+  text-shadow: 0 0 44px rgba(249,115,22,.38);
+}
+
+/* Cartão de etapa */
+.step-card{ transition: border-color .35s ease, background-color .35s ease; }
+.step-card:hover{
+  border-color: rgba(249,115,22,.28);
+  background-color: rgba(249,115,22,.03);
+}
+
+/* ============================================================
+   4ª DOBRA — RESULTADOS
+   ============================================================ */
+
+/* Feixe vertical que percorre a borda (design_system.html) */
+.beam-border-v{
+  position:absolute; top:0; bottom:0; left:0; width:1px;
+  background: rgba(255,255,255,.05); overflow:hidden; z-index:10;
+}
+.beam-border-v::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  transform: translateY(-100%);
+  animation: beam-drop 5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:.7;
+}
+@keyframes beam-drop{
+  0%{ transform: translateY(-100%); opacity:0; }
+  10%{ opacity:1; } 90%{ opacity:1; }
+  100%{ transform: translateY(100%); opacity:0; }
+}
+
+/* Aspas decorativas do card de resultado */
+.quote-mark{
+  font-family: 'Bricolage Grotesque', sans-serif;
+  line-height: 1;
+}
+
+::selection{ background: rgba(249,115,22,.30); color:#fff; }
+
+/* Acessibilidade: respeita redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+  .js [data-reveal]{ opacity:1 !important; }
+}
+</style>
+</head>
+
+<body class="min-h-screen bg-bg text-white overflow-x-hidden antialiased relative">
+
+<!-- ============================================================
+     CAMADAS DE FUNDO
+     ============================================================ -->
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
+  <div class="stars absolute inset-0"></div>
+  <div class="dot-grid absolute inset-0"></div>
+  <div class="grid-bg-mask absolute inset-0"></div>
+  <!-- Orbes de profundidade -->
+  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[140vw] h-[320px] max-w-[900px] rounded-full bg-accent/10 blur-[90px] sm:h-[520px] sm:blur-[130px]"></div>
+  <div class="absolute bottom-0 right-0 w-[100vw] h-[100vw] max-w-[620px] max-h-[620px] rounded-full bg-accentlo/10 blur-[90px] sm:blur-[110px]"></div>
+  <div class="absolute top-1/3 -left-40 w-[90vw] h-[90vw] max-w-[520px] max-h-[520px] rounded-full bg-accent2/10 blur-[90px] sm:blur-[130px]"></div>
+  <!-- Vinheta -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,5,5,.85)_100%)]"></div>
+</div>
+
+<Header />
+
+<slot />
+
+<Footer />
+
+<!-- Troca os <i data-lucide> por <svg> em todo o documento.
+     Fica aqui, no fim do body, e não no script da página: o rodapé é
+     renderizado depois do <slot />, então um createIcons() disparado lá
+     dentro rodaria antes de os ícones do rodapé existirem. -->
+<script is:inline>if (window.lucide) lucide.createIcons();</script>
+
+</body>
+</html>

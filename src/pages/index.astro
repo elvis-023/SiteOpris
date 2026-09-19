@@ -1,0 +1,36 @@
+---
+// Landing page da Opris — a ordem das cinco dobras.
+//
+// O shell do documento (head, fundo, cabeçalho, rodapé) vive em
+// Layout.astro. Cada dobra é um componente que leva junto o próprio
+// markup e a própria animação; o que elas têm em comum no reveal por
+// scroll está em scripts/reveal.js.
+//
+// ⚠ PLACEHOLDERS a trocar antes de publicar: e-mail (contato@opris.com.br),
+// WhatsApp (wa.me/5500000000000) e os dados da seção "Resultados".
+import ArquiteturaSection from '../components/ArquiteturaSection.astro';
+import ContatoSection from '../components/ContatoSection.astro';
+import HeroOpris from '../components/HeroOpris.astro';
+import ProcessoSection from '../components/ProcessoSection.astro';
+import ResultadosSection from '../components/ResultadosSection.astro';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Opris — O motor invisível por trás das empresas mais eficientes"
+  description="Automações sob medida, softwares robustos e plataformas web de alta performance para o mercado B2B. Eliminamos tarefas repetitivas para sua equipe focar em crescer."
+>
+
+<main class="relative z-10">
+  <HeroOpris />
+
+  <ArquiteturaSection />
+
+  <ProcessoSection />
+
+  <ResultadosSection />
+
+  <ContatoSection />
+</main>
+
+</Layout>
