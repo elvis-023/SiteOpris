@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR" class="scroll-smooth overflow-x-hidden">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -91,7 +91,10 @@
   --ease-entry:    cubic-bezier(.2,.8,.2,1);
 }
 
-html, body { background-color: var(--bg); }
+html, body { background-color: var(--bg); overflow-x: hidden; }
+/* Nada pode furar a largura da viewport no mobile */
+*, *::before, *::after { min-width: 0; }
+img, svg, video { max-width: 100%; height: auto; }
 body { font-family: 'Inter', system-ui, sans-serif; }
 
 /* Anti-FOUC: só esconde se o JS estiver ativo */
@@ -349,14 +352,14 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 <!-- ============================================================
      CAMADAS DE FUNDO
      ============================================================ -->
-<div class="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+<div class="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
   <div class="stars absolute inset-0"></div>
   <div class="dot-grid absolute inset-0"></div>
   <div class="grid-bg-mask absolute inset-0"></div>
   <!-- Orbes de profundidade -->
-  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[900px] h-[520px] rounded-full bg-accent/10 blur-[130px]"></div>
-  <div class="absolute bottom-0 right-0 w-[620px] h-[620px] rounded-full bg-accentlo/10 blur-[110px]"></div>
-  <div class="absolute top-1/3 -left-40 w-[520px] h-[520px] rounded-full bg-accent2/10 blur-[130px]"></div>
+  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[140vw] h-[320px] max-w-[900px] rounded-full bg-accent/10 blur-[90px] sm:h-[520px] sm:blur-[130px]"></div>
+  <div class="absolute bottom-0 right-0 w-[100vw] h-[100vw] max-w-[620px] max-h-[620px] rounded-full bg-accentlo/10 blur-[90px] sm:blur-[110px]"></div>
+  <div class="absolute top-1/3 -left-40 w-[90vw] h-[90vw] max-w-[520px] max-h-[520px] rounded-full bg-accent2/10 blur-[90px] sm:blur-[130px]"></div>
   <!-- Vinheta -->
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(5,5,5,.85)_100%)]"></div>
 </div>
@@ -365,7 +368,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
      NAV
      ============================================================ -->
 <header class="relative z-50">
-  <nav class="relative max-w-7xl mx-auto flex items-center justify-between px-6 py-6" data-reveal="nav">
+  <nav class="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6 sm:py-6" data-reveal="nav">
     <div class="beam-border-h"></div>
 
     <!-- Logo -->
@@ -392,18 +395,36 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       <a href="#contato" class="hidden sm:block rounded-full border-t border-white/20 bg-gradient-to-b from-accenthi to-accentlo px-5 py-2 text-sm shadow-[0_0_15px_-3px_rgba(249,115,22,.4)] transition-all hover:brightness-110">
         Falar com especialista
       </a>
-      <button class="md:hidden p-2 text-neutral-300 transition-colors hover:text-white" aria-label="Abrir menu">
-        <i data-lucide="menu" class="w-5 h-5"></i>
+      <button id="btn-menu" type="button"
+              class="-mr-2 flex h-11 w-11 items-center justify-center text-neutral-300 transition-colors hover:text-white md:hidden"
+              aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+        <i data-lucide="menu" class="h-5 w-5" data-menu-icon="open"></i>
+        <i data-lucide="x" class="hidden h-5 w-5" data-menu-icon="close"></i>
       </button>
     </div>
   </nav>
+
+  <!-- Menu mobile (mesmos links do menu central) -->
+  <div id="menu-mobile" class="hidden border-b border-white/5 bg-bg/95 backdrop-blur-md md:hidden">
+    <div class="mx-auto flex max-w-7xl flex-col px-4 pb-5 pt-2 sm:px-6">
+      <a href="#" class="flex items-center gap-2 rounded-lg px-3 py-3 text-sm text-white transition-colors hover:bg-white/5">
+        <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>Início
+      </a>
+      <a href="#arquitetura" class="rounded-lg px-3 py-3 text-sm text-neutral-400 transition-colors hover:bg-white/5 hover:text-white">Soluções</a>
+      <a href="#processo" class="rounded-lg px-3 py-3 text-sm text-neutral-400 transition-colors hover:bg-white/5 hover:text-white">Processo</a>
+      <a href="#resultados" class="rounded-lg px-3 py-3 text-sm text-neutral-400 transition-colors hover:bg-white/5 hover:text-white">Resultados</a>
+      <a href="#contato" class="mt-3 rounded-full border-t border-white/20 bg-gradient-to-b from-accenthi to-accentlo px-5 py-3 text-center text-sm shadow-[0_0_15px_-3px_rgba(249,115,22,.4)] transition-all hover:brightness-110 sm:hidden">
+        Falar com especialista
+      </a>
+    </div>
+  </div>
 </header>
 
 <!-- ============================================================
      HERO
      ============================================================ -->
 <main class="relative z-10">
-  <section class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 pt-14 pb-24 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
+  <section class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-16 pt-10 sm:gap-16 sm:px-6 sm:pb-24 sm:pt-14 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
 
     <!-- ---------- COLUNA ESQUERDA ---------- -->
     <div class="lg:col-span-7">
@@ -421,12 +442,12 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
       <!-- Headline -->
       <h1 data-reveal="headline" data-split
-          class="mb-7 font-display text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-[64px] xl:text-[72px]">
+          class="mb-6 font-display text-[2rem] font-light leading-[1.08] tracking-tight [text-wrap:balance] sm:mb-7 sm:text-5xl md:text-[3.5rem] lg:text-[64px] lg:leading-[1.06] xl:text-[72px]">
         O motor <span class="text-grad">invisível</span> por trás das empresas mais eficientes.
       </h1>
 
       <!-- Subtítulo -->
-      <p data-reveal="sub" class="mb-10 max-w-xl text-base leading-relaxed text-neutral-400 sm:text-lg">
+      <p data-reveal="sub" class="mb-8 max-w-xl text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-lg">
         Desenvolvemos automações sob medida, softwares robustos e sites com design moderno
         que reformulam a presença digital da sua empresa. Unimos engenharia de alta
         performance para eliminar tarefas repetitivas e liberar sua
@@ -434,11 +455,11 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </p>
 
       <!-- CTAs -->
-      <div data-reveal="cta" class="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div data-reveal="cta" class="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
 
         <!-- Primário: Beam Ring (estrutura do botão da Finex, sem as listras) -->
         <a href="#contato"
-           class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+           class="btn-beam group relative isolate inline-flex h-[54px] w-full items-center justify-center overflow-hidden rounded-full px-4 text-center text-[12px] font-semibold uppercase leading-tight tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]"
            style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
 
           <!-- Feixe cônico girando na borda -->
@@ -454,34 +475,34 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           </span>
 
           <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
-            <i data-lucide="cog" class="h-[17px] w-[17px] text-accent"></i>
+            <i data-lucide="cog" class="h-[17px] w-[17px] shrink-0 text-accent"></i>
             Automatizar minha operação
-            <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+            <i data-lucide="arrow-right" class="h-[17px] w-[17px] shrink-0 transition-transform duration-300 group-hover:translate-x-1"></i>
           </span>
         </a>
 
         <!-- Secundário: outline/fantasma -->
         <a href="#resultados"
-           class="group inline-flex h-[54px] items-center justify-center gap-2.5 whitespace-nowrap rounded-full border border-white/15 bg-white/[0.03] px-6 text-[13px] font-semibold uppercase tracking-tight text-neutral-300 backdrop-blur-sm transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white sm:px-8 sm:text-[14px]">
-          <i data-lucide="play-circle" class="h-[17px] w-[17px] text-neutral-500 transition-colors group-hover:text-accent"></i>
+           class="group inline-flex h-[54px] w-full items-center justify-center gap-2.5 rounded-full border border-white/15 bg-white/[0.03] px-4 text-[12px] font-semibold uppercase leading-tight tracking-tight text-neutral-300 backdrop-blur-sm transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]">
+          <i data-lucide="play-circle" class="h-[17px] w-[17px] shrink-0 text-neutral-500 transition-colors group-hover:text-accent"></i>
           Ver casos de uso
         </a>
       </div>
 
       <!-- Prova social -->
-      <div data-reveal="proof" class="mt-14 flex flex-wrap items-center gap-x-10 gap-y-6 border-t border-white/5 pt-8">
+      <div data-reveal="proof" class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-6 border-t border-white/5 pt-8 sm:mt-14 sm:gap-x-10">
         <div>
-          <div class="font-display text-3xl font-light tracking-tight">+37h</div>
+          <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">+37h</div>
           <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Devolvidas / mês</div>
         </div>
         <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
         <div>
-          <div class="font-display text-3xl font-light tracking-tight">99,9%</div>
+          <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">99,9%</div>
           <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Uptime das rotinas</div>
         </div>
         <div class="hidden h-10 w-px bg-white/10 sm:block"></div>
         <div>
-          <div class="font-display text-3xl font-light tracking-tight">B2B</div>
+          <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">B2B</div>
           <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Foco exclusivo</div>
         </div>
       </div>
@@ -515,7 +536,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         <!-- Borda com gradiente -->
         <div class="absolute inset-0 z-0 bg-gradient-to-b from-yellow-300 via-accent to-transparent opacity-80"></div>
 
-        <div class="relative z-10 h-full rounded-[30px] bg-surface p-6 sm:p-7">
+        <div class="relative z-10 h-full rounded-[30px] bg-surface p-5 sm:p-7">
           <!-- Brilho interno -->
           <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-accent/10 to-transparent"></div>
 
@@ -625,22 +646,22 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   <!-- ============================================================
        2ª DOBRA — ARQUITETURA
        ============================================================ -->
-  <section id="arquitetura" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+  <section id="arquitetura" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
     <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="pointer-events-none absolute left-1/2 top-1/3 h-[520px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-6">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
 
       <!-- Cabeçalho -->
-      <header class="mb-16 max-w-2xl lg:mb-20">
+      <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-20">
         <span data-reveal="arch-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
           <span class="h-px w-6 bg-accent"></span>
           Metodologia
         </span>
-        <h2 data-reveal="arch-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
+        <h2 data-reveal="arch-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
           Arquitetura de <span class="text-grad">Eficiência</span>
         </h2>
-        <p data-reveal="arch-head" class="text-base leading-relaxed text-neutral-400 sm:text-lg">
+        <p data-reveal="arch-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
           Não entregamos peças soltas. Automação, engenharia e design operam como um
           sistema único cada camada reforçando a seguinte para sua empresa ganhar
           escala sem ganhar complexidade.
@@ -648,10 +669,10 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </header>
 
       <!-- Grid principal -->
-      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
 
         <!-- ---------- ESQUERDA: diagrama de rede ---------- -->
-        <div data-reveal="arch-card" class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-6 sm:p-8">
+        <div data-reveal="arch-card" class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-4 sm:p-8">
 
           <div class="mb-4 flex items-center justify-between">
             <span class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
@@ -692,25 +713,25 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
             <!-- Núcleo -->
             <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div class="relative flex h-[76px] w-[76px] items-center justify-center rounded-2xl border border-white/15 bg-zinc-900 shadow-[0_0_50px_-10px_rgba(249,115,22,.55)]">
+              <div class="relative flex h-[60px] w-[60px] items-center justify-center rounded-2xl border border-white/15 bg-zinc-900 shadow-[0_0_50px_-10px_rgba(249,115,22,.55)] sm:h-[76px] sm:w-[76px]">
                 <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/40"></span>
                 <span class="core-ring pointer-events-none absolute inset-0 rounded-2xl border border-accent/30" style="animation-delay:1.2s"></span>
-                <i data-lucide="server-cog" class="h-8 w-8 text-accent"></i>
+                <i data-lucide="server-cog" class="h-6 w-6 text-accent sm:h-8 sm:w-8"></i>
               </div>
             </div>
 
             <!-- Satélites -->
-            <div class="node absolute left-[25%] top-[24%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Bancos de dados">
-              <i data-lucide="database" class="h-5 w-5 text-neutral-400"></i>
+            <div class="node absolute left-[25%] top-[24%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Bancos de dados">
+              <i data-lucide="database" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
             </div>
-            <div class="node absolute left-[76%] top-[29%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="APIs e integrações">
-              <i data-lucide="code-2" class="h-5 w-5 text-neutral-400"></i>
+            <div class="node absolute left-[76%] top-[29%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="APIs e integrações">
+              <i data-lucide="code-2" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
             </div>
-            <div class="node absolute left-[74%] top-[75%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Segurança">
-              <i data-lucide="shield-check" class="h-5 w-5 text-neutral-400"></i>
+            <div class="node absolute left-[74%] top-[75%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Segurança">
+              <i data-lucide="shield-check" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
             </div>
-            <div class="node absolute left-[26%] top-[72%] flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl" title="Rotinas automatizadas">
-              <i data-lucide="cog" class="h-5 w-5 text-neutral-400"></i>
+            <div class="node absolute left-[26%] top-[72%] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl sm:h-12 sm:w-12" title="Rotinas automatizadas">
+              <i data-lucide="cog" class="h-4 w-4 text-neutral-400 sm:h-5 sm:w-5"></i>
             </div>
 
             <!-- Poeira -->
@@ -720,41 +741,41 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         </div>
 
         <!-- ---------- DIREITA: os pilares ---------- -->
-        <ol class="space-y-10 lg:space-y-12">
+        <ol class="space-y-8 sm:space-y-10 lg:space-y-12">
 
-          <li data-reveal="arch-item" class="group flex gap-5">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">01</span>
+          <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">01</span>
             <div class="min-w-0">
-              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Automação Inteligente</h3>
-              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+              <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Automação Inteligente</h3>
+              <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
                 Mapeamos o que consome as horas da sua equipe e transformamos em fluxos que
                 rodam sozinhos. Integrações, webhooks e regras de negócio que não dormem.
-                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">&minus;37h/mês</code>
+                <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">&minus;37h/mês</code>
               </p>
             </div>
           </li>
 
-          <li data-reveal="arch-item" class="group flex gap-5">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">02</span>
+          <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">02</span>
             <div class="min-w-0">
-              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Engenharia Sob Medida</h3>
-              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+              <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Engenharia Sob Medida</h3>
+              <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
                 Sistemas construídos para o seu processo, não o contrário. Arquitetura pensada
                 para performance, observabilidade e para crescer sem exigir reescrita.
-                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">99,9% uptime</code>
+                <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">99,9% uptime</code>
               </p>
             </div>
           </li>
 
-          <li data-reveal="arch-item" class="group flex gap-5">
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent">03</span>
+          <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">03</span>
             <div class="min-w-0">
-              <h3 class="mb-2 text-lg font-semibold tracking-tight text-white sm:text-xl">Design que Converte</h3>
-              <p class="text-sm leading-relaxed text-neutral-400 sm:text-[15px]">
+              <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Design que Converte</h3>
+              <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
                 Do redesenho ao site novo: interfaces claras, rápidas e construídas para
                 vender. Seu visitante entende o valor do negócio em segundos e sabe
                 exatamente qual é o próximo passo.
-                <code class="ml-0.5 rounded bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-neutral-300 ring-1 ring-white/10">carrega em 1s</code>
+                <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">carrega em 1s</code>
               </p>
             </div>
           </li>
@@ -766,40 +787,40 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   <!-- ============================================================
        3ª DOBRA — PROCESSO
        ============================================================ -->
-  <section id="processo" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+  <section id="processo" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
     <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="pointer-events-none absolute bottom-0 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-accent2/[0.04] blur-[150px]" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-6">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
 
       <!-- Cabeçalho -->
-      <header class="mb-16 max-w-2xl lg:mb-24">
+      <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-24">
         <span data-reveal="proc-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
           <span class="h-px w-6 bg-accent"></span>
           Processo
         </span>
-        <h2 data-reveal="proc-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
+        <h2 data-reveal="proc-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
           Do diagnóstico ao <span class="text-grad">piloto automático</span>
         </h2>
-        <p data-reveal="proc-head" class="text-base leading-relaxed text-neutral-400 sm:text-lg">
+        <p data-reveal="proc-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
           Nada de projeto de seis meses que só aparece no fim. Você acompanha cada etapa
           funcionando, decide o que entra primeiro e vê o retorno antes da entrega final.
         </p>
       </header>
 
       <!-- Etapas -->
-      <ol class="relative mb-24 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <ol class="relative mb-16 grid grid-cols-1 gap-8 sm:mb-20 sm:grid-cols-2 sm:gap-10 lg:mb-24 lg:grid-cols-4 lg:gap-8">
 
         <li data-reveal="proc-step" class="relative">
           <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" aria-hidden="true"></span>
-          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-1rem)] w-px sm:hidden" aria-hidden="true"></span>
           <div class="relative mb-6 flex items-center gap-4">
             <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">01</span>
             <i data-lucide="search" class="h-5 w-5 text-accent"></i>
           </div>
-          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Diagnóstico</h3>
-            <p class="text-sm leading-relaxed text-neutral-400">
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
               Acompanhamos sua operação por dentro, medimos onde as horas se perdem e
               priorizamos o que devolve mais tempo primeiro.
             </p>
@@ -808,14 +829,14 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
         <li data-reveal="proc-step" class="relative">
           <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.4s" aria-hidden="true"></span>
-          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-1rem)] w-px sm:hidden" aria-hidden="true"></span>
           <div class="relative mb-6 flex items-center gap-4">
             <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">02</span>
             <i data-lucide="pen-tool" class="h-5 w-5 text-accent"></i>
           </div>
-          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Desenho</h3>
-            <p class="text-sm leading-relaxed text-neutral-400">
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
               Fluxos, arquitetura e telas definidos antes da primeira linha de código.
               Você aprova o caminho sabendo exatamente o que vai receber.
             </p>
@@ -824,14 +845,14 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
         <li data-reveal="proc-step" class="relative">
           <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.8s" aria-hidden="true"></span>
-          <span class="step-wire absolute left-6 top-14 h-[calc(100%-2rem)] w-px lg:hidden" aria-hidden="true"></span>
+          <span class="step-wire absolute left-6 top-14 h-[calc(100%-1rem)] w-px sm:hidden" aria-hidden="true"></span>
           <div class="relative mb-6 flex items-center gap-4">
             <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900 font-mono text-xs text-neutral-400">03</span>
             <i data-lucide="code-2" class="h-5 w-5 text-accent"></i>
           </div>
-          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Construção</h3>
-            <p class="text-sm leading-relaxed text-neutral-400">
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
               Entregas em ciclos curtos, sempre em ambiente real. Você testa rodando, não
               em apresentação de slides.
             </p>
@@ -843,9 +864,9 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-zinc-900 font-mono text-xs text-accent">04</span>
             <i data-lucide="activity" class="h-5 w-5 text-accent"></i>
           </div>
-          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-5">
+          <div class="step-card rounded-2xl border border-white/10 bg-zinc-900/30 p-4 sm:p-5">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white">Operação</h3>
-            <p class="text-sm leading-relaxed text-neutral-400">
+            <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-sm">
               Monitoramos, ajustamos e evoluímos. A automação não para no deploy — ela
               cresce junto com a sua operação.
             </p>
@@ -854,11 +875,11 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </ol>
 
       <!-- Integrações (marquee do design system) -->
-      <div data-reveal="proc-marquee" class="relative mb-24 overflow-hidden border-y border-white/5 py-5">
-        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-bg to-transparent"></div>
-        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-bg to-transparent"></div>
+      <div data-reveal="proc-marquee" class="relative mb-16 overflow-hidden border-y border-white/5 py-5 sm:mb-20 lg:mb-24">
+        <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-bg to-transparent sm:w-24"></div>
+        <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-bg to-transparent sm:w-24"></div>
         <div class="flex w-max animate-marquee">
-          <div class="flex items-center gap-12 pr-12 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-600">
+          <div class="flex shrink-0 items-center gap-8 pr-8 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-600 sm:gap-12 sm:pr-12 sm:text-[11px]">
             <span>Conectamos com</span><span class="text-accent/70">/</span>
             <span>ERP</span><span class="text-accent/70">/</span>
             <span>CRM</span><span class="text-accent/70">/</span>
@@ -870,7 +891,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <span>Bancos de dados</span><span class="text-accent/70">/</span>
             <span>APIs internas</span><span class="text-accent/70">/</span>
           </div>
-          <div aria-hidden="true" class="flex items-center gap-12 pr-12 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-600">
+          <div aria-hidden="true" class="flex shrink-0 items-center gap-8 pr-8 font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-600 sm:gap-12 sm:pr-12 sm:text-[11px]">
             <span>Conectamos com</span><span class="text-accent/70">/</span>
             <span>ERP</span><span class="text-accent/70">/</span>
             <span>CRM</span><span class="text-accent/70">/</span>
@@ -886,18 +907,18 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </div>
 
       <!-- Manifesto (tipografia do design system) + CTA -->
-      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
-        <h2 data-reveal="proc-manifesto" class="text-3xl font-normal leading-[1.1] tracking-tight text-neutral-700 md:text-5xl lg:col-span-8 lg:text-[4.5rem] lg:leading-[0.95]">
+      <div class="grid grid-cols-1 gap-10 sm:gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
+        <h2 data-reveal="proc-manifesto" class="text-[1.6rem] font-normal leading-[1.2] tracking-tight text-neutral-700 [text-wrap:balance] sm:text-3xl sm:leading-[1.1] md:text-5xl lg:col-span-8 lg:text-[4.5rem] lg:leading-[0.95]">
           A maioria das empresas não precisa de <span class="font-medium text-white">mais gente</span>. Precisa de <span class="font-medium text-white">menos trabalho manual</span>.
         </h2>
 
         <div data-reveal="proc-manifesto" class="lg:col-span-4">
-          <p class="mb-7 text-sm leading-relaxed text-neutral-400">
+          <p class="mb-6 text-[14px] leading-relaxed text-neutral-400 sm:mb-7 sm:text-sm">
             Uma conversa de 30 minutos é o bastante para mapearmos onde sua operação
             está perdendo tempo — e dizermos, sem rodeios, se dá para automatizar.
           </p>
           <a href="#contato"
-             class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+             class="btn-beam group relative isolate inline-flex h-[54px] w-full items-center justify-center overflow-hidden rounded-full px-4 text-center text-[12px] font-semibold uppercase leading-tight tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]"
              style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
             <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
               <span class="btn-beam-ring absolute inset-[-100%] block"></span>
@@ -908,9 +929,9 @@ body { font-family: 'Inter', system-ui, sans-serif; }
               <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45"></span>
             </span>
             <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
-              <i data-lucide="calendar-check" class="h-[17px] w-[17px] text-accent"></i>
+              <i data-lucide="calendar-check" class="h-[17px] w-[17px] shrink-0 text-accent"></i>
               Agendar diagnóstico
-              <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+              <i data-lucide="arrow-right" class="h-[17px] w-[17px] shrink-0 transition-transform duration-300 group-hover:translate-x-1"></i>
             </span>
           </a>
         </div>
@@ -934,99 +955,99 @@ body { font-family: 'Inter', system-ui, sans-serif; }
        publicidade enganosa (CDC art. 37) e cai por terra no
        primeiro prospect que pedir uma referência.
        ============================================================ -->
-  <section id="resultados" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+  <section id="resultados" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
     <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-6">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
 
       <!-- Cabeçalho -->
-      <header class="mb-16 max-w-2xl lg:mb-20">
+      <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-20">
         <span data-reveal="res-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
           <span class="h-px w-6 bg-accent"></span>
           Resultados
         </span>
-        <h2 data-reveal="res-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[56px]">
+        <h2 data-reveal="res-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
           Menos planilha, <span class="text-grad">mais operação</span>
         </h2>
-        <p data-reveal="res-head" class="text-base leading-relaxed text-neutral-400 sm:text-lg">
+        <p data-reveal="res-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
           Toda automação que colocamos no ar começou com uma planilha que alguém preenchia
           à mão. Abaixo, o que mudou na rotina de quem parou de preencher.
         </p>
       </header>
 
       <!-- Métricas agregadas — padrão "Metrics Grid" do design system -->
-      <div class="mb-20 grid grid-cols-2 gap-x-8 gap-y-12 border-t border-white/10 pt-12 lg:grid-cols-4">
+      <div class="mb-14 grid grid-cols-2 gap-x-4 gap-y-8 border-t border-white/10 pt-10 sm:mb-20 sm:gap-x-8 sm:gap-y-12 sm:pt-12 lg:grid-cols-4">
         <div data-reveal="res-metric" class="group flex cursor-default flex-col">
-          <span class="mb-3 font-display text-5xl font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent lg:text-[4rem]">1.200h</span>
-          <span class="text-xs font-semibold uppercase tracking-widest text-neutral-600 transition-colors group-hover:text-white">Devolvidas por ano</span>
+          <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">1.200h</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Devolvidas por ano</span>
         </div>
         <div data-reveal="res-metric" class="group flex cursor-default flex-col">
-          <span class="mb-3 font-display text-5xl font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent lg:text-[4rem]">31</span>
-          <span class="text-xs font-semibold uppercase tracking-widest text-neutral-600 transition-colors group-hover:text-white">Rotinas no ar</span>
+          <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">31</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Rotinas no ar</span>
         </div>
         <div data-reveal="res-metric" class="group flex cursor-default flex-col">
-          <span class="mb-3 font-display text-5xl font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent lg:text-[4rem]">6</span>
-          <span class="text-xs font-semibold uppercase tracking-widest text-neutral-600 transition-colors group-hover:text-white">Setores atendidos</span>
+          <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">6</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Setores atendidos</span>
         </div>
         <div data-reveal="res-metric" class="group flex cursor-default flex-col">
-          <span class="mb-3 font-display text-5xl font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent lg:text-[4rem]">0</span>
-          <span class="text-xs font-semibold uppercase tracking-widest text-neutral-600 transition-colors group-hover:text-white">Projetos abandonados</span>
+          <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">0</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Projetos abandonados</span>
         </div>
       </div>
 
       <!-- Casos anonimizados -->
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-7">
+        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
           <span class="beam-border-v" aria-hidden="true"></span>
-          <div class="mb-6 flex items-center justify-between">
+          <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
             <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Geração de orçamentos</span>
             <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">40 pessoas</span>
           </div>
           <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
-          <p class="mb-7 text-sm leading-relaxed text-neutral-300">
+          <p class="mb-6 text-[14px] leading-relaxed text-neutral-300 sm:mb-7 sm:text-sm">
             Nossa equipe perdia horas montando propostas. A Opris automatizou tudo: com o
             preenchimento automático de CNPJ e integrações via webhooks, o sistema hoje gera
             o PDF final com a nossa identidade visual instantaneamente. Mudou nossa rotina.
           </p>
           <div class="flex items-end justify-between border-t border-white/5 pt-5">
             <div>
-              <div class="font-display text-3xl font-light tracking-tight text-white">100%</div>
+              <div class="font-display text-2xl font-light tracking-tight text-white sm:text-3xl">100%</div>
               <div class="mt-1 font-mono text-[10px] uppercase tracking-widest text-neutral-500">Automatizado</div>
             </div>
             <i data-lucide="trending-up" class="h-5 w-5 text-accent"></i>
           </div>
         </article>
 
-        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-7">
+        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
           <span class="beam-border-v" style="animation-delay:1.6s" aria-hidden="true"></span>
-          <div class="mb-6 flex items-center justify-between">
+          <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
             <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Integração de sistemas</span>
             <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">120 pessoas</span>
           </div>
           <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
-          <p class="mb-7 text-sm leading-relaxed text-neutral-300">
+          <p class="mb-6 text-[14px] leading-relaxed text-neutral-300 sm:mb-7 sm:text-sm">
             Tínhamos que digitar os mesmos dados em diversas plataformas diferentes, era um
             caos operacional. A Opris integrou nossos sistemas via API de forma invisível.
             A informação agora flui em tempo real e zeramos os erros de digitação.
           </p>
           <div class="flex items-end justify-between border-t border-white/5 pt-5">
             <div>
-              <div class="font-display text-3xl font-light tracking-tight text-white">0</div>
+              <div class="font-display text-2xl font-light tracking-tight text-white sm:text-3xl">0</div>
               <div class="mt-1 font-mono text-[10px] uppercase tracking-widest text-neutral-500">Erros humanos</div>
             </div>
             <i data-lucide="clock" class="h-5 w-5 text-accent"></i>
           </div>
         </article>
 
-        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-7 md:col-span-2 lg:col-span-1">
+        <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7 md:col-span-2 lg:col-span-1">
           <span class="beam-border-v" style="animation-delay:3.2s" aria-hidden="true"></span>
-          <div class="mb-6 flex items-center justify-between">
+          <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
             <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Redesign e performance</span>
             <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">250 pessoas</span>
           </div>
           <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
-          <p class="mb-7 text-sm leading-relaxed text-neutral-300">
+          <p class="mb-6 text-[14px] leading-relaxed text-neutral-300 sm:mb-7 sm:text-sm">
             Nosso site antigo não passava a credibilidade que precisávamos para fechar
             contratos B2B. A Opris reformulou todo o visual e a engenharia do projeto.
             Ficou moderno, absurdamente rápido de carregar e virou uma verdadeira máquina
@@ -1034,7 +1055,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
           </p>
           <div class="flex items-end justify-between border-t border-white/5 pt-5">
             <div>
-              <div class="font-display text-3xl font-light tracking-tight text-white">3&times;</div>
+              <div class="font-display text-2xl font-light tracking-tight text-white sm:text-3xl">3&times;</div>
               <div class="mt-1 font-mono text-[10px] uppercase tracking-widest text-neutral-500">Mais conversão</div>
             </div>
             <i data-lucide="target" class="h-5 w-5 text-accent"></i>
@@ -1057,12 +1078,12 @@ body { font-family: 'Inter', system-ui, sans-serif; }
        Basin, API própria), preencha data-endpoint com a URL — o
        form passa a fazer POST normal e o mailto é ignorado.
        ============================================================ -->
-  <section id="contato" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+  <section id="contato" class="relative z-10 overflow-hidden border-t border-white/5 py-16 sm:py-24 lg:py-32">
     <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
     <div class="pointer-events-none absolute left-1/2 top-1/4 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-6">
-      <div class="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+      <div class="grid grid-cols-1 gap-10 sm:gap-14 lg:grid-cols-12 lg:gap-16">
 
         <!-- Esquerda -->
         <div class="lg:col-span-5">
@@ -1070,40 +1091,40 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <span class="h-px w-6 bg-accent"></span>
             Contato
           </span>
-          <h2 data-reveal="cta-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl">
+          <h2 data-reveal="cta-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl">
             Vamos ver o que <span class="text-grad">dá para automatizar</span>
           </h2>
-          <p data-reveal="cta-head" class="mb-10 text-base leading-relaxed text-neutral-400 sm:text-lg">
+          <p data-reveal="cta-head" class="mb-8 text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-base md:text-lg">
             Trinta minutos, sem custo e sem compromisso. Você mostra a rotina que mais
             incomoda e a gente diz o que é automatizável — inclusive se a resposta for
             &ldquo;nada, por enquanto&rdquo;.
           </p>
 
-          <ul data-reveal="cta-head" class="mb-10 space-y-3.5">
-            <li class="flex items-center gap-3 text-sm text-neutral-300">
-              <i data-lucide="clock" class="h-4 w-4 shrink-0 text-accent"></i>
+          <ul data-reveal="cta-head" class="mb-8 space-y-3.5 sm:mb-10">
+            <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+              <i data-lucide="clock" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
               Resposta imediata
             </li>
-            <li class="flex items-center gap-3 text-sm text-neutral-300">
-              <i data-lucide="shield-check" class="h-4 w-4 shrink-0 text-accent"></i>
+            <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+              <i data-lucide="shield-check" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
               Tudo que você contar fica em sigilo
             </li>
-            <li class="flex items-center gap-3 text-sm text-neutral-300">
-              <i data-lucide="message-square" class="h-4 w-4 shrink-0 text-accent"></i>
+            <li class="flex items-start gap-3 text-[14px] text-neutral-300 sm:items-center sm:text-sm">
+              <i data-lucide="message-square" class="mt-0.5 h-4 w-4 shrink-0 text-accent sm:mt-0"></i>
               Você fala com quem vai fazer, não com vendedor
             </li>
           </ul>
 
           <!-- Canais diretos -->
-          <div data-reveal="cta-head" class="flex flex-wrap gap-3">
+          <div data-reveal="cta-head" class="flex flex-wrap gap-2.5 sm:gap-3">
             <a href="mailto:contato@opris.com.br"
-               class="group inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white">
-              <i data-lucide="mail" class="h-4 w-4 text-neutral-500 transition-colors group-hover:text-accent"></i>
+               class="group inline-flex max-w-full items-center gap-2.5 break-all rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-[13px] text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white sm:break-normal sm:text-sm">
+              <i data-lucide="mail" class="h-4 w-4 shrink-0 text-neutral-500 transition-colors group-hover:text-accent"></i>
               contato@opris.com.br
             </a>
             <a href="https://wa.me/5500000000000" target="_blank" rel="noopener"
-               class="group inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white">
-              <i data-lucide="message-circle" class="h-4 w-4 text-neutral-500 transition-colors group-hover:text-accent"></i>
+               class="group inline-flex max-w-full items-center gap-2.5 break-all rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-[13px] text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white sm:break-normal sm:text-sm">
+              <i data-lucide="message-circle" class="h-4 w-4 shrink-0 text-neutral-500 transition-colors group-hover:text-accent"></i>
               WhatsApp
             </a>
           </div>
@@ -1112,38 +1133,38 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         <!-- Direita: formulário -->
         <div data-reveal="cta-form" class="lg:col-span-7">
           <form id="form-contato" data-endpoint="" method="post" novalidate
-                class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-6 sm:p-8">
+                class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-5 sm:p-8">
             <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
 
             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
                 <label for="f-nome" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Nome *</label>
                 <input id="f-nome" name="nome" type="text" required autocomplete="name"
-                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
                        placeholder="Como te chamamos"/>
               </div>
               <div>
                 <label for="f-empresa" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Empresa</label>
                 <input id="f-empresa" name="empresa" type="text" autocomplete="organization"
-                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
                        placeholder="Nome da empresa"/>
               </div>
               <div>
                 <label for="f-email" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">E-mail corporativo *</label>
                 <input id="f-email" name="email" type="email" required autocomplete="email"
-                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
                        placeholder="voce@empresa.com.br"/>
               </div>
               <div>
                 <label for="f-fone" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">WhatsApp</label>
                 <input id="f-fone" name="telefone" type="tel" autocomplete="tel"
-                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
                        placeholder="(00) 00000-0000"/>
               </div>
               <div class="sm:col-span-2">
                 <label for="f-msg" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Qual rotina mais consome tempo hoje? *</label>
                 <textarea id="f-msg" name="mensagem" rows="4" required
-                          class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-sm leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                          class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-base leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:text-sm"
                           placeholder="Ex.: conferimos 200 pedidos por dia na mão, comparando o pedido do cliente com o que entrou no ERP."></textarea>
               </div>
             </div>
@@ -1151,9 +1172,9 @@ body { font-family: 'Inter', system-ui, sans-serif; }
             <!-- Mensagem de estado (validação / retorno) -->
             <p id="form-aviso" role="status" aria-live="polite" class="mt-5 hidden text-sm"></p>
 
-            <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="mt-7 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
               <button type="submit"
-                      class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+                      class="btn-beam group relative isolate inline-flex h-[54px] w-full items-center justify-center overflow-hidden rounded-full px-4 text-center text-[12px] font-semibold uppercase leading-tight tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:w-auto sm:whitespace-nowrap sm:px-8 sm:text-[14px]"
                       style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
                 <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
                   <span class="btn-beam-ring absolute inset-[-100%] block"></span>
@@ -1164,12 +1185,12 @@ body { font-family: 'Inter', system-ui, sans-serif; }
                   <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45"></span>
                 </span>
                 <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
-                  <i data-lucide="send" class="h-[17px] w-[17px] text-accent"></i>
+                  <i data-lucide="send" class="h-[17px] w-[17px] shrink-0 text-accent"></i>
                   Enviar e agendar
-                  <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+                  <i data-lucide="arrow-right" class="h-[17px] w-[17px] shrink-0 transition-transform duration-300 group-hover:translate-x-1"></i>
                 </span>
               </button>
-              <p class="text-xs leading-relaxed text-neutral-600 sm:max-w-[16rem]">
+              <p class="text-center text-xs leading-relaxed text-neutral-600 sm:max-w-[16rem] sm:text-left">
                 Seus dados ficam só conosco. Nada de lista de disparo.
               </p>
             </div>
@@ -1187,8 +1208,8 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 <footer class="relative z-10 border-t border-white/5">
   <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
 
-  <div class="mx-auto max-w-7xl px-6 py-16">
-    <div class="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-16">
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+    <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-10 md:grid-cols-4 lg:gap-16">
 
       <!-- Marca -->
       <div class="col-span-2 md:col-span-1">
@@ -1208,43 +1229,43 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       <!-- Serviços -->
       <div>
         <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Serviços</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Automação de processos</a></li>
-          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Software sob medida</a></li>
-          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Sites e redesign</a></li>
-          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Integrações e APIs</a></li>
+        <ul class="space-y-1 text-sm sm:space-y-2">
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Automação de processos</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Software sob medida</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Sites e redesign</a></li>
+          <li><a href="#arquitetura" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Integrações e APIs</a></li>
         </ul>
       </div>
 
       <!-- Empresa -->
       <div>
         <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Empresa</h3>
-        <ul class="space-y-3 text-sm">
-          <li><a href="#processo" class="text-neutral-400 transition-colors hover:text-white">Como trabalhamos</a></li>
-          <li><a href="#resultados" class="text-neutral-400 transition-colors hover:text-white">Resultados</a></li>
-          <li><a href="#contato" class="text-neutral-400 transition-colors hover:text-white">Contato</a></li>
+        <ul class="space-y-1 text-sm sm:space-y-2">
+          <li><a href="#processo" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Como trabalhamos</a></li>
+          <li><a href="#resultados" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Resultados</a></li>
+          <li><a href="#contato" class="inline-block py-1.5 text-neutral-400 transition-colors hover:text-white">Contato</a></li>
         </ul>
       </div>
 
       <!-- Contato -->
       <div>
         <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Falar com a gente</h3>
-        <ul class="space-y-3 text-sm">
+        <ul class="space-y-1 text-sm sm:space-y-2">
           <li>
-            <a href="mailto:contato@opris.com.br" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
-              <i data-lucide="mail" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+            <a href="mailto:contato@opris.com.br" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="mail" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
               contato@opris.com.br
             </a>
           </li>
           <li>
-            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
-              <i data-lucide="message-circle" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="message-circle" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
               WhatsApp
             </a>
           </li>
           <li>
-            <a href="#" target="_blank" rel="noopener" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
-              <i data-lucide="linkedin" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+            <a href="#" target="_blank" rel="noopener" class="group inline-flex max-w-full items-center gap-2 break-all py-1.5 text-neutral-400 transition-colors hover:text-white sm:break-normal">
+              <i data-lucide="linkedin" class="h-3.5 w-3.5 shrink-0 text-neutral-600 transition-colors group-hover:text-accent"></i>
               LinkedIn
             </a>
           </li>
@@ -1253,13 +1274,13 @@ body { font-family: 'Inter', system-ui, sans-serif; }
     </div>
 
     <!-- Barra inferior -->
-    <div class="mt-14 flex flex-col gap-4 border-t border-white/5 pt-8 sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-mono text-[11px] uppercase tracking-widest text-neutral-600">
+    <div class="mt-12 flex flex-col gap-4 border-t border-white/5 pt-8 sm:mt-14 sm:flex-row sm:items-center sm:justify-between">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-neutral-600 sm:text-[11px]">
         &copy; <span id="ano-atual">2026</span> Opris &middot; Todos os direitos reservados
       </p>
-      <div class="flex flex-wrap items-center gap-6 font-mono text-[11px] uppercase tracking-widest text-neutral-600">
-        <a href="#" class="transition-colors hover:text-neutral-300">Política de privacidade</a>
-        <a href="#" class="transition-colors hover:text-neutral-300">Termos</a>
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[10px] uppercase tracking-widest text-neutral-600 sm:text-[11px]">
+        <a href="#" class="inline-block py-1 transition-colors hover:text-neutral-300">Política de privacidade</a>
+        <a href="#" class="inline-block py-1 transition-colors hover:text-neutral-300">Termos</a>
       </div>
     </div>
   </div>
@@ -1275,6 +1296,36 @@ body { font-family: 'Inter', system-ui, sans-serif; }
   /* ---------- Ano no rodapé ---------- */
   var anoEl = document.getElementById('ano-atual');
   if (anoEl) anoEl.textContent = new Date().getFullYear();
+
+  /* ---------- Menu mobile ---------- */
+  var btnMenu = document.getElementById('btn-menu');
+  var menuMobile = document.getElementById('menu-mobile');
+  if (btnMenu && menuMobile) {
+    var iconeAbrir  = btnMenu.querySelector('[data-menu-icon="open"]');
+    var iconeFechar = btnMenu.querySelector('[data-menu-icon="close"]');
+
+    function alternarMenu(abrir) {
+      menuMobile.classList.toggle('hidden', !abrir);
+      btnMenu.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      btnMenu.setAttribute('aria-label', abrir ? 'Fechar menu' : 'Abrir menu');
+      if (iconeAbrir)  iconeAbrir.classList.toggle('hidden', abrir);
+      if (iconeFechar) iconeFechar.classList.toggle('hidden', !abrir);
+    }
+
+    btnMenu.addEventListener('click', function () {
+      alternarMenu(menuMobile.classList.contains('hidden'));
+    });
+
+    /* Fecha ao navegar para uma âncora */
+    menuMobile.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { alternarMenu(false); });
+    });
+
+    /* Ao voltar para desktop o painel some: reseta o estado */
+    window.matchMedia('(min-width: 768px)').addEventListener('change', function (e) {
+      if (e.matches) alternarMenu(false);
+    });
+  }
 
   /* ---------- Formulário de contato ----------
      Com data-endpoint preenchido, faz POST normal.
@@ -1334,6 +1385,11 @@ body { font-family: 'Inter', system-ui, sans-serif; }
     return;
   }
 
+  /* Blur é caro em GPU de celular: no mobile a entrada é só fade + deslocamento. */
+  var isMobile = window.matchMedia('(max-width: 767px)').matches;
+  var b8  = isMobile ? 'blur(0px)' : 'blur(8px)';
+  var b10 = isMobile ? 'blur(0px)' : 'blur(10px)';
+
   /* ---------- Split do headline em palavras (para o reveal por máscara) ---------- */
   function splitWords(root) {
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -1367,13 +1423,13 @@ body { font-family: 'Inter', system-ui, sans-serif; }
     .from('[data-reveal="nav"]', { y: -18, duration: .8 }, 0)
 
     .to('[data-reveal="tag"]', { opacity: 1, duration: .7 }, .15)
-    .from('[data-reveal="tag"]', { y: 16, filter: 'blur(8px)', duration: .7 }, .15)
+    .from('[data-reveal="tag"]', { y: 16, filter: b8, duration: .7 }, .15)
 
     .set('[data-reveal="headline"]', { opacity: 1 }, .3)
     .from(words, { yPercent: 115, duration: 1, stagger: .045, ease: 'expo.out' }, .3)
 
     .to('[data-reveal="sub"]', { opacity: 1, duration: .8 }, .75)
-    .from('[data-reveal="sub"]', { y: 22, filter: 'blur(8px)', duration: .8 }, .75)
+    .from('[data-reveal="sub"]', { y: 22, filter: b8, duration: .8 }, .75)
 
     .to('[data-reveal="cta"]', { opacity: 1, duration: .7 }, .92)
     .from('[data-reveal="cta"]', { y: 22, duration: .7 }, .92)
@@ -1382,59 +1438,88 @@ body { font-family: 'Inter', system-ui, sans-serif; }
     .from('[data-reveal="proof"]', { y: 20, duration: .7 }, 1.05)
 
     .to('[data-reveal="panel"]', { opacity: 1, duration: 1 }, .5)
-    .from('[data-reveal="panel"]', { y: 40, scale: .96, filter: 'blur(10px)', duration: 1.1 }, .5);
+    .from('[data-reveal="panel"]', { y: 40, scale: .96, filter: b10, duration: 1.1 }, .5);
 
-  /* ---------- Crachás: entrada + flutuação em loop ---------- */
-  var floats = gsap.utils.toArray('[data-float]');
+  /* ---------- Crachás flutuantes ----------
+     Só existem a partir de lg (hidden lg:block). Fora disso nem
+     criamos o loop de flutuação — é ciclo de CPU jogado fora. */
+  var mm = gsap.matchMedia();
 
-  gsap.set(floats, { opacity: 0, scale: .9 });
-  gsap.to(floats, {
-    opacity: 1, scale: 1, duration: .6, stagger: .12, delay: 1.1, ease: 'back.out(1.6)',
-    onComplete: function () {
-      floats.forEach(function (el, i) {
-        gsap.to(el, {
-          y: i % 2 === 0 ? -12 : -16,
-          duration: 2.4 + i * .25,
-          ease: 'sine.inOut',
-          repeat: -1,
-          yoyo: true,
-          delay: i * .18
+  mm.add('(min-width: 1024px)', function () {
+    var floats = gsap.utils.toArray('[data-float]');
+    if (!floats.length) return;
+
+    gsap.set(floats, { opacity: 0, scale: .9 });
+    gsap.to(floats, {
+      opacity: 1, scale: 1, duration: .6, stagger: .12, delay: 1.1, ease: 'back.out(1.6)',
+      onComplete: function () {
+        floats.forEach(function (el, i) {
+          gsap.to(el, {
+            y: i % 2 === 0 ? -12 : -16,
+            duration: 2.4 + i * .25,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+            delay: i * .18
+          });
         });
-      });
-    }
+      }
+    });
   });
 
-  /* ---------- 2ª dobra: Arquitetura (ScrollTrigger) ---------- */
-  if (window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
+  /* ScrollTrigger não carregou: revela tudo para não sumir conteúdo */
+  if (!window.ScrollTrigger) {
+    gsap.set('[data-reveal^="arch"], [data-reveal^="proc"], [data-reveal^="res"], [data-reveal^="cta"]', { opacity: 1 });
+    return;
+  }
 
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- Reveals das seções ----------
+     Mesma coreografia nos dois breakpoints, com duas diferenças:
+
+       · Desktop  — os pilares entram deslizando no eixo X (x: 44).
+       · Mobile   — nada se move na horizontal. Um translate em X
+                    dentro de um container de largura cheia empurra
+                    o conteúdo para fora da viewport e liga a barra
+                    de rolagem lateral no meio da animação; aqui os
+                    pilares sobem (y) como os demais blocos.
+
+     Blur também sai no mobile: filtro em tela inteira derruba o
+     frame rate em aparelho intermediário.
+
+     O matchMedia cuida do ciclo de vida — ao cruzar o breakpoint
+     ele reverte o contexto anterior e monta o outro. */
+  mm.add({ desktop: '(min-width: 768px)', mobile: '(max-width: 767px)' }, function (ctx) {
+    var desk = ctx.conditions.desktop;
+    var blur = desk ? 'blur(8px)' : 'blur(0px)';
+
+    /* Entrada padrão de cabeçalho de seção */
+    var headFrom = { opacity: 0, y: desk ? 28 : 20, filter: blur };
+    var headTo   = { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 };
+
+    /* ----- 2ª dobra: Arquitetura ----- */
     gsap.timeline({
-      scrollTrigger: { trigger: '#arquitetura', start: 'top 72%', once: true },
+      scrollTrigger: { trigger: '#arquitetura', start: 'top 80%', once: true },
       defaults: { ease: 'power3.out' }
     })
-    /* 1. Cabeçalho: fade-up em stagger */
-    .fromTo('[data-reveal="arch-head"]',
-      { opacity: 0, y: 28, filter: 'blur(8px)' },
-      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
-    /* 2. Card do diagrama: zoom-in suave */
+    .fromTo('[data-reveal="arch-head"]', headFrom, headTo, 0)
     .fromTo('[data-reveal="arch-card"]',
-      { opacity: 0, scale: .94, filter: 'blur(10px)' },
+      { opacity: 0, scale: desk ? .94 : .98, filter: desk ? 'blur(10px)' : 'blur(0px)' },
       { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.1 }, .18)
-    /* 3. Pilares: entram da direita, um após o outro */
     .fromTo('[data-reveal="arch-item"]',
-      { opacity: 0, x: 44 },
-      { opacity: 1, x: 0, duration: .7, stagger: .15 }, .42);
+      desk ? { opacity: 0, x: 44 } : { opacity: 0, y: 24 },
+      desk ? { opacity: 1, x: 0, duration: .7, stagger: .15 }
+           : { opacity: 1, y: 0, duration: .6, stagger: .12 }, .42);
 
     /* ----- 3ª dobra: Processo ----- */
     gsap.timeline({
-      scrollTrigger: { trigger: '#processo', start: 'top 72%', once: true },
+      scrollTrigger: { trigger: '#processo', start: 'top 80%', once: true },
       defaults: { ease: 'power3.out' }
     })
-    .fromTo('[data-reveal="proc-head"]',
-      { opacity: 0, y: 28, filter: 'blur(8px)' },
-      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    .fromTo('[data-reveal="proc-head"]', headFrom, headTo, 0)
     .fromTo('[data-reveal="proc-step"]',
-      { opacity: 0, y: 36 },
+      { opacity: 0, y: desk ? 36 : 24 },
       { opacity: 1, y: 0, duration: .7, stagger: .13 }, .3)
     .fromTo('[data-reveal="proc-marquee"]',
       { opacity: 0 },
@@ -1442,43 +1527,38 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
     /* O manifesto entra com trigger próprio, mais abaixo na página */
     gsap.fromTo('[data-reveal="proc-manifesto"]',
-      { opacity: 0, y: 30, filter: 'blur(8px)' },
+      { opacity: 0, y: desk ? 30 : 22, filter: blur },
       {
         opacity: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .14, ease: 'power3.out',
-        scrollTrigger: { trigger: '[data-reveal="proc-manifesto"]', start: 'top 82%', once: true }
+        scrollTrigger: { trigger: '[data-reveal="proc-manifesto"]', start: 'top 88%', once: true }
       });
 
     /* ----- 4ª dobra: Resultados ----- */
     gsap.timeline({
-      scrollTrigger: { trigger: '#resultados', start: 'top 72%', once: true },
+      scrollTrigger: { trigger: '#resultados', start: 'top 80%', once: true },
       defaults: { ease: 'power3.out' }
     })
-    .fromTo('[data-reveal="res-head"]',
-      { opacity: 0, y: 28, filter: 'blur(8px)' },
-      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    .fromTo('[data-reveal="res-head"]', headFrom, headTo, 0)
     .fromTo('[data-reveal="res-metric"]',
-      { opacity: 0, y: 24 },
+      { opacity: 0, y: desk ? 24 : 16 },
       { opacity: 1, y: 0, duration: .7, stagger: .1 }, .3)
     .fromTo('[data-reveal="res-case"]',
-      { opacity: 0, y: 36 },
+      { opacity: 0, y: desk ? 36 : 24 },
       { opacity: 1, y: 0, duration: .8, stagger: .14 }, .55);
 
     /* ----- Contato ----- */
     gsap.timeline({
-      scrollTrigger: { trigger: '#contato', start: 'top 75%', once: true },
+      scrollTrigger: { trigger: '#contato', start: 'top 82%', once: true },
       defaults: { ease: 'power3.out' }
     })
-    .fromTo('[data-reveal="cta-head"]',
-      { opacity: 0, y: 28, filter: 'blur(8px)' },
-      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    .fromTo('[data-reveal="cta-head"]', headFrom, headTo, 0)
     .fromTo('[data-reveal="cta-form"]',
-      { opacity: 0, y: 36, scale: .97 },
+      { opacity: 0, y: desk ? 36 : 24, scale: desk ? .97 : 1 },
       { opacity: 1, y: 0, scale: 1, duration: .9 }, .25);
+  });
 
-  } else {
-    /* ScrollTrigger não carregou: revela as seções para não sumir conteúdo */
-    gsap.set('[data-reveal^="arch"], [data-reveal^="proc"], [data-reveal^="res"], [data-reveal^="cta"]', { opacity: 1 });
-  }
+  /* Fontes e ícones mudam a altura da página depois do primeiro cálculo */
+  window.addEventListener('load', function () { ScrollTrigger.refresh(); });
 
 })();
 </script>
