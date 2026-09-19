@@ -382,9 +382,9 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       <a href="#" class="flex items-center gap-2 rounded-full border border-white/5 bg-neutral-800/80 px-4 py-1.5 text-xs shadow-inner">
         <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>Início
       </a>
-      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Soluções</a>
-      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Casos</a>
-      <a href="#" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Empresa</a>
+      <a href="#arquitetura" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Soluções</a>
+      <a href="#processo" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Processo</a>
+      <a href="#resultados" class="px-4 py-1.5 text-xs text-neutral-400 transition-colors hover:text-white">Resultados</a>
     </div>
 
     <!-- CTA -->
@@ -461,7 +461,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
         </a>
 
         <!-- Secundário: outline/fantasma -->
-        <a href="#casos"
+        <a href="#resultados"
            class="group inline-flex h-[54px] items-center justify-center gap-2.5 whitespace-nowrap rounded-full border border-white/15 bg-white/[0.03] px-6 text-[13px] font-semibold uppercase tracking-tight text-neutral-300 backdrop-blur-sm transition-all duration-300 hover:border-white/35 hover:bg-white/[0.07] hover:text-white sm:px-8 sm:text-[14px]">
           <i data-lucide="play-circle" class="h-[17px] w-[17px] text-neutral-500 transition-colors group-hover:text-accent"></i>
           Ver casos de uso
@@ -1048,7 +1048,226 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       </p>
     </div>
   </section>
+
+  <!-- ============================================================
+       CONTATO
+
+       ⚠ SUBSTITUIR ANTES DE PUBLICAR: e-mail e WhatsApp abaixo
+       são placeholders (procure por "opris.com.br" e "5500").
+
+       O formulário funciona sem backend: se data-endpoint estiver
+       vazio, o envio monta um mailto já preenchido, então nenhuma
+       mensagem se perde. Para usar um serviço real (Formspree,
+       Basin, API própria), preencha data-endpoint com a URL — o
+       form passa a fazer POST normal e o mailto é ignorado.
+       ============================================================ -->
+  <section id="contato" class="relative z-10 border-t border-white/5 py-24 lg:py-32">
+    <div class="dot-grid-soft pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute left-1/2 top-1/4 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-accent/[0.05] blur-[150px]" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-7xl px-6">
+      <div class="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+
+        <!-- Esquerda -->
+        <div class="lg:col-span-5">
+          <span data-reveal="cta-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+            <span class="h-px w-6 bg-accent"></span>
+            Contato
+          </span>
+          <h2 data-reveal="cta-head" class="mb-5 text-4xl font-light leading-[1.08] tracking-tight text-white sm:text-5xl">
+            Vamos ver o que <span class="text-grad">dá para automatizar</span>
+          </h2>
+          <p data-reveal="cta-head" class="mb-10 text-base leading-relaxed text-neutral-400 sm:text-lg">
+            Trinta minutos, sem custo e sem compromisso. Você mostra a rotina que mais
+            incomoda e a gente diz o que é automatizável — inclusive se a resposta for
+            &ldquo;nada, por enquanto&rdquo;.
+          </p>
+
+          <ul data-reveal="cta-head" class="mb-10 space-y-3.5">
+            <li class="flex items-center gap-3 text-sm text-neutral-300">
+              <i data-lucide="clock" class="h-4 w-4 shrink-0 text-accent"></i>
+              Resposta em até 1 dia útil
+            </li>
+            <li class="flex items-center gap-3 text-sm text-neutral-300">
+              <i data-lucide="shield-check" class="h-4 w-4 shrink-0 text-accent"></i>
+              NDA assinado antes de ver qualquer dado seu
+            </li>
+            <li class="flex items-center gap-3 text-sm text-neutral-300">
+              <i data-lucide="message-square" class="h-4 w-4 shrink-0 text-accent"></i>
+              Conversa técnica, sem script de vendas
+            </li>
+          </ul>
+
+          <!-- Canais diretos -->
+          <div data-reveal="cta-head" class="flex flex-wrap gap-3">
+            <a href="mailto:contato@opris.com.br"
+               class="group inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white">
+              <i data-lucide="mail" class="h-4 w-4 text-neutral-500 transition-colors group-hover:text-accent"></i>
+              contato@opris.com.br
+            </a>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener"
+               class="group inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-neutral-300 transition-all duration-300 hover:border-white/25 hover:text-white">
+              <i data-lucide="message-circle" class="h-4 w-4 text-neutral-500 transition-colors group-hover:text-accent"></i>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Direita: formulário -->
+        <div data-reveal="cta-form" class="lg:col-span-7">
+          <form id="form-contato" data-endpoint="" method="post" novalidate
+                class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-6 sm:p-8">
+            <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
+
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label for="f-nome" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Nome *</label>
+                <input id="f-nome" name="nome" type="text" required autocomplete="name"
+                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       placeholder="Como te chamamos"/>
+              </div>
+              <div>
+                <label for="f-empresa" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Empresa</label>
+                <input id="f-empresa" name="empresa" type="text" autocomplete="organization"
+                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       placeholder="Nome da empresa"/>
+              </div>
+              <div>
+                <label for="f-email" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">E-mail corporativo *</label>
+                <input id="f-email" name="email" type="email" required autocomplete="email"
+                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       placeholder="voce@empresa.com.br"/>
+              </div>
+              <div>
+                <label for="f-fone" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">WhatsApp</label>
+                <input id="f-fone" name="telefone" type="tel" autocomplete="tel"
+                       class="h-11 w-full rounded-lg border border-white/10 bg-bg px-4 text-sm text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                       placeholder="(00) 00000-0000"/>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="f-msg" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Qual rotina mais consome tempo hoje? *</label>
+                <textarea id="f-msg" name="mensagem" rows="4" required
+                          class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-sm leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none"
+                          placeholder="Ex.: conferimos 200 pedidos por dia na mão, comparando o pedido do cliente com o que entrou no ERP."></textarea>
+              </div>
+            </div>
+
+            <!-- Mensagem de estado (validação / retorno) -->
+            <p id="form-aviso" role="status" aria-live="polite" class="mt-5 hidden text-sm"></p>
+
+            <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <button type="submit"
+                      class="btn-beam group relative isolate inline-flex h-[54px] items-center justify-center overflow-hidden whitespace-nowrap rounded-full px-6 text-[13px] font-semibold uppercase tracking-tight text-white/90 transition-shadow duration-300 hover:text-white sm:px-8 sm:text-[14px]"
+                      style="--border-gradient: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,0), rgba(255,255,255,.2)); --border-radius-before: 9999px">
+                <span class="pointer-events-none absolute inset-0 -z-20 overflow-hidden rounded-full p-[1px]">
+                  <span class="btn-beam-ring absolute inset-[-100%] block"></span>
+                  <span class="absolute inset-[1px] rounded-full bg-bg"></span>
+                </span>
+                <span class="pointer-events-none absolute inset-[2px] -z-10 overflow-hidden rounded-full bg-surface">
+                  <span class="absolute inset-0 bg-gradient-to-b from-accent/15 to-transparent"></span>
+                  <span class="absolute bottom-0 left-1/2 h-1/2 w-2/3 -translate-x-1/2 rounded-full bg-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-accent/45"></span>
+                </span>
+                <span class="relative z-10 inline-flex items-center justify-center gap-2.5">
+                  <i data-lucide="send" class="h-[17px] w-[17px] text-accent"></i>
+                  Enviar e agendar
+                  <i data-lucide="arrow-right" class="h-[17px] w-[17px] transition-transform duration-300 group-hover:translate-x-1"></i>
+                </span>
+              </button>
+              <p class="text-xs leading-relaxed text-neutral-600 sm:max-w-[16rem]">
+                Seus dados ficam só conosco. Nada de lista de disparo.
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
+
+<!-- ============================================================
+     FOOTER
+     ⚠ SUBSTITUIR: CNPJ, cidade, e-mail, WhatsApp e LinkedIn.
+     ============================================================ -->
+<footer class="relative z-10 border-t border-white/5">
+  <span class="beam-border-h" style="top:0; bottom:auto;" aria-hidden="true"></span>
+
+  <div class="mx-auto max-w-7xl px-6 py-16">
+    <div class="grid grid-cols-2 gap-10 md:grid-cols-4 lg:gap-16">
+
+      <!-- Marca -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="#" class="mb-4 inline-flex items-center gap-2.5 group">
+          <span class="relative flex h-8 w-8 items-center justify-center">
+            <i data-lucide="asterisk" class="absolute h-8 w-8 rotate-45 text-white"></i>
+            <i data-lucide="asterisk" class="absolute h-8 w-8 text-accent transition-transform duration-700 group-hover:rotate-90"></i>
+          </span>
+          <span class="text-xl tracking-tight text-white">Opris</span>
+        </a>
+        <p class="max-w-xs text-sm leading-relaxed text-neutral-500">
+          Automações sob medida, softwares robustos e sites que vendem. Para empresas
+          que querem crescer sem inchar a equipe.
+        </p>
+      </div>
+
+      <!-- Serviços -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Serviços</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Automação de processos</a></li>
+          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Software sob medida</a></li>
+          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Sites e redesign</a></li>
+          <li><a href="#arquitetura" class="text-neutral-400 transition-colors hover:text-white">Integrações e APIs</a></li>
+        </ul>
+      </div>
+
+      <!-- Empresa -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Empresa</h3>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#processo" class="text-neutral-400 transition-colors hover:text-white">Como trabalhamos</a></li>
+          <li><a href="#resultados" class="text-neutral-400 transition-colors hover:text-white">Resultados</a></li>
+          <li><a href="#contato" class="text-neutral-400 transition-colors hover:text-white">Contato</a></li>
+        </ul>
+      </div>
+
+      <!-- Contato -->
+      <div>
+        <h3 class="mb-4 font-mono text-[10px] uppercase tracking-widest text-neutral-600">Falar com a gente</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="mailto:contato@opris.com.br" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
+              <i data-lucide="mail" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              contato@opris.com.br
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/5500000000000" target="_blank" rel="noopener" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
+              <i data-lucide="message-circle" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              WhatsApp
+            </a>
+          </li>
+          <li>
+            <a href="#" target="_blank" rel="noopener" class="group inline-flex items-center gap-2 text-neutral-400 transition-colors hover:text-white">
+              <i data-lucide="linkedin" class="h-3.5 w-3.5 text-neutral-600 transition-colors group-hover:text-accent"></i>
+              LinkedIn
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="mt-14 flex flex-col gap-4 border-t border-white/5 pt-8 sm:flex-row sm:items-center sm:justify-between">
+      <p class="font-mono text-[11px] uppercase tracking-widest text-neutral-600">
+        &copy; <span id="ano-atual">2026</span> Opris &middot; CNPJ 00.000.000/0001-00
+      </p>
+      <div class="flex flex-wrap items-center gap-6 font-mono text-[11px] uppercase tracking-widest text-neutral-600">
+        <a href="#" class="transition-colors hover:text-neutral-300">Política de privacidade</a>
+        <a href="#" class="transition-colors hover:text-neutral-300">Termos</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function () {
@@ -1056,6 +1275,59 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
   /* Ícones Lucide */
   if (window.lucide) lucide.createIcons();
+
+  /* ---------- Ano no rodapé ---------- */
+  var anoEl = document.getElementById('ano-atual');
+  if (anoEl) anoEl.textContent = new Date().getFullYear();
+
+  /* ---------- Formulário de contato ----------
+     Com data-endpoint preenchido, faz POST normal.
+     Vazio, monta um mailto já preenchido — assim o form nunca
+     engole a mensagem, mesmo sem backend. */
+  var form = document.getElementById('form-contato');
+  if (form) {
+    var aviso = document.getElementById('form-aviso');
+    var EMAIL_DESTINO = 'contato@opris.com.br';   // ⚠ trocar
+
+    function mostrarAviso(texto, erro) {
+      if (!aviso) return;
+      aviso.textContent = texto;
+      aviso.className = 'mt-5 text-sm ' + (erro ? 'text-accent' : 'text-neutral-400');
+    }
+
+    form.addEventListener('submit', function (e) {
+      /* Validação nativa (o form tem novalidate para controlarmos a mensagem) */
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        var invalido = form.querySelector(':invalid');
+        if (invalido) invalido.focus();
+        mostrarAviso('Preencha nome, e-mail e a descrição da rotina para continuar.', true);
+        return;
+      }
+
+      var endpoint = form.getAttribute('data-endpoint');
+      if (endpoint) {
+        form.setAttribute('action', endpoint);
+        return; // segue o envio normal
+      }
+
+      /* Sem endpoint: cai para mailto */
+      e.preventDefault();
+      var d = new FormData(form);
+      var corpo =
+        'Nome: '     + (d.get('nome')     || '') + '\n' +
+        'Empresa: '  + (d.get('empresa')  || '-') + '\n' +
+        'E-mail: '   + (d.get('email')    || '') + '\n' +
+        'WhatsApp: ' + (d.get('telefone') || '-') + '\n\n' +
+        'Rotina que consome tempo:\n' + (d.get('mensagem') || '');
+
+      mostrarAviso('Abrindo seu aplicativo de e-mail… Se nada acontecer, escreva para ' + EMAIL_DESTINO + '.', false);
+
+      window.location.href = 'mailto:' + EMAIL_DESTINO +
+        '?subject=' + encodeURIComponent('Diagnóstico Opris — ' + (d.get('empresa') || d.get('nome') || '')) +
+        '&body='    + encodeURIComponent(corpo);
+    });
+  }
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hasGSAP = typeof window.gsap !== 'undefined';
@@ -1198,9 +1470,21 @@ body { font-family: 'Inter', system-ui, sans-serif; }
       { opacity: 0 },
       { opacity: 1, duration: .7 }, .95);
 
+    /* ----- Contato ----- */
+    gsap.timeline({
+      scrollTrigger: { trigger: '#contato', start: 'top 75%', once: true },
+      defaults: { ease: 'power3.out' }
+    })
+    .fromTo('[data-reveal="cta-head"]',
+      { opacity: 0, y: 28, filter: 'blur(8px)' },
+      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .8, stagger: .12 }, 0)
+    .fromTo('[data-reveal="cta-form"]',
+      { opacity: 0, y: 36, scale: .97 },
+      { opacity: 1, y: 0, scale: 1, duration: .9 }, .25);
+
   } else {
     /* ScrollTrigger não carregou: revela as seções para não sumir conteúdo */
-    gsap.set('[data-reveal^="arch"], [data-reveal^="proc"], [data-reveal^="res"]', { opacity: 1 });
+    gsap.set('[data-reveal^="arch"], [data-reveal^="proc"], [data-reveal^="res"], [data-reveal^="cta"]', { opacity: 1 });
   }
 
 })();
