@@ -114,8 +114,20 @@ export function revelarSecao(trigger, montar, opts = {}) {
   );
 }
 
-/* Fontes e ícones mudam a altura da página depois do primeiro cálculo,
-   e aí todo gatilho preso a uma posição sai do lugar. Como este módulo
-   é o único que cria ScrollTriggers no site — e um módulo só é avaliado
-   uma vez, por mais componentes que o importem — o recálculo mora aqui. */
-window.addEventListener('load', () => ScrollTrigger.refresh());
+/* Um refresh, e só quando as fontes assentam.
+
+   Antes era no evento `load`, para cobrir dois suspeitos de mudar a
+   altura da página depois do primeiro cálculo: a troca dos ícones e o
+   swap das fontes. Os dois foram medidos e nenhum mexe mais no layout —
+   os <i data-lucide> vivem todos em containers flex, onde as classes de
+   tamanho já valem antes da troca (0 elementos deslocados), e as fontes
+   agora têm fallback métrico (0 elementos deslocados).
+
+   Sobra um caso: máquina sem Arial nem Liberation Sans, em que o
+   fallback métrico não resolve e a troca realmente mexe no layout.
+   Por isso o refresh continua existindo — mas preso a document.fonts.ready,
+   que resolve bem antes do `load` (este espera todo subrecurso) e é o
+   único momento em que ainda resta layout para recalcular. É esse
+   recálculo que aparece no relatório como "forced reflow" lendo
+   offsetWidth; agora acontece uma vez, mais cedo e sobre menos coisa. */
+document.fonts.ready.then(() => ScrollTrigger.refresh());
