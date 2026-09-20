@@ -4,7 +4,7 @@
 ---
 
 <header class="relative z-50">
-  <nav class="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6 sm:py-6" data-reveal="nav">
+  <nav class="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-5 sm:px-6 sm:py-6" data-hero="nav">
     <div class="beam-border-h"></div>
 
     <!-- Logo -->
@@ -58,23 +58,23 @@
 
 <script>
   /* ---------- Menu mobile ----------
-     Script de componente (módulo, adiado pelo Astro). Roda depois do
-     lucide.createIcons() do layout, que troca os <i data-lucide> por <svg> —
-     guardar as referências antes deixaria os ícones apontando para nós já
-     descartados e o toggle não surtiria efeito. */
+     Script de componente (módulo, adiado pelo Astro).
+
+     Os dois ícones são procurados a cada toggle, e não guardados numa
+     const aqui em cima: o createIcons() do layout substitui cada
+     <i data-lucide> por um <svg> novo, e a ordem entre os dois módulos
+     agrupados não é garantida. Uma referência capturada antes da troca
+     apontaria para um nó já descartado e o ícone nunca mudaria. */
   const btnMenu = document.getElementById('btn-menu');
   const menuMobile = document.getElementById('menu-mobile');
 
   if (btnMenu && menuMobile) {
-    const iconeAbrir = btnMenu.querySelector('[data-menu-icon="open"]');
-    const iconeFechar = btnMenu.querySelector('[data-menu-icon="close"]');
-
     const alternarMenu = (abrir: boolean) => {
       menuMobile.classList.toggle('hidden', !abrir);
       btnMenu.setAttribute('aria-expanded', abrir ? 'true' : 'false');
       btnMenu.setAttribute('aria-label', abrir ? 'Fechar menu' : 'Abrir menu');
-      if (iconeAbrir) iconeAbrir.classList.toggle('hidden', abrir);
-      if (iconeFechar) iconeFechar.classList.toggle('hidden', !abrir);
+      btnMenu.querySelector('[data-menu-icon="open"]')?.classList.toggle('hidden', abrir);
+      btnMenu.querySelector('[data-menu-icon="close"]')?.classList.toggle('hidden', !abrir);
     };
 
     btnMenu.addEventListener('click', () => {

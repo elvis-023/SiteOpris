@@ -8,13 +8,50 @@
    mora aqui, para as quatro dobras não saírem do lugar uma da outra
    com o tempo.
 
-   O GSAP e o ScrollTrigger vêm do CDN no <head> do Layout, então
-   este módulo lê os dois de `window` em vez de importá-los. */
+   O GSAP e o ScrollTrigger vêm do pacote npm, importados aqui. Como
+   um módulo só é avaliado uma vez por página — por mais componentes
+   que o importem —, o registro do plugin e o bundle do GSAP são
+   compartilhados por todas as dobras. */
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-/* Revela sem animar. Usado quando não dá para animar (sem GSAP,
-   sem ScrollTrigger ou com prefers-reduced-motion): o anti-FOUC
-   do layout (.js [data-reveal]{opacity:0}) deixaria a seção
-   invisível para sempre se ninguém acendesse a luz. */
+gsap.registerPlugin(ScrollTrigger);
+
+/* limitCallbacks corta as chamadas de callback fora das bordas do
+   gatilho; ignoreMobileResize evita o refresh (e o reflow forçado que
+   vem junto) quando a barra de endereço do navegador móvel some ou
+   reaparece e muda a altura da viewport sem nada ter mudado de fato. */
+ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
+
+/* Uma instância de matchMedia para o site inteiro. Cada revelarSecao()
+   criava a sua, e cada uma registra os próprios listeners de media query
+   e entra na conta do ScrollTrigger.refresh() — cinco vezes o mesmo
+   trabalho de medição. */
+const mm = gsap.matchMedia();
+
+/* will-change só enquanto a animação roda.
+
+   Deixar a dica ligada o tempo todo nos 40 elementos revelados manteria
+   40 camadas de composição vivas na memória desde o load, que é o
+   contrário do que se quer — a recomendação do MDN é justamente não
+   espalhar will-change. Ligar na entrada e desligar no fim dá a dica ao
+   compositor no momento em que ela vale e devolve a memória depois.
+   (O GSAP já promove a camada sozinho via force3D:"auto" enquanto o
+   tween corre; isto é o cinto de segurança em cima disso.) */
+function dica(trigger, ligar) {
+  document.querySelectorAll(trigger).forEach((raiz) => {
+    const alvos = raiz.hasAttribute('data-reveal') ? [raiz] : [];
+    alvos.push(...raiz.querySelectorAll('[data-reveal]'));
+    alvos.forEach((el) => {
+      el.style.willChange = ligar ? 'transform, opacity' : '';
+    });
+  });
+}
+
+/* Revela sem animar. Usado quando não dá para animar
+   (prefers-reduced-motion): o anti-FOUC do layout
+   (.js [data-reveal]{opacity:0}) deixaria a seção invisível
+   para sempre se ninguém acendesse a luz. */
 function mostrarTudo(trigger) {
   document.querySelectorAll(trigger).forEach((raiz) => {
     if (raiz.hasAttribute('data-reveal')) raiz.style.opacity = '1';
@@ -33,15 +70,12 @@ function mostrarTudo(trigger) {
  * @param {{ start?: string }} [opts] Ponto de disparo (padrão: 'top 80%').
  */
 export function revelarSecao(trigger, montar, opts = {}) {
-  const gsap = window.gsap;
   const reduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!gsap || reduzido || !window.ScrollTrigger) {
+  if (reduzido) {
     mostrarTudo(trigger);
     return;
   }
-
-  gsap.registerPlugin(window.ScrollTrigger);
 
   /* Mesma coreografia nos dois breakpoints, com uma diferença:
      no mobile nada se move na horizontal e o blur sai de cena.
@@ -52,15 +86,21 @@ export function revelarSecao(trigger, montar, opts = {}) {
 
      O matchMedia cuida do ciclo de vida — ao cruzar o breakpoint
      ele reverte o contexto anterior e monta o outro. */
-  gsap.matchMedia().add(
+  mm.add(
     { desktop: '(min-width: 768px)', mobile: '(max-width: 767px)' },
     (ctx) => {
       const desk = !!ctx.conditions.desktop;
       const blur = desk ? 'blur(8px)' : 'blur(0px)';
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger, start: opts.start || 'top 80%', once: true },
-        defaults: { ease: 'power3.out' }
+        scrollTrigger: {
+          trigger,
+          start: opts.start || 'top 80%',
+          once: true,
+          onEnter: () => dica(trigger, true)
+        },
+        defaults: { ease: 'power3.out' },
+        onComplete: () => dica(trigger, false)
       });
 
       montar(tl, {
@@ -78,6 +118,4 @@ export function revelarSecao(trigger, montar, opts = {}) {
    e aí todo gatilho preso a uma posição sai do lugar. Como este módulo
    é o único que cria ScrollTriggers no site — e um módulo só é avaliado
    uma vez, por mais componentes que o importem — o recálculo mora aqui. */
-if (window.ScrollTrigger) {
-  window.addEventListener('load', () => window.ScrollTrigger.refresh());
-}
+window.addEventListener('load', () => ScrollTrigger.refresh());

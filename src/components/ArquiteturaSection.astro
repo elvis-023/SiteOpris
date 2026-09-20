@@ -111,7 +111,7 @@
             <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
               Mapeamos o que consome as horas da sua equipe e transformamos em fluxos que
               rodam sozinhos. Integrações, webhooks e regras de negócio que não dormem.
-              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">&minus;37h/mês</code>
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded-sm bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">&minus;37h/mês</code>
             </p>
           </div>
         </li>
@@ -123,7 +123,7 @@
             <p class="text-[14px] leading-relaxed text-neutral-400 sm:text-[15px]">
               Sistemas construídos para o seu processo, não o contrário. Arquitetura pensada
               para performance, observabilidade e para crescer sem exigir reescrita.
-              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">99,9% uptime</code>
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded-sm bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">99,9% uptime</code>
             </p>
           </div>
         </li>
@@ -136,7 +136,7 @@
               Do redesenho ao site novo: interfaces claras, rápidas e construídas para
               vender. Seu visitante entende o valor do negócio em segundos e sabe
               exatamente qual é o próximo passo.
-              <code class="ml-0.5 inline-block whitespace-nowrap rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">carrega em 1s</code>
+              <code class="ml-0.5 inline-block whitespace-nowrap rounded-sm bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-neutral-300 ring-1 ring-white/10 sm:text-[11px]">carrega em 1s</code>
             </p>
           </div>
         </li>
@@ -147,9 +147,8 @@
 
 <script>
   /* ---------- Reveal da seção ----------
-     Script de componente: o Astro o serve como módulo adiado, então o
-     import resolve em build e o GSAP do CDN (carregado no <head>) já
-     está de pé quando isto roda. */
+     Script de componente: o Astro o agrupa e serve como módulo adiado.
+     O GSAP e o ScrollTrigger entram pelo import de reveal.js. */
   import { revelarSecao } from '../scripts/reveal.js';
 
   revelarSecao('#arquitetura', (tl, { desk, headFrom, headTo }) => {

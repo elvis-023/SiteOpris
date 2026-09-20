@@ -64,7 +64,7 @@
       <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
         <span class="beam-border-v" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
-          <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Geração de orçamentos</span>
+          <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Geração de orçamentos</span>
           <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">40 pessoas</span>
         </div>
         <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
@@ -85,7 +85,7 @@
       <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
         <span class="beam-border-v" style="animation-delay:1.6s" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
-          <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Integração de sistemas</span>
+          <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Integração de sistemas</span>
           <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">120 pessoas</span>
         </div>
         <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
@@ -106,7 +106,7 @@
       <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7 md:col-span-2 lg:col-span-1">
         <span class="beam-border-v" style="animation-delay:3.2s" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
-          <span class="rounded bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Redesign e performance</span>
+          <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Redesign e performance</span>
           <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-600">250 pessoas</span>
         </div>
         <span class="quote-mark mb-3 block text-4xl text-accent/30" aria-hidden="true">&ldquo;</span>
@@ -131,8 +131,8 @@
 
 <script>
   /* ---------- Reveal da seção ----------
-     Script de componente: módulo adiado pelo Astro, com o GSAP do CDN
-     (carregado no <head> do Layout) já de pé quando isto roda. */
+     Script de componente: módulo adiado pelo Astro. O GSAP e o
+     ScrollTrigger entram pelo import de reveal.js. */
   import { revelarSecao } from '../scripts/reveal.js';
 
   revelarSecao('#resultados', (tl, { desk, headFrom, headTo }) => {

@@ -1,11 +1,26 @@
 ---
 // HERO — primeira dobra.
 //
-// Texto, CTAs, prova social e o painel "opris://pipeline". A coreografia
-// de entrada (timeline de load + crachás flutuantes) vive no <script> do
-// fim deste arquivo: o reveal por scroll das demais seções continua em
-// index.astro.
+// Texto, CTAs, prova social e o painel "opris://pipeline".
+//
+// Esta dobra não carrega JavaScript nenhum. A coreografia de entrada é
+// CSS (ver "ENTRADA DO HERO" em styles/global.css) e o split do headline
+// em palavras acontece aqui, em build time. Antes os dois dependiam do
+// GSAP: o anti-FOUC deixava tudo em opacity:0 e só o bundle acendia a
+// luz, o que colocava ~27 KB de JS na frente do LCP.
 import Button from './Button.astro';
+
+// Headline fatiado em palavras para a revelação por máscara. Cada palavra
+// precisa do próprio <span> com overflow:hidden, e o índice vai no --i
+// para o CSS escalonar os atrasos.
+const HEADLINE: [string, boolean][] = [
+  ['O motor', false],
+  ['invisível', true],   // recebe o gradiente
+  ['por trás das empresas mais eficientes.', false],
+];
+const palavras = HEADLINE.flatMap(([trecho, grad]) =>
+  trecho.split(' ').map((palavra) => ({ palavra, grad })),
+);
 ---
 
 <section class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-16 pt-10 sm:gap-16 sm:px-6 sm:pb-24 sm:pt-14 lg:grid-cols-12 lg:gap-8 lg:pt-24 lg:pb-32">
@@ -14,7 +29,7 @@ import Button from './Button.astro';
   <div class="lg:col-span-7">
 
     <!-- Tagline -->
-    <div data-reveal="tag" class="mb-8 inline-flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-sm">
+    <div data-hero="tag" class="mb-8 inline-flex items-center gap-2.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-xs">
       <span class="relative flex h-2 w-2">
         <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
         <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
@@ -24,14 +39,21 @@ import Button from './Button.astro';
       </span>
     </div>
 
-    <!-- Headline -->
-    <h1 data-reveal="headline" data-split
+    <!-- Headline. Uma palavra por <span class="word">, com o índice no --i:
+         o CSS usa os dois para a revelação por máscara escalonada. -->
+    <h1 data-hero="headline"
         class="mb-6 font-display text-[2rem] font-light leading-[1.08] tracking-tight [text-wrap:balance] sm:mb-7 sm:text-5xl md:text-[3.5rem] lg:text-[64px] lg:leading-[1.06] xl:text-[72px]">
-      O motor <span class="text-grad">invisível</span> por trás das empresas mais eficientes.
+      {palavras.map(({ palavra, grad }, i) => (
+        <>
+          <span class="word" style={`--i:${i}`}>
+            <span class={grad ? 'text-grad' : undefined}>{palavra}</span>
+          </span>{' '}
+        </>
+      ))}
     </h1>
 
     <!-- Subtítulo -->
-    <p data-reveal="sub" class="mb-8 max-w-xl text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-lg">
+    <p data-hero="sub" class="mb-8 max-w-xl text-[15px] leading-relaxed text-neutral-400 sm:mb-10 sm:text-lg">
       Desenvolvemos automações sob medida, softwares robustos e sites com design moderno
       que reformulam a presença digital da sua empresa. Unimos engenharia de alta
       performance para eliminar tarefas repetitivas e liberar sua
@@ -39,7 +61,7 @@ import Button from './Button.astro';
     </p>
 
     <!-- CTAs -->
-    <div data-reveal="cta" class="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
+    <div data-hero="cta" class="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
 
       <!-- Primário: Beam Ring (estrutura do botão da Finex, sem as listras) -->
       <Button href="#contato" icon="cog">Automatizar minha operação</Button>
@@ -49,7 +71,7 @@ import Button from './Button.astro';
     </div>
 
     <!-- Prova social -->
-    <div data-reveal="proof" class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-6 border-t border-white/5 pt-8 sm:mt-14 sm:gap-x-10">
+    <div data-hero="proof" class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-6 border-t border-white/5 pt-8 sm:mt-14 sm:gap-x-10">
       <div>
         <div class="font-display text-2xl font-light tracking-tight sm:text-3xl">+37h</div>
         <div class="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-neutral-500">Devolvidas / mês</div>
@@ -72,26 +94,26 @@ import Button from './Button.astro';
 
     <!-- Crachás flutuantes (lg+) -->
     <div class="pointer-events-none absolute inset-0 z-20 hidden lg:block" aria-hidden="true">
-      <div data-float class="pill absolute -left-16 top-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+      <div data-float style="--i:0" class="pill absolute -left-16 top-6 flex items-center gap-2 rounded-full px-3.5 py-2">
         <i data-lucide="webhook" class="h-3.5 w-3.5 text-accent"></i>
         <span class="font-mono text-[11px] text-neutral-200">Webhooks</span>
       </div>
-      <div data-float class="pill absolute -right-10 top-32 flex items-center gap-2 rounded-full px-3.5 py-2">
+      <div data-float style="--i:1" class="pill absolute -right-10 top-32 flex items-center gap-2 rounded-full px-3.5 py-2">
         <i data-lucide="plug" class="h-3.5 w-3.5 text-accent2"></i>
         <span class="font-mono text-[11px] text-neutral-200">Integração via API</span>
       </div>
-      <div data-float class="pill absolute -left-20 bottom-24 flex items-center gap-2 rounded-full px-3.5 py-2">
+      <div data-float style="--i:2" class="pill absolute -left-20 bottom-24 flex items-center gap-2 rounded-full px-3.5 py-2">
         <i data-lucide="file-text" class="h-3.5 w-3.5 text-accent"></i>
         <span class="font-mono text-[11px] text-neutral-200">Geração de PDFs</span>
       </div>
-      <div data-float class="pill absolute -right-6 bottom-6 flex items-center gap-2 rounded-full px-3.5 py-2">
+      <div data-float style="--i:3" class="pill absolute -right-6 bottom-6 flex items-center gap-2 rounded-full px-3.5 py-2">
         <i data-lucide="database" class="h-3.5 w-3.5 text-accent2"></i>
         <span class="font-mono text-[11px] text-neutral-200">Sync de dados</span>
       </div>
     </div>
 
     <!-- Painel: pipeline de automação -->
-    <div data-reveal="panel" class="electric-card relative z-10 mx-auto w-full max-w-[400px] overflow-hidden rounded-[32px] bg-neutral-900 p-[2px]">
+    <div data-hero="panel" class="electric-card relative z-10 mx-auto w-full max-w-[400px] overflow-hidden rounded-[32px] bg-neutral-900 p-[2px]">
       <!-- Borda com gradiente -->
       <div class="absolute inset-0 z-0 bg-gradient-to-b from-yellow-300 via-accent to-transparent opacity-80"></div>
 
@@ -101,7 +123,7 @@ import Button from './Button.astro';
 
         <!-- Cabeçalho -->
         <div class="relative mb-7 flex items-start justify-between">
-          <span class="flex items-center gap-1.5 rounded border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-neutral-400">
+          <span class="flex items-center gap-1.5 rounded-sm border border-white/10 bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-neutral-400">
             <span class="relative flex h-2 w-2">
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accenthi opacity-75"></span>
               <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
@@ -202,109 +224,3 @@ import Button from './Button.astro';
   </div>
 </section>
 
-<script>
-  /* ---------- Coreografia de entrada do hero ----------
-     Script de componente: o Astro o serve como módulo adiado, então roda
-     depois do lucide.createIcons() do layout (os <i data-lucide> já viraram
-     <svg>) e com o GSAP do CDN, carregado no <head>, já disponível.
-
-     Só cuida do que está acima da dobra. As seções seguintes continuam
-     com o ScrollTrigger de index.astro. */
-  (function () {
-    'use strict';
-
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    /* Sem GSAP ou com movimento reduzido: mostra tudo e encerra.
-       O anti-FOUC (.js [data-reveal]{opacity:0}) esconderia o hero para
-       sempre se saíssemos daqui sem revelar nada. */
-    if (typeof window.gsap === 'undefined' || reduced) {
-      document
-        .querySelectorAll('[data-reveal="nav"], [data-reveal="tag"], [data-reveal="headline"], [data-reveal="sub"], [data-reveal="cta"], [data-reveal="proof"], [data-reveal="panel"]')
-        .forEach(function (el) { el.style.opacity = '1'; });
-      return;
-    }
-
-    /* Blur é caro em GPU de celular: no mobile a entrada é só fade + deslocamento. */
-    var isMobile = window.matchMedia('(max-width: 767px)').matches;
-    var b8  = isMobile ? 'blur(0px)' : 'blur(8px)';
-    var b10 = isMobile ? 'blur(0px)' : 'blur(10px)';
-
-    /* ---------- Split do headline em palavras (para o reveal por máscara) ---------- */
-    function splitWords(root) {
-      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      var nodes = [], n;
-      while ((n = walker.nextNode())) { if (n.nodeValue.trim()) nodes.push(n); }
-
-      nodes.forEach(function (node) {
-        var frag = document.createDocumentFragment();
-        node.nodeValue.split(/(\s+)/).forEach(function (chunk) {
-          if (!chunk) return;
-          if (/^\s+$/.test(chunk)) { frag.appendChild(document.createTextNode(chunk)); return; }
-          var outer = document.createElement('span');
-          outer.className = 'word';
-          var inner = document.createElement('span');
-          inner.textContent = chunk;
-          outer.appendChild(inner);
-          frag.appendChild(outer);
-        });
-        node.parentNode.replaceChild(frag, node);
-      });
-      return root.querySelectorAll('.word > span');
-    }
-
-    var headline = document.querySelector('[data-split]');
-    var words = headline ? splitWords(headline) : [];
-
-    /* ---------- Timeline de entrada ----------
-       O nav mora no Header.astro (layout), mas entra nesta mesma timeline:
-       o tempo dele é relativo ao hero, não ao cabeçalho isolado. */
-    var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-    tl.to('[data-reveal="nav"]', { opacity: 1, duration: .8 }, 0)
-      .from('[data-reveal="nav"]', { y: -18, duration: .8 }, 0)
-
-      .to('[data-reveal="tag"]', { opacity: 1, duration: .7 }, .15)
-      .from('[data-reveal="tag"]', { y: 16, filter: b8, duration: .7 }, .15)
-
-      .set('[data-reveal="headline"]', { opacity: 1 }, .3)
-      .from(words, { yPercent: 115, duration: 1, stagger: .045, ease: 'expo.out' }, .3)
-
-      .to('[data-reveal="sub"]', { opacity: 1, duration: .8 }, .75)
-      .from('[data-reveal="sub"]', { y: 22, filter: b8, duration: .8 }, .75)
-
-      .to('[data-reveal="cta"]', { opacity: 1, duration: .7 }, .92)
-      .from('[data-reveal="cta"]', { y: 22, duration: .7 }, .92)
-
-      .to('[data-reveal="proof"]', { opacity: 1, duration: .7 }, 1.05)
-      .from('[data-reveal="proof"]', { y: 20, duration: .7 }, 1.05)
-
-      .to('[data-reveal="panel"]', { opacity: 1, duration: 1 }, .5)
-      .from('[data-reveal="panel"]', { y: 40, scale: .96, filter: b10, duration: 1.1 }, .5);
-
-    /* ---------- Crachás flutuantes ----------
-       Só existem a partir de lg (hidden lg:block). Fora disso nem criamos
-       o loop de flutuação — é ciclo de CPU jogado fora. */
-    gsap.matchMedia().add('(min-width: 1024px)', function () {
-      var floats = gsap.utils.toArray('[data-float]');
-      if (!floats.length) return;
-
-      gsap.set(floats, { opacity: 0, scale: .9 });
-      gsap.to(floats, {
-        opacity: 1, scale: 1, duration: .6, stagger: .12, delay: 1.1, ease: 'back.out(1.6)',
-        onComplete: function () {
-          floats.forEach(function (el, i) {
-            gsap.to(el, {
-              y: i % 2 === 0 ? -12 : -16,
-              duration: 2.4 + i * .25,
-              ease: 'sine.inOut',
-              repeat: -1,
-              yoyo: true,
-              delay: i * .18
-            });
-          });
-        }
-      });
-    });
-  })();
-</script>
