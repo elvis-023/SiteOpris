@@ -34,9 +34,53 @@
   --color-accent2:  #3B82F6;
   --color-onaccent: #2C1306;
 
-  --font-sans:    Inter, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque", Inter, sans-serif;
-  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:    "Inter Variable", "Inter Fallback", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Fallback", sans-serif;
+  --font-mono:    "JetBrains Mono Variable", "JetBrains Fallback", ui-monospace, monospace;
+}
+
+/* ============================================================
+   FALLBACK MÉTRICO DO INTER
+   ============================================================
+
+   font-display:swap desenha o texto na fonte do sistema e troca quando
+   o woff2 chega — o texto nunca some, mas a troca mexe no layout: o
+   parágrafo do hero media 146,3 px com o Inter e 117 px com a fonte do
+   sistema, e tudo abaixo dele pulava ~29 px. Era essa a origem do CLS,
+   não a div de crachás que o relatório apontou (aquela é absolute, fora
+   do fluxo, e não empurra ninguém).
+
+   Este @font-face não baixa nada: é a Arial local reescalada para
+   ocupar exatamente o mesmo espaço do Inter, então a troca acontece
+   sem mover um pixel. Os números saíram de medição no próprio site
+   (canvas measureText, Inter vs Arial a 100px):
+
+     size-adjust     = largura(Inter) / largura(Arial)
+     ascent-override = ascent(Inter) / em, dividido pelo size-adjust
+                       (os overrides são relativos ao em já ajustado) */
+@font-face{
+  font-family: "Inter Fallback";
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  size-adjust:        106.394%;
+  ascent-override:     91.171%;
+  descent-override:    22.558%;
+  line-gap-override:       0%;
+}
+@font-face{
+  font-family: "Bricolage Fallback";
+  src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
+  size-adjust:         92.863%;
+  ascent-override:    100.147%;
+  descent-override:    29.075%;
+  line-gap-override:       0%;
+}
+@font-face{
+  font-family: "JetBrains Fallback";
+  src: local('Courier New'), local('Liberation Mono');
+  size-adjust:         99.984%;
+  ascent-override:    102.017%;
+  descent-override:    30.005%;
+  line-gap-override:       0%;
 }
 
 /* Preflight do Tailwind 4 tira o cursor:pointer dos botões; o site
@@ -92,7 +136,7 @@ html, body { background-color: var(--bg); overflow-x: hidden; }
 /* Nada pode furar a largura da viewport no mobile */
 *, *::before, *::after { min-width: 0; }
 img, svg, video { max-width: 100%; height: auto; }
-body { font-family: 'Inter', system-ui, sans-serif; }
+body { font-family: "Inter Variable", "Inter Fallback", system-ui, sans-serif; }
 
 /* Anti-FOUC: só esconde se o JS estiver ativo */
 .js [data-reveal]{ opacity: 0; }
@@ -156,15 +200,35 @@ body { font-family: 'Inter', system-ui, sans-serif; }
    FUNDO — profundidade em camadas
    ============================================================ */
 
-/* Malha de pontos com deriva lenta */
+/* Malha de pontos com deriva lenta.
+
+   A deriva era `animation: gridDrift` animando background-position neste
+   elemento, que é absolute inset-0 dentro do container fixed — ou seja,
+   a viewport inteira (medido: 1.254.900 px² de 1.269.000 numa janela de
+   1350x940, 98,9%). background-position não é propriedade de composição:
+   o navegador repintava a tela cheia a cada frame, para sempre. E como
+   os orbes desfocados e os 15 elementos com backdrop-filter vivem por
+   cima, cada repaint obrigava todos eles a refazer o blur junto.
+
+   Agora o padrão mora no ::before, que é uma camada própria movida por
+   transform — trabalho de compositor, sem repaint. A máscara fica no pai
+   para não viajar com o filho, e o overflow corta a sobra do inset. */
 .dot-grid{
-  background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
-  background-size: 28px 28px;
   -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
           mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
-  animation: gridDrift 26s linear infinite;
+  overflow: hidden;
 }
-@keyframes gridDrift{ to{ background-position: 28px 28px; } }
+.dot-grid::before{
+  content: '';
+  position: absolute;
+  /* uma célula a mais de cada lado: o translate de 28px nunca descobre a borda */
+  inset: -28px;
+  background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  animation: gridDrift 26s linear infinite;
+  will-change: transform;
+}
+@keyframes gridDrift{ to{ transform: translate3d(28px, 28px, 0); } }
 
 /* Campo de estrelas (design_system.html) */
 .stars{
@@ -414,7 +478,7 @@ body { font-family: 'Inter', system-ui, sans-serif; }
 
 /* Aspas decorativas do card de resultado */
 .quote-mark{
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: "Bricolage Grotesque Variable", "Bricolage Fallback", sans-serif;
   line-height: 1;
 }
 

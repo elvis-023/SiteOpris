@@ -8,7 +8,21 @@
 // adiados, nenhum bloqueando a renderização.
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+// Fontes servidas pela própria aplicação (@fontsource). Cada arquivo traz
+// todos os subsets com unicode-range, então o navegador baixa só o latin.
+// Bricolage vem pelo eixo opsz — é o que a URL do Google Fonts pedia
+// (opsz,wght@12..96,200..700), e sem ele o headline muda de aparência.
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+
 import '../styles/global.css';
+
+// O woff2 do Inter é o único no caminho do LCP (o parágrafo do hero).
+// Os outros dois entram com font-display:swap e o fallback métrico do
+// global.css segura o layout até chegarem.
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -35,19 +49,12 @@ const { title, description } = Astro.props;
      escondesse para animar. São 52 bytes inline, sem requisição. -->
 <script is:inline>document.documentElement.classList.add('js');</script>
 
-<!-- Google Fonts — Bricolage Grotesque (display, do design system) +
-     Inter + JetBrains Mono.
-     Os dois preconnect abrem DNS + TCP + TLS para os domínios da
-     Google em paralelo com o parse, então a folha de fontes já
-     encontra a conexão de pé; display=swap desenha o texto na fonte
-     do sistema enquanto a web font baixa, em vez de deixar a primeira
-     dobra em branco. -->
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
-/>
+<!-- Fontes locais: acabou a tag para fonts.googleapis.com. Aquela era
+     uma folha de estilo externa e bloqueante — DNS + TCP + TLS para
+     um terceiro antes de qualquer pixel, mesmo com preconnect. Agora o
+     @font-face vem dentro do nosso próprio CSS e o woff2 sai do mesmo
+     domínio, na mesma conexão já aberta. -->
+<link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin/>
 
 
 </head>
