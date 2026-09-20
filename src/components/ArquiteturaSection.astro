@@ -15,14 +15,14 @@
 
     <!-- Cabeçalho -->
     <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-20">
-      <span data-reveal="arch-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+      <span data-reveal="arch-head" style={`--i:0`} class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
         <span class="h-px w-6 bg-accent"></span>
         Metodologia
       </span>
-      <h2 data-reveal="arch-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
+      <h2 data-reveal="arch-head" style={`--i:1`} class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
         Arquitetura de <span class="text-grad">Eficiência</span>
       </h2>
-      <p data-reveal="arch-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
+      <p data-reveal="arch-head" style={`--i:2`} class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
         Não entregamos peças soltas. Automação, engenharia e design operam como um
         sistema único cada camada reforçando a seguinte para sua empresa ganhar
         escala sem ganhar complexidade.
@@ -33,7 +33,7 @@
     <div class="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-2 lg:gap-16">
 
       <!-- ---------- ESQUERDA: diagrama de rede ---------- -->
-      <div data-reveal="arch-card" class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-4 sm:p-8">
+      <div data-reveal="arch-card" style={`--i:0`} class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 p-4 sm:p-8">
 
         <div class="mb-4 flex items-center justify-between">
           <span class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-neutral-500">
@@ -104,7 +104,7 @@
       <!-- ---------- DIREITA: os pilares ---------- -->
       <ol class="space-y-8 sm:space-y-10 lg:space-y-12">
 
-        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+        <li data-reveal="arch-item" style={`--i:0`} class="group flex gap-4 sm:gap-5">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">01</span>
           <div class="min-w-0">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Automação Inteligente</h3>
@@ -116,7 +116,7 @@
           </div>
         </li>
 
-        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+        <li data-reveal="arch-item" style={`--i:1`} class="group flex gap-4 sm:gap-5">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">02</span>
           <div class="min-w-0">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Engenharia Sob Medida</h3>
@@ -128,7 +128,7 @@
           </div>
         </li>
 
-        <li data-reveal="arch-item" class="group flex gap-4 sm:gap-5">
+        <li data-reveal="arch-item" style={`--i:2`} class="group flex gap-4 sm:gap-5">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-zinc-900/60 font-mono text-xs text-neutral-500 transition-colors duration-300 group-hover:border-accent/40 group-hover:text-accent sm:h-11 sm:w-11">03</span>
           <div class="min-w-0">
             <h3 class="mb-2 text-base font-semibold tracking-tight text-white sm:text-lg md:text-xl">Design que Converte</h3>
@@ -147,20 +147,10 @@
 
 <script>
   /* ---------- Reveal da seção ----------
-     Script de componente: o Astro o agrupa e serve como módulo adiado.
-     O GSAP e o ScrollTrigger entram pelo import de reveal.js. */
+     A coreografia mora no CSS; aqui só se pede o aviso de entrada.
+     Ver "REVEAL POR SCROLL" em styles/global.css. */
   import { revelarSecao } from '../scripts/reveal.js';
 
-  revelarSecao('#arquitetura', (tl, { desk, headFrom, headTo }) => {
-    tl.fromTo('[data-reveal="arch-head"]', headFrom, headTo, 0)
-      .fromTo('[data-reveal="arch-card"]',
-        { opacity: 0, scale: desk ? .94 : .98, filter: desk ? 'blur(10px)' : 'blur(0px)' },
-        { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.1 }, .18)
-      /* Os pilares deslizam no eixo X só no desktop — ver o porquê
-         em scripts/reveal.js. */
-      .fromTo('[data-reveal="arch-item"]',
-        desk ? { opacity: 0, x: 44 } : { opacity: 0, y: 24 },
-        desk ? { opacity: 1, x: 0, duration: .7, stagger: .15 }
-             : { opacity: 1, y: 0, duration: .6, stagger: .12 }, .42);
-  });
+  revelarSecao('#arquitetura');
+
 </script>

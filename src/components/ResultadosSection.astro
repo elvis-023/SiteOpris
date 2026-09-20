@@ -25,14 +25,14 @@
 
     <!-- Cabeçalho -->
     <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-20">
-      <span data-reveal="res-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+      <span data-reveal="res-head" style={`--i:0`} class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
         <span class="h-px w-6 bg-accent"></span>
         Resultados
       </span>
-      <h2 data-reveal="res-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
+      <h2 data-reveal="res-head" style={`--i:1`} class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
         Menos planilha, <span class="text-grad">mais operação</span>
       </h2>
-      <p data-reveal="res-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
+      <p data-reveal="res-head" style={`--i:2`} class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
         Toda automação que colocamos no ar começou com uma planilha que alguém preenchia
         à mão. Abaixo, o que mudou na rotina de quem parou de preencher.
       </p>
@@ -40,19 +40,19 @@
 
     <!-- Métricas agregadas — padrão "Metrics Grid" do design system -->
     <div class="mb-14 grid grid-cols-2 gap-x-4 gap-y-8 border-t border-white/10 pt-10 sm:mb-20 sm:gap-x-8 sm:gap-y-12 sm:pt-12 lg:grid-cols-4">
-      <div data-reveal="res-metric" class="group flex cursor-default flex-col">
+      <div data-reveal="res-metric" style={`--i:0`} class="group flex cursor-default flex-col">
         <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">1.200h</span>
         <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Devolvidas por ano</span>
       </div>
-      <div data-reveal="res-metric" class="group flex cursor-default flex-col">
+      <div data-reveal="res-metric" style={`--i:1`} class="group flex cursor-default flex-col">
         <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">31</span>
         <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Rotinas no ar</span>
       </div>
-      <div data-reveal="res-metric" class="group flex cursor-default flex-col">
+      <div data-reveal="res-metric" style={`--i:2`} class="group flex cursor-default flex-col">
         <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">6</span>
         <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Setores atendidos</span>
       </div>
-      <div data-reveal="res-metric" class="group flex cursor-default flex-col">
+      <div data-reveal="res-metric" style={`--i:3`} class="group flex cursor-default flex-col">
         <span class="mb-2 font-display text-[2rem] font-light leading-none tracking-tighter text-white transition-colors duration-300 group-hover:text-accent sm:mb-3 sm:text-4xl md:text-5xl lg:text-[4rem]">0</span>
         <span class="text-[10px] font-semibold uppercase tracking-wider text-neutral-600 transition-colors group-hover:text-white sm:text-xs sm:tracking-widest">Projetos abandonados</span>
       </div>
@@ -61,7 +61,7 @@
     <!-- Casos anonimizados -->
     <div class="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-      <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
+      <article data-reveal="res-case" style={`--i:0`} class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
         <span class="beam-border-v" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
           <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Geração de orçamentos</span>
@@ -82,7 +82,7 @@
         </div>
       </article>
 
-      <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
+      <article data-reveal="res-case" style={`--i:1`} class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7">
         <span class="beam-border-v" style="animation-delay:1.6s" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
           <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Integração de sistemas</span>
@@ -103,7 +103,7 @@
         </div>
       </article>
 
-      <article data-reveal="res-case" class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7 md:col-span-2 lg:col-span-1">
+      <article data-reveal="res-case" style={`--i:2`} class="step-card relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7 md:col-span-2 lg:col-span-1">
         <span class="beam-border-v" style="animation-delay:3.2s" aria-hidden="true"></span>
         <div class="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 sm:mb-6">
           <span class="rounded-sm bg-white/5 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-neutral-400 ring-1 ring-white/10">Redesign e performance</span>
@@ -131,17 +131,9 @@
 
 <script>
   /* ---------- Reveal da seção ----------
-     Script de componente: módulo adiado pelo Astro. O GSAP e o
-     ScrollTrigger entram pelo import de reveal.js. */
+     A coreografia mora no CSS; aqui só se pede o aviso de entrada. */
   import { revelarSecao } from '../scripts/reveal.js';
 
-  revelarSecao('#resultados', (tl, { desk, headFrom, headTo }) => {
-    tl.fromTo('[data-reveal="res-head"]', headFrom, headTo, 0)
-      .fromTo('[data-reveal="res-metric"]',
-        { opacity: 0, y: desk ? 24 : 16 },
-        { opacity: 1, y: 0, duration: .7, stagger: .1 }, .3)
-      .fromTo('[data-reveal="res-case"]',
-        { opacity: 0, y: desk ? 36 : 24 },
-        { opacity: 1, y: 0, duration: .8, stagger: .14 }, .55);
-  });
+  revelarSecao('#resultados');
+
 </script>
