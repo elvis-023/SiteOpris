@@ -16,14 +16,14 @@ import Button from './Button.astro';
 
     <!-- Cabeçalho -->
     <header class="mb-12 max-w-2xl sm:mb-16 lg:mb-24">
-      <span data-reveal="proc-head" class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
+      <span data-reveal="proc-head" style={`--i:0`} class="mb-5 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-500">
         <span class="h-px w-6 bg-accent"></span>
         Processo
       </span>
-      <h2 data-reveal="proc-head" class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
+      <h2 data-reveal="proc-head" style={`--i:1`} class="mb-5 text-[1.75rem] font-light leading-[1.15] tracking-tight text-white [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:text-[56px]">
         Do diagnóstico ao <span class="text-grad">piloto automático</span>
       </h2>
-      <p data-reveal="proc-head" class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
+      <p data-reveal="proc-head" style={`--i:2`} class="text-[15px] leading-relaxed text-neutral-400 sm:text-base md:text-lg">
         Nada de projeto de seis meses que só aparece no fim. Você acompanha cada etapa
         funcionando, decide o que entra primeiro e vê o retorno antes da entrega final.
       </p>
@@ -32,7 +32,7 @@ import Button from './Button.astro';
     <!-- Etapas -->
     <ol class="relative mb-16 grid grid-cols-1 gap-8 sm:mb-20 sm:grid-cols-2 sm:gap-10 lg:mb-24 lg:grid-cols-4 lg:gap-8">
 
-      <li data-reveal="proc-step" class="relative">
+      <li data-reveal="proc-step" style={`--i:0`} class="relative">
         <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" aria-hidden="true"></span>
         <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
         <div class="relative mb-6 flex items-center gap-4">
@@ -48,7 +48,7 @@ import Button from './Button.astro';
         </div>
       </li>
 
-      <li data-reveal="proc-step" class="relative">
+      <li data-reveal="proc-step" style={`--i:1`} class="relative">
         <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.4s" aria-hidden="true"></span>
         <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
         <div class="relative mb-6 flex items-center gap-4">
@@ -64,7 +64,7 @@ import Button from './Button.astro';
         </div>
       </li>
 
-      <li data-reveal="proc-step" class="relative">
+      <li data-reveal="proc-step" style={`--i:2`} class="relative">
         <span class="step-wire absolute left-14 -right-8 top-6 hidden h-px lg:block" style="animation-delay:.8s" aria-hidden="true"></span>
         <span class="step-wire step-wire-v absolute left-6 top-full h-8 w-px sm:hidden" aria-hidden="true"></span>
         <div class="relative mb-6 flex items-center gap-4">
@@ -80,7 +80,7 @@ import Button from './Button.astro';
         </div>
       </li>
 
-      <li data-reveal="proc-step" class="relative">
+      <li data-reveal="proc-step" style={`--i:3`} class="relative">
         <div class="relative mb-6 flex items-center gap-4">
           <span class="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-zinc-900 font-mono text-xs text-accent">04</span>
           <i data-lucide="activity" class="h-5 w-5 text-accent"></i>
@@ -96,7 +96,7 @@ import Button from './Button.astro';
     </ol>
 
     <!-- Integrações (marquee do design system) -->
-    <div data-reveal="proc-marquee" class="relative mb-16 overflow-hidden border-y border-white/5 py-5 sm:mb-20 lg:mb-24">
+    <div data-reveal="proc-marquee" style={`--i:0`} class="relative mb-16 overflow-hidden border-y border-white/5 py-5 sm:mb-20 lg:mb-24">
       <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-bg to-transparent sm:w-24"></div>
       <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-bg to-transparent sm:w-24"></div>
       <div class="flex w-max animate-marquee">
@@ -133,11 +133,11 @@ import Button from './Button.astro';
          mesmo peso. O texto ao redor fica esmaecido, não ilegível —
          neutral-700 sobre o fundo dava 1,97:1 de contraste. -->
     <div class="grid grid-cols-1 gap-10 sm:gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
-      <h2 data-reveal="proc-manifesto" class="font-display text-[1.75rem] font-light leading-[1.15] tracking-tight text-neutral-500 [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:col-span-8 lg:text-[4rem] lg:leading-[1.02]">
+      <h2 data-reveal="proc-manifesto" data-reveal-solo style={`--i:0`} class="font-display text-[1.75rem] font-light leading-[1.15] tracking-tight text-neutral-500 [text-wrap:balance] sm:text-4xl sm:leading-[1.08] md:text-5xl lg:col-span-8 lg:text-[4rem] lg:leading-[1.02]">
         A maioria das empresas não precisa de <span class="manifesto-risco whitespace-nowrap text-neutral-400">mais gente<span class="manifesto-risco-linha" aria-hidden="true"></span></span>. Precisa de <span class="manifesto-realce font-medium">menos trabalho manual</span><span class="text-accent">.</span>
       </h2>
 
-      <div data-reveal="proc-manifesto" class="lg:col-span-4">
+      <div data-reveal="proc-manifesto" data-reveal-solo style={`--i:1`} class="lg:col-span-4">
         <p class="mb-6 text-[14px] leading-relaxed text-neutral-400 sm:mb-7 sm:text-sm">
           Uma conversa de 30 minutos é o bastante para mapearmos onde sua operação
           está perdendo tempo — e dizermos, sem rodeios, se dá para automatizar.
@@ -150,32 +150,15 @@ import Button from './Button.astro';
 
 <script>
   /* ---------- Reveals da seção ----------
-     Script de componente: módulo adiado pelo Astro. O GSAP e o
-     ScrollTrigger entram pelo import de reveal.js. */
+     A coreografia mora no CSS; aqui só se pede o aviso de entrada. */
   import { revelarSecao } from '../scripts/reveal.js';
 
-  revelarSecao('#processo', (tl, { headFrom, headTo, desk }) => {
-    tl.fromTo('[data-reveal="proc-head"]', headFrom, headTo, 0)
-      .fromTo('[data-reveal="proc-step"]',
-        { opacity: 0, y: desk ? 36 : 24 },
-        { opacity: 1, y: 0, duration: .7, stagger: .13 }, .3)
-      .fromTo('[data-reveal="proc-marquee"]',
-        { opacity: 0 },
-        { opacity: 1, duration: .9 }, .7);
-  });
+  revelarSecao('#processo');
 
   /* O manifesto fecha a dobra, quase uma tela abaixo das etapas. Preso
-     ao gatilho da seção ele já teria entrado — e passado — antes de
-     alguém chegar nele, então ganha gatilho e ponto de disparo próprios. */
-  revelarSecao('[data-reveal="proc-manifesto"]', (tl, { desk, blur }) => {
-    tl.fromTo('[data-reveal="proc-manifesto"]',
-      { opacity: 0, y: desk ? 30 : 22, filter: blur },
-      { opacity: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .14 })
-      /* O risco corta "mais gente" quando a frase já assentou — o gesto
-         só significa alguma coisa depois de a pessoa ter lido. Sem GSAP
-         a linha já nasce desenhada (ver o CSS), então nada se perde. */
-      .fromTo('.manifesto-risco-linha',
-        { scaleX: 0 },
-        { scaleX: 1, duration: .55, ease: 'power2.inOut' }, '>-.4');
-  }, { start: 'top 88%' });
+     ao gatilho da seção ele entraria — e passaria — antes de alguém
+     chegar nele; por isso tem gatilho e margem próprios, e o
+     data-reveal-solo o tira do seletor que revela por ancestral. */
+  revelarSecao('[data-reveal="proc-manifesto"]', 12);
+
 </script>

@@ -11,18 +11,26 @@ import Footer from '../components/Footer.astro';
 
 // Fontes servidas pela própria aplicação (@fontsource). Cada arquivo traz
 // todos os subsets com unicode-range, então o navegador baixa só o latin.
-// Bricolage vem pelo eixo opsz — é o que a URL do Google Fonts pedia
-// (opsz,wght@12..96,200..700), e sem ele o headline muda de aparência.
-import '@fontsource-variable/bricolage-grotesque/opsz.css';
+// Bricolage vem pelo eixo wght, não pelo opsz: o arquivo cai de 77 KB
+// para 41 KB, quase 20% do peso total da página. Perde-se o ajuste
+// óptico automático que o eixo opsz dá em corpo grande — troca
+// consciente, performance manda aqui.
+import '@fontsource-variable/bricolage-grotesque/wght.css';
 import '@fontsource-variable/inter/wght.css';
 import '@fontsource-variable/jetbrains-mono/wght.css';
 
 import '../styles/global.css';
 
-// O woff2 do Inter é o único no caminho do LCP (o parágrafo do hero).
-// Os outros dois entram com font-display:swap e o fallback métrico do
-// global.css segura o layout até chegarem.
-import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+// Preload só da Bricolage, a fonte do headline — o texto de maior peso
+// visual da primeira dobra. Pré-carregar as três punha 165 KB em
+// prioridade alta disputando banda com o CSS bloqueante; agora são 41 KB
+// e o resto o navegador descobre pelo CSS, um RTT depois.
+//
+// Inter e JetBrains não perdem nada de LCP com isso: o fallback métrico
+// do global.css desenha o texto no primeiro frame com as mesmas medidas,
+// então o LCP é registrado antes de qualquer woff2 chegar. O que elas
+// afetam é Speed Index, e aí o CSS as descobre cedo o bastante.
+import bricolageLatin from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -54,7 +62,7 @@ const { title, description } = Astro.props;
      um terceiro antes de qualquer pixel, mesmo com preconnect. Agora o
      @font-face vem dentro do nosso próprio CSS e o woff2 sai do mesmo
      domínio, na mesma conexão já aberta. -->
-<link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin/>
+<link rel="preload" as="font" type="font/woff2" href={bricolageLatin} crossorigin/>
 
 
 </head>

@@ -67,11 +67,15 @@
   line-gap-override:       0%;
 }
 @font-face{
+  /* Recalibrado ao trocar a Bricolage do eixo opsz para o wght: o
+     arquivo novo desenha o mesmo texto ~12% mais largo, então os
+     valores do opsz deixariam o fallback fora de medida e o CLS do
+     título voltaria. */
   font-family: "Bricolage Fallback";
   src: local('Arial'), local('Helvetica Neue'), local('Liberation Sans');
-  size-adjust:         92.863%;
-  ascent-override:    100.147%;
-  descent-override:    29.075%;
+  size-adjust:        104.110%;
+  ascent-override:     89.328%;
+  descent-override:    25.934%;
   line-gap-override:       0%;
 }
 @font-face{
@@ -140,6 +144,82 @@ body { font-family: "Inter Variable", "Inter Fallback", system-ui, sans-serif; }
 
 /* Anti-FOUC: só esconde se o JS estiver ativo */
 .js [data-reveal]{ opacity: 0; }
+
+/* ============================================================
+   REVEAL POR SCROLL — a coreografia das quatro dobras
+   ============================================================
+
+   Era uma timeline do GSAP por seção. Agora é uma animação só, e cada
+   grupo ajusta as variáveis abaixo — os valores são os mesmos que os
+   tweens usavam. O scripts/reveal.js apenas põe .is-visible no gatilho
+   quando o IntersectionObserver avisa.
+
+     --rv-x/y/scale  o estado inicial (o `from` do fromTo)
+     --rv-dur        duração
+     --rv-base       o offset na timeline (o 3º argumento do fromTo)
+     --rv-step       o antigo `stagger`, multiplicado pelo --i que cada
+                     elemento carrega no markup */
+
+[data-reveal]{
+  --rv-x: 0px;  --rv-y: 24px;  --rv-scale: 1;
+  --rv-dur: .8s; --rv-base: 0s; --rv-step: 0s;
+}
+
+/* Por ancestral, exceto quem tem gatilho próprio (data-reveal-solo):
+   esse só entra quando a própria classe chega. */
+.is-visible [data-reveal]:not([data-reveal-solo]),
+[data-reveal].is-visible{
+  animation: revelar var(--rv-dur) var(--ease-entry)
+             calc(var(--rv-base) + var(--i, 0) * var(--rv-step)) both;
+}
+
+@keyframes revelar{
+  from{ opacity: 0; transform: translate3d(var(--rv-x), var(--rv-y), 0) scale(var(--rv-scale)); }
+  to  { opacity: 1; transform: none; }
+}
+
+/* Cabeçalhos das quatro dobras: mesma entrada em todas. */
+[data-reveal$="-head"]{ --rv-y: 28px; --rv-step: .12s; }
+
+[data-reveal="arch-card"]    { --rv-y: 0px;  --rv-scale: .94; --rv-dur: 1.1s; --rv-base: .18s; }
+[data-reveal="arch-item"]    { --rv-x: 44px; --rv-y: 0px;     --rv-dur: .7s;  --rv-base: .42s; --rv-step: .15s; }
+[data-reveal="proc-step"]    { --rv-y: 36px; --rv-dur: .7s;   --rv-base: .3s; --rv-step: .13s; }
+[data-reveal="proc-marquee"] { --rv-y: 0px;  --rv-dur: .9s;   --rv-base: .7s; }
+[data-reveal="proc-manifesto"]{ --rv-y: 30px; --rv-dur: .9s;  --rv-step: .14s; }
+[data-reveal="res-metric"]   { --rv-y: 24px; --rv-dur: .7s;   --rv-base: .3s; --rv-step: .1s; }
+[data-reveal="res-case"]     { --rv-y: 36px; --rv-dur: .8s;   --rv-base: .55s; --rv-step: .14s; }
+[data-reveal="cta-form"]     { --rv-y: 36px; --rv-scale: .97; --rv-dur: .9s;  --rv-base: .25s; }
+
+/* No mobile nada se move na horizontal e o desfoque sai de cena — o
+   mesmo motivo de antes: translate em X dentro de container de largura
+   cheia liga a barra de rolagem lateral no meio da animação, e blur em
+   tela inteira derruba o frame rate em aparelho intermediário. */
+@media (max-width: 767px){
+  [data-reveal$="-head"]        { --rv-y: 20px; }
+  [data-reveal="arch-card"]     { --rv-scale: .98; }
+  [data-reveal="arch-item"]     { --rv-x: 0px; --rv-y: 24px; --rv-dur: .6s; --rv-step: .12s; }
+  [data-reveal="proc-step"]     { --rv-y: 24px; }
+  [data-reveal="proc-manifesto"]{ --rv-y: 22px; }
+  [data-reveal="res-metric"]    { --rv-y: 16px; }
+  [data-reveal="res-case"]      { --rv-y: 24px; }
+  [data-reveal="cta-form"]      { --rv-y: 24px; --rv-scale: 1; }
+}
+
+/* Só no desktop, cabeçalhos e manifesto entram saindo de desfoque. */
+@media (min-width: 768px){
+  .is-visible [data-reveal$="-head"],
+  [data-reveal="proc-manifesto"].is-visible{ animation-name: revelarDesfoque; }
+}
+@keyframes revelarDesfoque{
+  from{ opacity: 0; transform: translate3d(0, var(--rv-y), 0); filter: blur(8px); }
+  to  { opacity: 1; transform: none; filter: blur(0px); }
+}
+
+/* O risco do manifesto, depois da frase assentar. */
+[data-reveal-solo].is-visible .manifesto-risco-linha{
+  animation: riscar .55s cubic-bezier(.4,0,.2,1) .5s both;
+}
+@keyframes riscar{ from{ transform: scaleX(0); } to{ transform: scaleX(1); } }
 
 /* ============================================================
    ENTRADA DO HERO — CSS puro, fora do caminho do LCP
