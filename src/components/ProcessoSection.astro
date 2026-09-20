@@ -150,8 +150,8 @@ import Button from './Button.astro';
 
 <script>
   /* ---------- Reveals da seção ----------
-     Script de componente: módulo adiado pelo Astro, com o GSAP do CDN
-     (carregado no <head> do Layout) já de pé quando isto roda. */
+     Script de componente: módulo adiado pelo Astro. O GSAP e o
+     ScrollTrigger entram pelo import de reveal.js. */
   import { revelarSecao } from '../scripts/reveal.js';
 
   revelarSecao('#processo', (tl, { headFrom, headTo, desk }) => {

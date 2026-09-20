@@ -1,0 +1,431 @@
+/* ============================================================
+   FOLHA GLOBAL DO SITE
+   ============================================================
+
+   Importada no frontmatter de layouts/Layout.astro. O Vite/Tailwind
+   processa este arquivo no build: gera só as utilidades realmente
+   usadas nos .astro, minifica tudo e entrega uma folha com hash no
+   nome — em lugar do antigo cdn.tailwindcss.com, que era um <script>
+   bloqueante compilando CSS no navegador a cada carregamento. */
+
+/* source(none) desliga a varredura automática e o @source abaixo
+   aponta só para src/. Sem isso o Tailwind também leria siteAntigo/
+   (o HTML legado, ainda versionado) e geraria utilidades que nenhuma
+   página do Astro usa. */
+@import "tailwindcss" source(none);
+@source "../../src";
+
+/* ============================================================
+   TEMA DO TAILWIND — o que era tailwind.config no <head>
+   ============================================================
+
+   No Tailwind 4 o tema é CSS: cada --color-* aqui vira a família de
+   utilidades correspondente (bg-accent, text-accent, border-accent/40,
+   bg-accentlo/10 …), e cada --font-* vira font-sans / font-display /
+   font-mono. Os mesmos valores aparecem de novo no :root abaixo como
+   tokens do design system, usados direto no CSS artesanal. */
+@theme {
+  --color-bg:       #050505;
+  --color-surface:  #0A0A0A;
+  --color-surface2: #111111;
+  --color-accent:   #F97316;
+  --color-accenthi: #FB923C;
+  --color-accentlo: #EA580C;
+  --color-accent2:  #3B82F6;
+  --color-onaccent: #2C1306;
+
+  --font-sans:    Inter, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", Inter, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Preflight do Tailwind 4 tira o cursor:pointer dos botões; o site
+   sempre teve ponteiro de mão nos CTAs. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) { cursor: pointer; }
+}
+
+/* ============================================================
+   DESIGN TOKENS — espelham assets do design_system.html
+   ============================================================ */
+:root{
+  /* Superfícies */
+  --bg:            #050505;
+  --surface:       #0A0A0A;
+  --surface-2:     #111111;
+  --surface-warm:  #120A05;
+
+  /* Bordas */
+  --border:        rgba(255,255,255,.10);
+  --border-subtle: rgba(255,255,255,.05);
+
+  /* Texto */
+  --text:          #FFFFFF;
+  --text-muted:    #A3A3A3;
+  --text-dim:      #737373;
+  --on-accent:     #2C1306;
+
+  /* Accent primário (design system) */
+  --accent:        #F97316;
+  --accent-hi:     #FB923C;
+  --accent-lo:     #EA580C;
+
+  /* Accent secundário */
+  --accent-2:      #3B82F6;
+
+  /* Gradientes */
+  --grad-primary:  linear-gradient(to top, #FEF08A, #FB923C, #F97316);
+  --grad-text:     linear-gradient(to right, #FFFFFF, #FED7AA, #FB923C);
+  --grad-edge:     linear-gradient(to bottom, #FDE047, #F97316, transparent);
+
+  /* Glows */
+  --glow-accent:   0 0 40px -5px rgba(249,115,22,.60);
+  --glow-accent-h: 0 0 60px -5px rgba(249,115,22,.80);
+  --glow-blue:     0 0 20px rgba(59,130,246,.50), inset 0 0 10px rgba(59,130,246,.20);
+
+  /* Motion */
+  --ease-entry:    cubic-bezier(.2,.8,.2,1);
+}
+
+html, body { background-color: var(--bg); overflow-x: hidden; }
+/* Nada pode furar a largura da viewport no mobile */
+*, *::before, *::after { min-width: 0; }
+img, svg, video { max-width: 100%; height: auto; }
+body { font-family: 'Inter', system-ui, sans-serif; }
+
+/* Anti-FOUC: só esconde se o JS estiver ativo */
+.js [data-reveal]{ opacity: 0; }
+
+/* ============================================================
+   ENTRADA DO HERO — CSS puro, fora do caminho do LCP
+   ============================================================
+
+   A primeira dobra não espera JavaScript. Antes ela entrava numa
+   timeline do GSAP: o anti-FOUC acima deixava tudo em opacity:0 e só
+   o bundle acendia a luz, então o LCP só acontecia depois de baixar,
+   parsear e executar ~27 KB de JS. Por isso estes elementos usam
+   [data-hero] — que a regra anti-FOUC não pega — e entram por
+   @keyframes, que já rodam no primeiro frame depois do CSS.
+
+   Os dois blocos de texto grandes (o <h1> e o parágrafo) são os
+   candidatos naturais a LCP, e animam SÓ transform, em opacity:1
+   desde o primeiro frame: o Chrome descarta como LCP qualquer
+   elemento em opacity:0, então um fade neles adiaria a métrica de
+   novo — de 3,5 s para pouco, mas adiaria. Transform não entra nessa
+   conta e também não desloca layout, então não custa CLS. */
+
+@keyframes heroFade     { from{ opacity:0; transform: translateY(18px); }  to{ opacity:1; transform:none; } }
+@keyframes heroFadeDown { from{ opacity:0; transform: translateY(-18px); } to{ opacity:1; transform:none; } }
+@keyframes heroPanel    { from{ opacity:0; transform: translateY(34px) scale(.97); } to{ opacity:1; transform:none; } }
+@keyframes heroBadge    { from{ opacity:0; transform: scale(.9); } to{ opacity:1; transform:none; } }
+/* Sem opacity: preservam o LCP */
+@keyframes heroSlide    { from{ transform: translateY(16px); } to{ transform:none; } }
+@keyframes heroWord     { from{ transform: translateY(115%); } to{ transform:none; } }
+@keyframes heroFloat    { from{ transform: translateY(0); }    to{ transform: translateY(-13px); } }
+
+[data-hero]{ animation: heroFade .8s var(--ease-entry) backwards; }
+[data-hero="nav"]  { animation-name: heroFadeDown; }
+[data-hero="tag"]  { animation-delay: .06s; }
+[data-hero="panel"]{ animation-name: heroPanel; animation-duration: 1s; animation-delay: .14s; }
+[data-hero="cta"]  { animation-delay: .26s; }
+[data-hero="proof"]{ animation-delay: .32s; }
+
+/* LCP #1 — o parágrafo: desliza, nunca desaparece. */
+[data-hero="sub"]{ animation: heroSlide .8s var(--ease-entry) .16s backwards; }
+
+/* LCP #2 — o headline. O <h1> em si não anima; quem entra são as
+   palavras, cada uma subindo por trás do overflow:hidden do .word. */
+[data-hero="headline"]{ animation: none; }
+[data-hero="headline"] .word > span{
+  animation: heroWord .9s cubic-bezier(.16,1,.3,1) backwards;
+  animation-delay: calc(.10s + var(--i) * .035s);
+}
+
+/* Crachás flutuantes (lg+). A entrada e a flutuação infinita são duas
+   animações na mesma declaração; o atraso da segunda é o da primeira
+   mais a duração dela, para uma pegar exatamente onde a outra larga. */
+[data-float]{
+  --entrada: calc(.9s + var(--i) * .12s);
+  animation:
+    heroBadge .6s cubic-bezier(.34,1.56,.64,1) var(--entrada) backwards,
+    heroFloat calc(2.4s + var(--i) * .25s) ease-in-out calc(var(--entrada) + .6s) infinite alternate;
+}
+
+/* ============================================================
+   FUNDO — profundidade em camadas
+   ============================================================ */
+
+/* Malha de pontos com deriva lenta */
+.dot-grid{
+  background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+          mask-image: radial-gradient(ellipse 85% 65% at 50% 38%, #000 28%, transparent 76%);
+  animation: gridDrift 26s linear infinite;
+}
+@keyframes gridDrift{ to{ background-position: 28px 28px; } }
+
+/* Campo de estrelas (design_system.html) */
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 130px 80px, #ffffff, rgba(0,0,0,0));
+  background-size: 200px 200px;
+  opacity: .20;
+}
+
+/* Grid amplo mascarado (design_system.html) */
+.grid-bg-mask{
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+          mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+}
+
+/* Feixes que percorrem as bordas (design_system.html) */
+.beam-border-h{
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background: rgba(255,255,255,.05); overflow:hidden; z-index:10;
+}
+.beam-border-h::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 7s cubic-bezier(.4,0,.2,1) infinite;
+  animation-delay: 2.5s; opacity:.7;
+}
+@keyframes beam-slide{
+  0%{ transform: translateX(-100%); opacity:0; }
+  10%{ opacity:1; } 90%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Glow do painel (design_system.html) */
+.electric-card{
+  box-shadow: 0 0 30px rgba(249,115,22,.30), inset 0 0 20px rgba(249,115,22,.10);
+}
+
+/* ============================================================
+   BOTÃO PRIMÁRIO — "Beam Ring" (design_system.html)
+   Geometria do Finex (pílula escura + borda cônica girando),
+   recolorida para o accent primário laranja.
+   ============================================================ */
+.btn-beam{
+  box-shadow: 0 0 25px -10px rgba(249,115,22,.45);
+  /* Sem transform no hover: o botão fica parado, só o brilho responde. */
+}
+.btn-beam:hover{ box-shadow: 0 0 40px -10px rgba(249,115,22,.70); }
+
+/* Feixe cônico que percorre a borda (Finex) */
+.btn-beam-ring{
+  background: conic-gradient(from 0deg, transparent 0 300deg, var(--accent) 360deg);
+  animation: beam-spin 3s linear infinite;
+}
+@keyframes beam-spin{ to{ transform: rotate(360deg); } }
+
+/* Borda em gradiente mascarada (Finex / design_system.html) */
+[style*="--border-gradient"]::before{
+  content:""; position:absolute; inset:0; padding:1px;
+  border-radius: var(--border-radius-before, inherit);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  background: var(--border-gradient);
+  pointer-events: none;
+}
+
+/* ============================================================
+   CRACHÁS FLUTUANTES
+   ============================================================ */
+.pill{
+  background: rgba(10,10,10,.72);
+  border: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.8);
+  will-change: transform;
+}
+
+/* Pulso que viaja pela linha do pipeline */
+.flow-pulse{
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  animation: flowRun 2.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes flowRun{
+  0%{ transform: translateX(-100%); opacity:0; }
+  15%{ opacity:1; } 85%{ opacity:1; }
+  100%{ transform: translateX(100%); opacity:0; }
+}
+
+/* Palavras do headline (reveal por máscara) */
+.word{
+  display:inline-block; overflow:hidden; vertical-align:bottom;
+  padding-bottom:.14em; margin-bottom:-.14em;
+}
+.word > span{ display:inline-block; will-change: transform; }
+
+/* Texto em gradiente. No headline do hero a classe fica no <span> interno
+   de cada palavra (o split é feito em build time): um filho inline-block
+   quebraria o background-clip:text do pai e a palavra sumiria. */
+.text-grad{
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   2ª DOBRA — ARQUITETURA
+   ============================================================ */
+
+/* Malha de pontos da seção */
+.dot-grid-soft{
+  background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+          mask-image: radial-gradient(ellipse 78% 72% at 50% 50%, #000 32%, transparent 82%);
+}
+
+/* Luz percorrendo as conexões do diagrama.
+   pathLength="100" normaliza o comprimento de cada path, então o mesmo
+   dasharray e o mesmo timing funcionam para qualquer geometria de linha. */
+.wire-pulse{
+  stroke-dasharray: 6 94;
+  stroke-dashoffset: 100;
+  animation: wireRun 3.2s linear infinite;
+}
+@keyframes wireRun{ to{ stroke-dashoffset: 0; } }
+
+/* Anéis concêntricos expandindo a partir do núcleo */
+.core-ring{ animation: coreRing 3.6s cubic-bezier(.3,0,.5,1) infinite; }
+@keyframes coreRing{
+  0%   { transform: scale(.7);  opacity: 0;  }
+  35%  {                        opacity: .55;}
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+/* Nós satélite */
+.node{
+  background: rgba(24,24,27,.85);
+  border: 1px solid rgba(255,255,255,.10);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.node:hover{
+  border-color: rgba(249,115,22,.45);
+  box-shadow: 0 0 22px -6px rgba(249,115,22,.55);
+}
+
+/* Partícula em órbita */
+.orbit{ animation: orbitSpin 18s linear infinite; }
+@keyframes orbitSpin{ to{ transform: rotate(360deg); } }
+
+/* ============================================================
+   3ª DOBRA — PROCESSO
+   ============================================================ */
+
+/* Conector entre etapas. Reaproveita o keyframe beam-slide do
+   design system para o pulso que percorre a linha. */
+.step-wire{ background: rgba(255,255,255,.08); overflow: hidden; }
+.step-wire::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  transform: translateX(-100%);
+  animation: beam-slide 4.5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:.75;
+}
+/* Variante vertical (mobile). O gradiente horizontal comprimido em
+   1px pintava a linha inteira de laranja, sem pulso nenhum. */
+.step-wire-v::after{
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  transform: translateY(-100%);
+  animation-name: beam-drop;
+}
+
+/* Marquee de integrações (design_system.html) */
+.animate-marquee{ animation: marquee 34s linear infinite; }
+@keyframes marquee{
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Manifesto da dobra — o risco e o realce.
+
+   A linha é um elemento de verdade, e não um text-decoration ou um
+   ::after: o GSAP precisa de um alvo para desenhá-la da esquerda para
+   a direita, e pseudo-elemento ele não anima. Ela nasce em scaleX(1)
+   para continuar visível se o GSAP não subir; quem começa em zero é o
+   fromTo da timeline, no instante em que a animação entra. */
+.manifesto-risco{ position: relative; }
+.manifesto-risco-linha{
+  position: absolute; left: -.05em; right: -.05em;
+  /* Meio da altura-x da Bricolage, não meio da caixa da linha: medido,
+     dá .674em do topo (a caixa inline tem 1.194em), e a linha tem .06em
+     de espessura — daí o .644em. Como é proporção da fonte, vale em
+     qualquer tamanho. */
+  top: .644em;
+  height: .06em; min-height: 2px; border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+}
+
+/* O outro lado da frase: branco puro sobre o esmaecido, com o mesmo
+   halo quente dos elementos em destaque do design system. */
+.manifesto-realce{
+  color: #fff;
+  text-shadow: 0 0 44px rgba(249,115,22,.38);
+}
+
+/* Cartão de etapa */
+.step-card{ transition: border-color .35s ease, background-color .35s ease; }
+.step-card:hover{
+  border-color: rgba(249,115,22,.28);
+  background-color: rgba(249,115,22,.03);
+}
+
+/* ============================================================
+   4ª DOBRA — RESULTADOS
+   ============================================================ */
+
+/* Feixe vertical que percorre a borda (design_system.html) */
+.beam-border-v{
+  position:absolute; top:0; bottom:0; left:0; width:1px;
+  background: rgba(255,255,255,.05); overflow:hidden; z-index:10;
+}
+.beam-border-v::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  transform: translateY(-100%);
+  animation: beam-drop 5s cubic-bezier(.4,0,.2,1) infinite;
+  opacity:.7;
+}
+@keyframes beam-drop{
+  0%{ transform: translateY(-100%); opacity:0; }
+  10%{ opacity:1; } 90%{ opacity:1; }
+  100%{ transform: translateY(100%); opacity:0; }
+}
+
+/* Aspas decorativas do card de resultado */
+.quote-mark{
+  font-family: 'Bricolage Grotesque', sans-serif;
+  line-height: 1;
+}
+
+::selection{ background: rgba(249,115,22,.30); color:#fff; }
+
+/* Acessibilidade: respeita redução de movimento */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    animation-delay:0s !important;
+    transition-duration:.001ms !important;
+  }
+  .js [data-reveal]{ opacity:1 !important; }
+}

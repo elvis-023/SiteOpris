@@ -78,31 +78,31 @@ import Button from './Button.astro';
             <div>
               <label for="f-nome" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Nome *</label>
               <input id="f-nome" name="nome" type="text" required autocomplete="name"
-                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-hidden sm:h-11 sm:text-sm"
                      placeholder="Como te chamamos"/>
             </div>
             <div>
               <label for="f-empresa" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Empresa</label>
               <input id="f-empresa" name="empresa" type="text" autocomplete="organization"
-                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-hidden sm:h-11 sm:text-sm"
                      placeholder="Nome da empresa"/>
             </div>
             <div>
               <label for="f-email" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">E-mail corporativo *</label>
               <input id="f-email" name="email" type="email" required autocomplete="email"
-                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-hidden sm:h-11 sm:text-sm"
                      placeholder="voce@empresa.com.br"/>
             </div>
             <div>
               <label for="f-fone" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">WhatsApp</label>
               <input id="f-fone" name="telefone" type="tel" autocomplete="tel"
-                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:h-11 sm:text-sm"
+                     class="h-12 w-full rounded-lg border border-white/10 bg-bg px-4 text-base text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-hidden sm:h-11 sm:text-sm"
                      placeholder="(00) 00000-0000"/>
             </div>
             <div class="sm:col-span-2">
               <label for="f-msg" class="mb-2 block font-mono text-[10px] uppercase tracking-widest text-neutral-500">Qual rotina mais consome tempo hoje? *</label>
               <textarea id="f-msg" name="mensagem" rows="4" required
-                        class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-base leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-none sm:text-sm"
+                        class="w-full resize-y rounded-lg border border-white/10 bg-bg px-4 py-3 text-base leading-relaxed text-white transition-colors placeholder:text-neutral-600 focus:border-accent/50 focus:outline-hidden sm:text-sm"
                         placeholder="Ex.: conferimos 200 pedidos por dia na mão, comparando o pedido do cliente com o que entrou no ERP."></textarea>
             </div>
           </div>
@@ -124,8 +124,8 @@ import Button from './Button.astro';
 
 <script>
   /* Script de componente: módulo adiado pelo Astro. O listener de submit
-     entra depois do parse, e o GSAP do CDN (carregado no <head> do
-     Layout) já está de pé quando o reveal é montado. */
+     entra depois do parse; o GSAP e o ScrollTrigger do reveal entram
+     pelo import de reveal.js. */
   import { revelarSecao } from '../scripts/reveal.js';
 
   /* ---------- Formulário de contato ----------
